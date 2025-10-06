@@ -1,11 +1,13 @@
 draw_set_font(fntBattle);
 
-draw_sprite(sprCurrentCharBox, 0, 0, display_get_gui_height());
-draw_text(actionMenuTextOffX, currNameTextY, currentChar[$"name"]);
-draw_set_font(fntHP);
-draw_text(actionMenuTextOffX, currHPTextY, currentChar[$"hp"]);
-draw_text(actionMenuTextOffX, currHPTextY + 16, currentChar[$"mana"]);
-draw_set_font(fntBattle);
+if (objBattleController.isPlayerTurn == true){
+	draw_sprite(sprCurrentCharBox, 0, 0, display_get_gui_height());
+	draw_text(actionMenuTextOffX, currNameTextY, currentChar[$"name"]);
+	draw_set_font(fntHP);
+	draw_text(actionMenuTextOffX, currHPTextY, currentChar[$"hp"]);
+	draw_text(actionMenuTextOffX, currHPTextY + 16, currentChar[$"mana"]);
+	draw_set_font(fntBattle);
+}
 //draw_text(actionMenuTextOffX, currHPTextY + actionMenuTextSpaceY, currentChar[$"mana"]);
 
 switch(menuState){
@@ -47,7 +49,7 @@ switch(menuState){
 	case BMENUST.SPELL:
 		draw_sprite(sprActionBox, 0, actionBoxX[0], actionBoxActiveY);
 		draw_sprite(sprInfoBox, 0, infoBoxX, actionBoxActiveY);
-		draw_text(actionBoxX[0] + actionMenuTextOffX, actionBoxActiveY - actionMenuHeaderY, "SPELL");
+		draw_text(actionBoxX[0] + actionMenuTextOffX, actionBoxActiveY - actionMenuHeaderY, "SKILLS");
 		for (var i = 0; i < array_length(options); i++){
 			var textCol = (i == selected) ? c_yellow : c_white;
 			draw_set_color(textCol);
@@ -63,6 +65,15 @@ switch(menuState){
 			var textCol = (i == selected) ? c_yellow : c_white;
 			draw_set_color(textCol);
 			draw_text(actionBoxX[0] + actionMenuTextOffX, actionBoxActiveY - actionMenuTextY + (actionMenuTextSpaceY * i), options[i]);	
+			draw_set_color(c_white);
+		}
+		break;
+	case BMENUST.ANIMATE:
+		for (var i = 0; i < array_length(options); ++i){
+			draw_sprite(sprActionBox, 0, actionBoxX[i], actionBoxInactiveY);
+			var textCol = (i == selected) ? c_yellow : c_white;
+			draw_set_color(textCol);
+			draw_text(actionBoxX[i] + actionMenuTextOffX, actionBoxInactiveY - actionMenuHeaderY, options[i]);
 			draw_set_color(c_white);
 		}
 		break;

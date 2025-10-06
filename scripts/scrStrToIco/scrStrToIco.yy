@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scrStrToIco",
   "parent":{
-    "name":"Defines",
-    "path":"folders/Scripts/Defines.yy",
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

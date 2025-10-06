@@ -11,6 +11,7 @@ function scrDefineMenuOptions(){
 		ACTION,
 		ATTACK,
 		SPELL,
-		TARGET
+		TARGET,
+		ANIMATE
 	}
 }

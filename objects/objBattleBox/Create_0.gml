@@ -42,7 +42,7 @@ getOpText = function(op){
 	}
 	
 	if (op == BOPS.SPELL){
-		return "SPELL";	
+		return "SKILLS";	
 	}
 	
 	if (op == BOPS.ITEM){

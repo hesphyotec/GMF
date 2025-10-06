@@ -15,7 +15,7 @@
 		"spells" : ["fireball"],
 		"buffs": [],
 		"debuffs": [],
-		"sprite" : "BattleRock"
+		"sprite" : "sprBattleRock"
 	},
 	"bigRock" : {
 		"name" : "Killer Rock",
@@ -33,6 +33,6 @@
 		"spells" : ["fireball"],
 		"buffs": [],
 		"debuffs": [],
-		"sprite" : "BigRock"
+		"sprite" : "sprBattleBigRock"
 	}
 }

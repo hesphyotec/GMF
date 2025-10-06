@@ -3,42 +3,58 @@
 		"slash" : {
 			"name" : "Slash",
 			"damage" : 10,
-			"scale" : "str"
+			"scale" : "str",
+			"sound" : "Hit1",
+			"sprite" : "sprSlash"
 		},
 		"punch" : {
 			"name" : "Punch",
 			"damage" : 5,
-			"scale" : "str"
+			"scale" : "str",
+			"sound" : "Hit1",
+			"sprite" : "sprSlash"
 		},
 		"chop" : {
 			"name" : "Chop",
 			"damage" : 15,
-			"scale" : "dex"
+			"scale" : "dex",
+			"sound" : "Hit1",
+			"sprite" : "sprSlash"
 		},
 		"hackdown" : {
 			"name" : "Hack Down",
 			"damage" : 30,
-			"scale" : "str"
+			"scale" : "str",
+			"sound" : "Hit1",
+			"sprite" : "sprSlash"
 		},
 		"bowshot" : {
 			"name" : "Bow Shot",
 			"damage" : 25,
-			"scale" : "dex"
+			"scale" : "dex",
+			"sound" : "Hit1",
+			"sprite" : "sprSlash"
 		},
 		"bonk" : {
 			"name" : "Staff Strike",
 			"damage" : 5,
-			"scale" : "str"
+			"scale" : "str",
+			"sound" : "Hit1",
+			"sprite" : "sprSlash"
 		},
 		"smash" : {
 			"name" : "Rock Smash",
 			"damage" : 25,
-			"scale" : "str"
+			"scale" : "str",
+			"sound" : "Hit1",
+			"sprite" : "sprSlash"
 		},
 		"roll" : {
 			"name" : "Rock n' Roll",
 			"damage" : 10,
-			"scale" : "str"
+			"scale" : "str",
+			"sound" : "Hit1",
+			"sprite" : "sprSlash"
 		}
 	},
 	"spells" : {
@@ -47,21 +63,36 @@
 			"damage" : 20,
 			"scale" : "int",
 			"cost" : 25,
-			"effects" : ["burn 1"]
+			"effects" : ["burn 1"],
+			"sound" : "Fireball",
+			"sprite" : "sprFireball"
 		},
 		"heal" : {
 			"name" : "Heal",
 			"heal" : 10,
 			"scale" : "int",
 			"cost" : 30,
-			"effects" : []
+			"effects" : [],
+			"sound" : "Heal",
+			"sprite" : "sprSlash"
 		},
 		"lightning" : {
 			"name" : "Lightning",
 			"damage" : 25,
 			"scale" : "int",
 			"cost" : 50,
-			"effects" : []
+			"effects" : [],
+			"sound" : "Lightning",
+			"sprite" : "sprLightning"
+		},
+		"devsmite" : {
+			"name" : "HOLY SMITE",
+			"damage" : 5000,
+			"scale" : "int",
+			"cost" : 0,
+			"effects" : [],
+			"sound" : "Obliterate",
+			"sprite" : "sprSlash"
 		}
 	}
 }

@@ -19,6 +19,7 @@ if (active && (alarm[0] <=0)){
 				break;
 			case BMENUST.ATTACK:
 				action = options[selection];
+				if (DEBUG_ENABLED) show_debug_message("Enemies: " + string(team2Chars) + string(objBattleController.team2));
 				chooseTarget(team2Chars);
 				break;
 			case BMENUST.SPELL:
@@ -26,6 +27,7 @@ if (active && (alarm[0] <=0)){
 				var spell = struct_get(global.data.moves[$"spells"], action);
 				show_debug_message(string(spell));
 				if (variable_struct_exists(spell,"damage")){
+					if (DEBUG_ENABLED) show_debug_message("Enemies: " + string(team2Chars) + string(objBattleController.team2));
 					chooseTarget(team2Chars);	
 				}
 				if (variable_struct_exists(spell,"heal")){

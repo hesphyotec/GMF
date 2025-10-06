@@ -1,0 +1,1 @@
+objBattleMenu.animFinish();

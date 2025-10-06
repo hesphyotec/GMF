@@ -15,7 +15,8 @@
 		"spells" : [],
 		"buffs": [],
 		"debuffs": [],
-		"sprite" : "vet"
+		"sprite" : "sprBattleVetT",
+		"splash" : "sprVetSplash"
 	},
 	"healer" : {
 		"name" : "Yvette",
@@ -33,7 +34,8 @@
 		"spells" : ["heal", "fireball"],
 		"buffs": [],
 		"debuffs": [],
-		"sprite" : "healer"
+		"sprite" : "sprBattleHealerT",
+		"splash" : "sprHealerSplash"
 	},
 	"archer" : {
 		"name" : "Blumiere",
@@ -51,6 +53,7 @@
 		"spells" : [],
 		"buffs": [],
 		"debuffs": [],
-		"sprite" : "archer"
+		"sprite" : "sprBattleArcherT",
+		"splash" : "sprArcherSplash"
 	}
 }

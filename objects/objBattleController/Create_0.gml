@@ -12,7 +12,7 @@ x = room_width / 2;
 y = room_height / 2; 
 
 
-menu = instance_create_layer(0,0, "Instances", objBattleMenu);
+menu = instance_create_layer(0,0, "Menu", objBattleMenu);
 
 enemyData = global.data.enemies;
 
@@ -80,8 +80,9 @@ loadEncounter = function(encounter){
 }
 
 startTurn = function(fighter){
-	show_debug_message("Starting turn for" + string(fighter[$"name"]));
-	show_debug_message("Current order: " + string(fighters));
+	if(DEBUG_ENABLED) show_debug_message("Starting turn for" + string(fighter[$"name"]));
+	if(DEBUG_ENABLED) show_debug_message("Current order: " + string(fighters));
+	if(DEBUG_ENABLED) show_debug_message("Enemy Team Remaining: " + string(array_length(team2)));
 	for(var i = 0; i < array_length(fighters); ++i){
 		show_debug_message("Current order [" + string(i) + "]: " + string(fighters[i][$"name"]));
 	}
@@ -126,6 +127,7 @@ doSpell = function(spl, tar, team){
 		if(spell[$"damage"]){
 			var dmg  = spell[$"damage"] * (struct_get(activeFighter[$"stats"], spell[$"scale"]) div 2);
 			doDamage(tar, dmg);
+			//audio_play_sound(sndObliterate,1, false);
 		} else if(spell[$"heal"]){
 			var heal = spell[$"heal"] * (struct_get(activeFighter[$"stats"], spell[$"scale"]) div 2);
 			doHeal(tar, heal);
@@ -148,12 +150,14 @@ doSpell = function(spl, tar, team){
 	}
 	
 endTurn = function(){
-	show_debug_message("Ending Turn.");
+	if(DEBUG_ENABLED) show_debug_message("Ending Turn.");
+	if(DEBUG_ENABLED) show_debug_message("[7] Enemy Team Remaining: " + string(array_length(team2)));
 	if(array_contains(fighters, activeFighter)){
 		var ind = array_get_index(fighters, activeFighter);
 		array_delete(fighters, ind, 1);
 		array_push(fighters, activeFighter);
 	}
+	if(DEBUG_ENABLED) show_debug_message("Enemy Team Remaining: " + string(array_length(team2)));
 	if (array_length(team2) <= 0){
 		endBattle(true);
 		return;
@@ -186,6 +190,7 @@ doDamage = function(target, dmg){
 	target.hp -= dmg;
 	show_debug_message(string(target[$"name"]) + " takes " + string(dmg) + "damage.");
 	var isPlayer = array_contains(team1, target);
+	if(DEBUG_ENABLED) show_debug_message("[1] Enemy Team Remaining: " + string(array_length(team2)));
 	if (target.hp <= 0){
 		if (!isPlayer){
 			doDeath(target, team2);
@@ -194,11 +199,23 @@ doDamage = function(target, dmg){
 		}
 		array_delete(fighters, array_get_index(fighters, target), 1);
 	}
+	if(DEBUG_ENABLED) show_debug_message("[6] Enemy Team Remaining: " + string(array_length(team2)));
 }
 
 doDeath = function(target, team){
-	array_delete(team, array_get_index(team, target), 1);
-	menu.charDied(target, team);
+	var tarInd = 0;
+	if (team == team1){
+		tarInd = array_get_index(team1, target);
+		if (DEBUG_ENABLED) show_debug_message("Target: " + string(target) + string(team[tarInd]));
+		array_delete(team1, tarInd, 1);
+	} else {
+		tarInd = array_get_index(team2, target);
+		if (DEBUG_ENABLED) show_debug_message("Target: " + string(target) + string(team[tarInd]));
+		if (DEBUG_ENABLED) show_debug_message("Enemy team before death: " + string(team2));
+		array_delete(team2, tarInd, 1);
+		if (DEBUG_ENABLED) show_debug_message("Enemy team after death: " + string(team2));
+	}
+	menu.charDied();
 	if (target == activeFighter){
 		menu.turnEnd();
 		endTurn();
@@ -249,23 +266,30 @@ enemyTurn = function(enemy){
 		// UH WTF ERROR?????	
 		show_debug_message("No actions loaded!");
 	}
+	
+	battleState = BSTATES.ACTION;
+	if(DEBUG_ENABLED) show_debug_message("Animations waiting at enemy turn: " + string(objBattleMenu.animsWaiting));
+	
 	var atkData = global.data.moves[$"attacks"];
 	var splData = global.data.moves[$"spells"];
 	
 	if (variable_struct_exists(atkData, action)){
 		var tIndex = irandom(array_length(team1) - 1);
 		var target = team1[tIndex];
-		doAttack(action, target, team1);
+		menu.doAnimation(action, enemy, target, menu.team1Chars, false);
+		//doAttack(action, target, team1);
 	} else if (variable_struct_exists(splData, action)){
 		if (variable_struct_exists(struct_get(splData, action), "damage")){
 			var tIndex = irandom(array_length(team1) - 1);
 			var target = team1[tIndex];
-			doSpell(action, target, team1);
+			menu.doAnimation(action, enemy, target, menu.team1Chars, true);
+			//doSpell(action, target, team1);
 		}
 		if (variable_struct_exists(struct_get(splData, action), "heal")){
 			var tIndex = irandom(array_length(team2) - 1);
 			var target = team2[tIndex];
-			doSpell(action, target, team2);
+			menu.doAnimation(action, enemy, target, menu.team2Chars, true);
+			//doSpell(action, target, team2);
 		}
 	}
 	

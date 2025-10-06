@@ -14,10 +14,11 @@ battlePlayer = {
 		int : 5
 	},
 	attacks : ["slash"],
-	spells : ["lightning"],
+	spells : ["lightning", "devsmite"],
 	buffs : [],
 	debuffs : [],
-	sprite : "PlayerT"
+	sprite : "sprBattlePlayerT",
+	splash : "sprHumanPlayerSplash"
 };
 
 loadCompanion = function(comp){
@@ -29,9 +30,10 @@ loadCompanion = function(comp){
 		stats	: compData[$"stats"],
 		attacks : compData[$"attacks"],
 		spells	: compData[$"spells"],
-		buffs : [],
+		buffs	: [],
 		debuffs : [],
-		sprite	: compData[$"sprite"]
+		sprite	: compData[$"sprite"],
+		splash	: compData[$"splash"]
 	}
 	return companion;
 }
