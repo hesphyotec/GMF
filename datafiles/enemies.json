@@ -1,0 +1,38 @@
+{
+	"enemyTest" : {
+		"name" : "Rock",
+		"hp" : 500,
+		"mana" : 100,
+		"stats" : {
+			"maxhp" : 500,
+			"maxmana" : 100,
+			"str" : 4,
+			"dex" : 4,
+			"int" : 4,
+			"cspd" : 4
+		},
+		"attacks" : ["punch"],
+		"spells" : ["fireball"],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "BattleRock"
+	},
+	"bigRock" : {
+		"name" : "Killer Rock",
+		"hp" : 1000,
+		"mana" : 100,
+		"stats" : {
+			"maxhp" : 1000,
+			"maxmana" : 100,
+			"str" : 10,
+			"dex" : 2,
+			"int" : 2,
+			"cspd" : 1
+		},
+		"attacks" : ["smash", "roll"],
+		"spells" : ["fireball"],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "BigRock"
+	}
+}

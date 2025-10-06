@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrLoadJSON",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrLoadJSON",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,4 @@
+scrGetInput();
+if (active){
+	writeDiag();	
+}

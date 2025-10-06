@@ -1,0 +1,67 @@
+{
+	"attacks" : {
+		"slash" : {
+			"name" : "Slash",
+			"damage" : 10,
+			"scale" : "str"
+		},
+		"punch" : {
+			"name" : "Punch",
+			"damage" : 5,
+			"scale" : "str"
+		},
+		"chop" : {
+			"name" : "Chop",
+			"damage" : 15,
+			"scale" : "dex"
+		},
+		"hackdown" : {
+			"name" : "Hack Down",
+			"damage" : 30,
+			"scale" : "str"
+		},
+		"bowshot" : {
+			"name" : "Bow Shot",
+			"damage" : 25,
+			"scale" : "dex"
+		},
+		"bonk" : {
+			"name" : "Staff Strike",
+			"damage" : 5,
+			"scale" : "str"
+		},
+		"smash" : {
+			"name" : "Rock Smash",
+			"damage" : 25,
+			"scale" : "str"
+		},
+		"roll" : {
+			"name" : "Rock n' Roll",
+			"damage" : 10,
+			"scale" : "str"
+		}
+	},
+	"spells" : {
+		"fireball" : {
+			"name" : "Fireball",
+			"damage" : 20,
+			"scale" : "int",
+			"cost" : 25,
+			"effects" : ["burn 1"]
+		},
+		"heal" : {
+			"name" : "Heal",
+			"heal" : 10,
+			"scale" : "int",
+			"cost" : 30,
+			"effects" : []
+		},
+		"lightning" : {
+			"name" : "Lightning",
+			"damage" : 25,
+			"scale" : "int",
+			"cost" : 50,
+			"effects" : []
+		}
+	}
+}

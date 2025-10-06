@@ -1,0 +1,12 @@
+{
+	"npc_test" : {
+		"dialogue" : [
+			"I'm just a rock. I'm chillin'.",
+			"Skibidi Rizzma!"
+			],
+		"choices" : [
+			"I'm killing myself.",
+			"Shut the fuck up."
+			]
+	}
+}

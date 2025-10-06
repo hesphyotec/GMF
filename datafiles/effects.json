@@ -1,0 +1,10 @@
+{
+	"buffs" : {},
+	"debuffs" : {
+		"burn 1" : {
+			"name" : "Burning I",
+			"dmg" : 25,
+			"duration" : 3
+		}
+	}
+}

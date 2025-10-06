@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrDefineEnemies",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrDefineEnemies",
+  "parent":{
+    "name":"Defines",
+    "path":"folders/Scripts/Defines.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

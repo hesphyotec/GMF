@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrStrToIco",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrStrToIco",
+  "parent":{
+    "name":"Defines",
+    "path":"folders/Scripts/Defines.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

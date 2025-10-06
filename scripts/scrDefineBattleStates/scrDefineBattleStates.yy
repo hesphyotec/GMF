@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrDefineBattleStates",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrDefineBattleStates",
+  "parent":{
+    "name":"Defines",
+    "path":"folders/Scripts/Defines.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

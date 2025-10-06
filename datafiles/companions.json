@@ -1,0 +1,56 @@
+{
+	"veteran" : {
+		"name" : "Tyralt",
+		"hp": 200,
+		"mana" : 0,
+		"stats" : {
+			"maxhp" : 200,
+			"maxmana" : 0,
+			"str" : 8,
+			"dex" : 2,
+			"int" : 0,
+			"cspd" : 2
+		},
+		"attacks" : ["slash", "chop", "hackdown"],
+		"spells" : [],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "vet"
+	},
+	"healer" : {
+		"name" : "Yvette",
+		"hp" : 75,
+		"mana" : 100,
+		"stats" : {
+			"maxhp" : 75,
+			"maxmana" : 100,
+			"str" : 1,
+			"dex" : 4,
+			"int" : 8,
+			"cspd" : 8
+		},
+		"attacks" : ["bonk"],
+		"spells" : ["heal", "fireball"],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "healer"
+	},
+	"archer" : {
+		"name" : "Blumiere",
+		"hp" : 120,
+		"mana" : 0,
+		"stats" : {
+			"maxhp" : 120,
+			"maxmana" : 0,
+			"str" : 3,
+			"dex" : 7,
+			"int" : 0,
+			"cspd" : 7
+		},
+		"attacks" : ["bowshot", "punch"],
+		"spells" : [],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "archer"
+	}
+}
