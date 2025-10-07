@@ -5,14 +5,17 @@
 			"damage" : 10,
 			"scale" : "str",
 			"sound" : "Hit1",
-			"sprite" : "sprSlash"
+			"sprite" : "sprSlash",
+			"type" : "attack"
 		},
 		"punch" : {
 			"name" : "Punch",
 			"damage" : 5,
 			"scale" : "str",
 			"sound" : "Hit1",
-			"sprite" : "sprSlash"
+			"sprite" : "sprSlash",
+			"type" : "attack"
+			
 		},
 		"chop" : {
 			"name" : "Chop",
@@ -26,35 +29,40 @@
 			"damage" : 30,
 			"scale" : "str",
 			"sound" : "Hit1",
-			"sprite" : "sprSlash"
+			"sprite" : "sprSlash",
+			"type" : "attack"
 		},
 		"bowshot" : {
 			"name" : "Bow Shot",
 			"damage" : 25,
 			"scale" : "dex",
 			"sound" : "Hit1",
-			"sprite" : "sprSlash"
+			"sprite" : "sprSlash",
+			"type" : "attack"
 		},
 		"bonk" : {
 			"name" : "Staff Strike",
 			"damage" : 5,
 			"scale" : "str",
 			"sound" : "Hit1",
-			"sprite" : "sprSlash"
+			"sprite" : "sprSlash",
+			"type" : "attack"
 		},
 		"smash" : {
 			"name" : "Rock Smash",
 			"damage" : 25,
 			"scale" : "str",
 			"sound" : "Hit1",
-			"sprite" : "sprSlash"
+			"sprite" : "sprSlash",
+			"type" : "attack"
 		},
 		"roll" : {
 			"name" : "Rock n' Roll",
 			"damage" : 10,
 			"scale" : "str",
 			"sound" : "Hit1",
-			"sprite" : "sprSlash"
+			"sprite" : "sprSlash",
+			"type" : "attack"
 		}
 	},
 	"spells" : {
@@ -65,7 +73,8 @@
 			"cost" : 25,
 			"effects" : ["burn 1"],
 			"sound" : "Fireball",
-			"sprite" : "sprFireball"
+			"sprite" : "sprFireball",
+			"type" : "dmgSpell"
 		},
 		"heal" : {
 			"name" : "Heal",
@@ -74,7 +83,8 @@
 			"cost" : 30,
 			"effects" : [],
 			"sound" : "Heal",
-			"sprite" : "sprSlash"
+			"sprite" : "sprSlash",
+			"type" : "restoreSpell"
 		},
 		"lightning" : {
 			"name" : "Lightning",
@@ -83,7 +93,8 @@
 			"cost" : 50,
 			"effects" : [],
 			"sound" : "Lightning",
-			"sprite" : "sprLightning"
+			"sprite" : "sprLightning",
+			"type" : "dmgSpell"
 		},
 		"devsmite" : {
 			"name" : "HOLY SMITE",
@@ -92,7 +103,17 @@
 			"cost" : 0,
 			"effects" : [],
 			"sound" : "Obliterate",
-			"sprite" : "sprSlash"
+			"sprite" : "sprSlash",
+			"type" : "dmgSpell"
+		},
+		"ironskin" : {
+			"name" : "Ironskin",
+			"scale" : "int",
+			"cost" : 25,
+			"effects" : ["strResist1"],
+			"sound" : "Heal",
+			"sprite" : "sprLightning",
+			"type" : "buffSpell"
 		}
 	}
 }

@@ -1,16 +1,16 @@
 draw_set_font(fntBattle);
 
-if (objBattleController.isPlayerTurn == true){
+if (battleInfo.isPlayerTurn == true){
 	draw_sprite(sprCurrentCharBox, 0, 0, display_get_gui_height());
-	draw_text(actionMenuTextOffX, currNameTextY, currentChar[$"name"]);
+	draw_text(actionMenuTextOffX, currNameTextY, battleInfo.activeFighter[$"name"]);
 	draw_set_font(fntHP);
-	draw_text(actionMenuTextOffX, currHPTextY, currentChar[$"hp"]);
-	draw_text(actionMenuTextOffX, currHPTextY + 16, currentChar[$"mana"]);
+	draw_text(actionMenuTextOffX, currHPTextY, battleInfo.activeFighter[$"hp"]);
+	draw_text(actionMenuTextOffX, currHPTextY + 16, battleInfo.activeFighter[$"mana"]);
 	draw_set_font(fntBattle);
 }
 //draw_text(actionMenuTextOffX, currHPTextY + actionMenuTextSpaceY, currentChar[$"mana"]);
 
-switch(menuState){
+switch(battleInfo.menuState){
 	case BMENUST.ACTION:
 		for (var i = 0; i < array_length(options); ++i){
 			var activeY = (i == selected) ? actionBoxActiveY : actionBoxInactiveY;

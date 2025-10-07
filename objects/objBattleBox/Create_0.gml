@@ -7,8 +7,10 @@ bOffX = 96;
 bOffY = 32;
 borderOffX = 8;
 borderOffY = 8;
-menuState = BMENUST.ACTION;
-currentChar = undefined;
+battleInfo = {};
+
+battleInfo.menuState = BMENUST.ACTION;
+//currentChar = undefined;
 attackData = global.data.moves[$"attacks"];
 spellData = global.data.moves[$"spells"];
 
@@ -30,8 +32,6 @@ loadButtons = function(ops){
 	for(var i = 0; i < array_length(ops); i++){
 		array_push(options, getOpText(ops[i]));
 	}
-	menuState = objBattleMenu.menuState;
-	currentChar = objBattleMenu.fighter;
 	attacks = objBattleMenu.attacks;
 	spells = objBattleMenu.spells;
 }
@@ -60,7 +60,7 @@ getOpText = function(op){
 	if (struct_get(global.data.moves[$"spells"], op)){
 		return struct_get(global.data.moves[$"spells"], op)[$"name"];
 	}
-	if (objBattleMenu.menuState == BMENUST.TARGET){
+	if (battleInfo.menuState == BMENUST.TARGET){
 		return op;	
 	}
 	return "ERROR";

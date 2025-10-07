@@ -13,25 +13,31 @@ if (active && (alarm[0] <=0)){
 		updateSelection(1);
 	}
 	if (interactPress){
-		switch(menuState){
+		switch(battleInfo.menuState){
 			case BMENUST.ACTION:
 				doFunction(options[selection]);
 				break;
 			case BMENUST.ATTACK:
 				action = options[selection];
-				if (DEBUG_ENABLED) show_debug_message("Enemies: " + string(team2Chars) + string(objBattleController.team2));
-				chooseTarget(team2Chars);
+				if (DEBUG_ENABLED) show_debug_message("Enemies: " + string(battleInfo.team2));
+				chooseTarget(battleInfo.team2);
 				break;
 			case BMENUST.SPELL:
 				action = options[selection];
-				var spell = struct_get(global.data.moves[$"spells"], action);
+				var spell = struct_get(splData, action);
 				show_debug_message(string(spell));
-				if (variable_struct_exists(spell,"damage")){
-					if (DEBUG_ENABLED) show_debug_message("Enemies: " + string(team2Chars) + string(objBattleController.team2));
-					chooseTarget(team2Chars);	
-				}
-				if (variable_struct_exists(spell,"heal")){
-					chooseTarget(team1Chars);	
+				if (spell[$"cost"] <= battleInfo.activeFighter[$"mana"]){
+					if (variable_struct_exists(spell,"type")){
+						if (spell[$"type"] == "dmgSpell"){
+							if (DEBUG_ENABLED) show_debug_message("Enemies: " + string(battleInfo.team2) + string(battleInfo.team2));
+							chooseTarget(battleInfo.team2);	
+						}	
+						if (spell[$"type"] == "restoreSpell" || spell[$"type"] == "buffSpell"){
+							chooseTarget(battleInfo.team1);	
+						}
+					}
+				} else {
+					audio_play_sound(sndNoResource, 1, false);
 				}
 				break;
 			case BMENUST.TARGET:

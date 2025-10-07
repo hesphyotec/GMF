@@ -7,6 +7,7 @@ function scrDefineBattleStates(){
 	}
 	enum CHARSTATES{
 		SELECTED,
-		IDLE
+		IDLE,
+		ATTACK
 	}
 }

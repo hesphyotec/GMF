@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":6,
   "parent":{
-    "name":"Characters",
-    "path":"folders/Sprites/Battle/Characters.yy",
+    "name":"Archer",
+    "path":"folders/Sprites/Battle/Characters/Archer.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

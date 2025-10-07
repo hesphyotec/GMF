@@ -2,6 +2,7 @@ state = CHARSTATES.IDLE;
 character = undefined;
 splash = undefined;
 isPlayerTeam = false;
+animating = false;
 
 
 yOff = 0;
@@ -30,6 +31,8 @@ loadSprite = function(char){
 }
 
 doAnim = function(act, isActor){
+	state = CHARSTATES.ATTACK;
+	if (DEBUG_ENABLED) show_debug_message("[2]" + act);
 	if (isActor){
 		var action = undefined;
 		var isSpl = false;
@@ -39,14 +42,26 @@ doAnim = function(act, isActor){
 			action = struct_get(splData, act);	
 			isSpl = true;
 		}
+		if (DEBUG_ENABLED) show_debug_message("[3]" + string(action));
+		var anim = undefined;
+		anim = asset_get_index(string_concat(character[$"sprite"], act));
+		if (DEBUG_ENABLED) show_debug_message("[3b]" + string(anim));
+		if (anim != -1){
+			if (DEBUG_ENABLED) show_debug_message("[3b]" + string(action));
+			animating = true;
+			sprite_index = anim;
+			image_index = 0;
+			image_speed = 1;
+		}
 		var actSound = action[$"sound"];
 		var soundId = scrGetSound(actSound);
 		if (DEBUG_ENABLED) show_debug_message(string(soundId));
-		alarm[0] = ceil(audio_sound_length(soundId))*45;
+		if (DEBUG_ENABLED) show_debug_message("[4]" + string(action));
 		audio_play_sound(soundId, 1, false);
-	} else {
-		if (alarm[0] <= 0){
-			alarm[0] = 5;
+		if (anim == -1){
+			alarm[0] = (audio_sound_length(soundId) * room_speed) * .75;
 		}
+	} else {
+		alarm[0] = 1;
 	}
 }

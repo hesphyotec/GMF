@@ -1,9 +1,18 @@
 {
-	"buffs" : {},
+	"buffs" : {
+		"strResist1" : {
+			"name" : "Physical Resistance I",
+			"abil" : "resist",
+			"type" : "str",
+			"pow" : 0.25,
+			"duration" : 5
+		}
+	},
 	"debuffs" : {
 		"burn 1" : {
 			"name" : "Burning I",
-			"dmg" : 25,
+			"damage" : 25,
+			"scale" : "int",
 			"duration" : 3
 		}
 	}

@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":6,
   "parent":{
-    "name":"Characters",
-    "path":"folders/Sprites/Battle/Characters.yy",
+    "name":"Human Player",
+    "path":"folders/Sprites/Battle/Characters/Human Player.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

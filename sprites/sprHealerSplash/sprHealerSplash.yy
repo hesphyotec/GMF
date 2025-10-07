@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":6,
   "parent":{
-    "name":"Characters",
-    "path":"folders/Sprites/Battle/Characters.yy",
+    "name":"Healer",
+    "path":"folders/Sprites/Battle/Characters/Healer.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

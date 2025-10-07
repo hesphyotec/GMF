@@ -12,10 +12,10 @@ global.debug = false;
 global.battles = [];
 
 global.data = {
-	enemies : scrLoadJSON("enemies.json"),
-	dialogue : scrLoadJSON("dialogue.json"),
-	moves : scrLoadJSON("moves.json"),
-	companions : scrLoadJSON("companions.json"),
-	effects : scrLoadJSON("effects.json")
-}
+	enemies		: scrLoadJSON("enemies.json"),
+	dialogue	: scrLoadJSON("dialogue.json"),
+	moves		: scrLoadJSON("moves.json"),
+	companions	: scrLoadJSON("companions.json"),
+	effects		: scrLoadJSON("effects.json")
+};
 

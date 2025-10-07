@@ -16,7 +16,12 @@
 		"buffs": [],
 		"debuffs": [],
 		"sprite" : "sprBattleVetT",
-		"splash" : "sprVetSplash"
+		"splash" : "sprVetSplash",
+		"resistances" : {
+			"str" : 0.10,
+			"dex" : 0.00,
+			"int" : 0.00
+		}
 	},
 	"healer" : {
 		"name" : "Yvette",
@@ -31,11 +36,16 @@
 			"cspd" : 8
 		},
 		"attacks" : ["bonk"],
-		"spells" : ["heal", "fireball"],
+		"spells" : ["heal", "fireball", "ironskin"],
 		"buffs": [],
 		"debuffs": [],
 		"sprite" : "sprBattleHealerT",
-		"splash" : "sprHealerSplash"
+		"splash" : "sprHealerSplash",
+		"resistances" : {
+			"str" : 0.00,
+			"dex" : 0.00,
+			"int" : 0.10
+		}
 	},
 	"archer" : {
 		"name" : "Blumiere",
@@ -54,6 +64,11 @@
 		"buffs": [],
 		"debuffs": [],
 		"sprite" : "sprBattleArcherT",
-		"splash" : "sprArcherSplash"
+		"splash" : "sprArcherSplash",
+		"resistances" : {
+			"str" : 0.00,
+			"dex" : 0.10,
+			"int" : 0.00
+		}
 	}
 }
