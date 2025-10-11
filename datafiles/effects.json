@@ -4,15 +4,30 @@
 			"name" : "Physical Resistance I",
 			"abil" : "resist",
 			"type" : "str",
-			"pow" : 0.25,
+			"pow" : 0.5,
 			"duration" : 5
+		},
+		"meditate1" : {
+			"name" : "Meditate I",
+			"abil" : "meditate",
+			"pow" : 25,
+			"duration" : 2			
 		}
 	},
 	"debuffs" : {
 		"burn 1" : {
 			"name" : "Burning I",
-			"damage" : 25,
+			"abil" : "damage",
+			"pow" : 5,
+			"type" : "int",
 			"scale" : "int",
+			"duration" : 3
+		},
+		"strWeakness1" : {
+			"name" : "Physical Weakness I",
+			"abil" : "weakness",
+			"type" : "str",
+			"pow" : 0.5,
 			"duration" : 3
 		}
 	}

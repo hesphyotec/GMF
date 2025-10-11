@@ -11,8 +11,8 @@
 			"int" : 0,
 			"cspd" : 2
 		},
-		"attacks" : ["slash", "chop", "hackdown"],
-		"spells" : [],
+		"attacks" : ["slash"],
+		"spells" : ["hackdown", "chop"],
 		"buffs": [],
 		"debuffs": [],
 		"sprite" : "sprBattleVetT",
@@ -21,7 +21,8 @@
 			"str" : 0.10,
 			"dex" : 0.00,
 			"int" : 0.00
-		}
+		},
+		"desc" : "Ex-soldier from the Impish War. Smells like booze and cigarrettes."
 	},
 	"healer" : {
 		"name" : "Yvette",
@@ -36,7 +37,7 @@
 			"cspd" : 8
 		},
 		"attacks" : ["bonk"],
-		"spells" : ["heal", "fireball", "ironskin"],
+		"spells" : ["heal", "fireball", "ironskin", "meditate"],
 		"buffs": [],
 		"debuffs": [],
 		"sprite" : "sprBattleHealerT",
@@ -45,7 +46,8 @@
 			"str" : 0.00,
 			"dex" : 0.00,
 			"int" : 0.10
-		}
+		},
+		"desc" : "Scholar of the White Magi. Clumsy but knows her stuff."
 	},
 	"archer" : {
 		"name" : "Blumiere",
@@ -69,6 +71,7 @@
 			"str" : 0.00,
 			"dex" : 0.10,
 			"int" : 0.00
-		}
+		},
+		"desc" : "Master Hunter. Doesn't seem very social."
 	}
 }

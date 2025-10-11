@@ -8,8 +8,10 @@ battleInfo = {
 	menuState		: BMENUST.ACTION,
 	isPlayerTurn	: false,
 	team1			: [],
-	team2			: []
+	team2			: [],
+	inventory		: global.playerData[0][$"inventory"]
 };
+
 activeTurn = 0;
 //isPlayerTurn = false;
 diedMidTurn = false;
@@ -28,8 +30,11 @@ menu.menuBox.battleInfo = battleInfo;
 enemyData = global.data.enemies;
 atkData = global.data.moves[$"attacks"];
 splData = global.data.moves[$"spells"];
+itemData = global.data.items;
 bData = global.data.effects[$"buffs"];
 dbData = global.data.effects[$"debuffs"];
+
+//if (DEBUG_ENABLED) show_message(string(battleInfo.inventory[0][$"name"]));
 
 initBattle = function(){
 	show_debug_message("Starting Battle");
@@ -105,7 +110,8 @@ startTurn = function(fighter){
 		enemyTurn(battleInfo.activeFighter);
 	}
 	for(var i = array_length(battleInfo.activeFighter[$"buffs"]) - 1; i >=0 ; --i){
-		if(array_length(battleInfo.activeFighter[$"debuffs"]) > 0){
+		if(array_length(battleInfo.activeFighter[$"buffs"]) > 0){
+			if (DEBUG_ENABLED) show_debug_message("Buff takes effect: " + string(battleInfo.activeFighter[$"buffs"][i]));
 			doBuff(battleInfo.activeFighter[$"buffs"][i], i);
 		}
 	}
@@ -133,40 +139,68 @@ doAttack = function(atk, tar, team){
 	}
 	
 doSpell = function(spl, tar, team){
-		menu.turnEnd();
-		show_debug_message(string(battleInfo.activeFighter[$"name"]) + " is using a spell.");
-		battleInfo.battleState = BSTATES.ACTION;
-		if (struct_exists(splData, spl)){
-			var spell = struct_get(splData, spl);
-			show_debug_message("Retrieved Spell: " + string(spl) + " : " + string(spell));
-			battleInfo.activeFighter[$"mana"] -= spell[$"cost"];
-			if(spell[$"type"] == "dmgSpell"){
-				doDamage(tar, spell);
-			} else if(spell[$"type"] == "restoreSpell"){
-				doHeal(tar, spell);
-			}
-			if (array_length(spell[$"effects"])){
-				var effData = global.data.effects;
-				var effect = {};
-				var spEffs = spell[$"effects"];
-				for (var i = 0; i < array_length(spEffs); ++i){
-					if (variable_struct_exists(effData[$"buffs"], spEffs[i])){
-						if (DEBUG_ENABLED) show_debug_message("Retrieved Buff: " + string(struct_get(effData[$"buffs"], spEffs[i])) + " : " + spEffs[i]);
-						array_push(tar[$"buffs"], spEffs[i]);
-						if (DEBUG_ENABLED) show_debug_message("Applied Buff: " + spEffs[i]);
-					} else if (variable_struct_exists(effData[$"debuffs"], spEffs[i])){
-						array_push(tar[$"debuffs"], spEffs[i]);
-					}
+	menu.turnEnd();
+	show_debug_message(string(battleInfo.activeFighter[$"name"]) + " is using a spell.");
+	battleInfo.battleState = BSTATES.ACTION;
+	if (struct_exists(splData, spl)){
+		var spell = struct_get(splData, spl);
+		show_debug_message("Retrieved Spell: " + string(spl) + " : " + string(spell));
+		battleInfo.activeFighter[$"mana"] -= spell[$"cost"];
+		if(spell[$"type"] == "dmgSpell"){
+			doDamage(tar, spell);
+		} else if(spell[$"type"] == "restoreSpell"){
+			doHeal(tar, spell);
+		}
+		if (array_length(spell[$"effects"])){
+			var effData = global.data.effects;
+			var effect = {};
+			var spEffs = spell[$"effects"];
+			for (var i = 0; i < array_length(spEffs); ++i){
+				if (variable_struct_exists(effData[$"buffs"], spEffs[i])){
+					if (DEBUG_ENABLED) show_debug_message("Retrieved Buff: " + string(struct_get(effData[$"buffs"], spEffs[i])) + " : " + spEffs[i]);
+					array_push(tar[$"buffs"], spEffs[i]);
+					if (DEBUG_ENABLED) show_debug_message("Applied Buff: " + spEffs[i]);
+				} else if (variable_struct_exists(effData[$"debuffs"], spEffs[i])){
+					array_push(tar[$"debuffs"], spEffs[i]);
 				}
 			}
-		} else {
-			show_message("Error loading spell!");	
 		}
-		if(battleInfo.battleState == BSTATES.ACTION){
-			endTurn();
+	} else {
+		show_message("Error loading spell!");	
+	}
+	if(battleInfo.battleState == BSTATES.ACTION){
+		endTurn();
+	}
+}
+
+doItem = function(item, tar, team){
+	menu.turnEnd();
+	show_debug_message(string(battleInfo.activeFighter[$"name"]) + " uses " + item[$"name"] + " on " + tar[$"name"]);
+	battleInfo.battleState = BSTATES.ACTION;
+	if(item[$"abil"] == "heal"){
+		doHeal(tar, item);
+	} else if(item[$"abil"] == "restore"){
+		doRestore(tar, item);
+	}
+	if (array_length(item[$"effects"])){
+		var effData = global.data.effects;
+		var effect = {};
+		var itEffs = item[$"effects"];
+		for (var i = 0; i < array_length(itEffs); ++i){
+			if (variable_struct_exists(effData[$"buffs"], itEffs[i])){
+				if (DEBUG_ENABLED) show_debug_message("Retrieved Buff: " + string(struct_get(effData[$"buffs"], spEffs[i])) + " : " + spEffs[i]);
+				array_push(tar[$"buffs"], itEffs[i]);
+				if (DEBUG_ENABLED) show_debug_message("Applied Buff: " + itEffs[i]);
+			} else if (variable_struct_exists(effData[$"debuffs"], itEffs[i])){
+				array_push(tar[$"debuffs"], itEffs[i]);
+			}
 		}
 	}
-	
+	if(battleInfo.battleState == BSTATES.ACTION){
+		endTurn();
+	}
+}
+
 endTurn = function(){
 	if(DEBUG_ENABLED) show_debug_message("Ending Turn.");
 	if(DEBUG_ENABLED) show_debug_message("[7] Enemy Team Remaining: " + string(array_length(battleInfo.team2)));
@@ -210,10 +244,10 @@ doDamage = function(target, action){
 	var resistMult = 1.0;
 	var tarResMult = struct_get(target[$"resistances"], action[$"scale"]);
 	var bonusMult = 0.0;
-	if (struct_exists(battleInfo.activeFighter, "buffs")){
-		if (array_length(battleInfo.activeFighter[$"buffs"]) > 0){
-			for (var i = 0; i < array_length(battleInfo.activeFighter[$"buffs"]); ++i){
-				var buff = battleInfo.activeFighter[$"buffs"][i];
+	if (struct_exists(target, "buffs") && struct_exists(target, "debuffs")){
+		if (array_length(target[$"buffs"]) > 0){
+			for (var i = 0; i < array_length(target[$"buffs"]); ++i){
+				var buff = target[$"buffs"][i];
 				var buffData = struct_get(bData, buff);
 				if (struct_exists(buffData, "abil") && struct_exists(buffData, "pow") && struct_exists(buffData, "type")){
 					if (buffData[$"abil"] == "resist"){
@@ -226,9 +260,30 @@ doDamage = function(target, action){
 				}
 			}
 		}
+		if (array_length(target[$"debuffs"]) > 0){
+			for (var i = 0; i < array_length(target[$"debuffs"]); ++i){
+				var debuff = target[$"debuffs"][i];
+				var debuffData = struct_get(dbData, debuff);
+				if (struct_exists(debuffData, "abil") && struct_exists(debuffData, "pow") && struct_exists(debuffData, "type")){
+					if (debuffData[$"abil"] == "weakness"){
+						if (debuffData[$"type"] == action[$"scale"]){
+							bonusMult -= debuffData[$"pow"];
+						}
+					}
+				} else {
+					show_debug_message("Error: Malformed Debuff Struct!");	
+				}
+			}
+		}
 	}
 	resistMult = 1.0 - (tarResMult + bonusMult);
-	var dmg  = ceil((action[$"damage"] * dmgMult) * (resistMult));
+	if (DEBUG_ENABLED) show_debug_message(string(action[$"damage"]) + " : " + string(dmgMult) + " : " + string(resistMult) + " : " + string(action));
+	var dmg = 0;
+	if(struct_exists(action, "damage")){
+		dmg = ceil((action[$"damage"] * dmgMult) * (resistMult));
+	} else if (struct_exists(action, "pow")){
+		dmg = ceil((action[$"pow"] * dmgMult) * (resistMult));
+	}
 	target.hp -= dmg;
 	show_debug_message(string(target[$"name"]) + " takes " + string(dmg) + "damage.");
 	var isPlayer = array_contains(battleInfo.team1, target);
@@ -278,33 +333,61 @@ doDowned = function(target, team){
 	show_debug_message(string(target[$"name"]) + " is down.");
 }
 
-doHeal = function(target, spell){
-	var heal = spell[$"heal"] * (struct_get(battleInfo.activeFighter[$"stats"], spell[$"scale"]) div 2);
+doHeal = function(target, act){
+	var heal = 0;
+	if (struct_exists(act, "heal")){	//If is a spell
+		heal = act[$"heal"] * (struct_get(battleInfo.activeFighter[$"stats"], act[$"scale"]) div 2);
+	} else {		// If is an item
+		heal = act[$"pow"];
+	}
 	target.hp = min(target.stats.maxhp, target.hp + heal);
 	show_debug_message(string(target[$"name"]) + " heals " + string(heal) + "hp.");
 }
 
+doRestore = function(target, act){
+	var res = act[$"pow"];
+	target.mana = min(target.stats.maxmana, target.mana + res);
+	show_debug_message(string(target[$"name"]) + " regained " + string(res) + "mana.");
+}
+
 doBuff = function(bff, ind){
+	var earlyTurnEnd = false;
 	if (struct_exists(bData, bff)){
 		var buff = struct_get(bData, bff);
+		if (DEBUG_ENABLED) show_debug_message(string(buff));
 		if (struct_exists(buff, "abil")){
-			
+			if (buff[$"abil"] == "meditate"){
+				doRestore(battleInfo.activeFighter, buff);
+				earlyTurnEnd = true;
+			}
 		}
 		if(--buff[$"duration"] <= 0){
 			array_delete(battleInfo.activeFighter[$"buffs"], ind, 1);	
 		}
+		if(earlyTurnEnd){
+			if (DEBUG_ENABLED) show_debug_message("Aborting turn");
+			menu.turnEnd();
+			endTurn();
+		}
 	} else {
 		show_message("Error loading Debuffs!");	
-	}	
+	}
 }
 doDebuff = function(db, ind){
+	var earlyTurnEnd = false;
 	if (struct_exists(dbData, db)){
 		var debuff = struct_get(dbData, db);
-		if (struct_exists(debuff, "damage")){
-			doDamage(battleInfo.activeFighter, debuff);
+		if (struct_exists(debuff, "abil")){
+			if (debuff[$"abil"] == "damage"){
+				doDamage(battleInfo.activeFighter, debuff);
+			}
 		}
 		if(--debuff[$"duration"] <= 0){
 			array_delete(battleInfo.activeFighter[$"debuffs"], ind, 1);	
+		}
+		if(earlyTurnEnd){
+			menu.turnEnd();
+			endTurn();
 		}
 	} else {
 		show_message("Error loading Debuffs!");	

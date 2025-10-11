@@ -12,8 +12,10 @@ effOffX = sprite_get_width(sprite_index)/2;
 effSpace = 12;
 dbOffY = 8;
 bOffY = 16;
+
 atkData = global.data.moves[$"attacks"];
 splData = global.data.moves[$"spells"];
+itemData = global.data.items;
 
 splashY = display_get_gui_height() - (92 * MENU_GUI_SCALE);
 
@@ -32,15 +34,19 @@ loadSprite = function(char){
 
 doAnim = function(act, isActor){
 	state = CHARSTATES.ATTACK;
-	if (DEBUG_ENABLED) show_debug_message("[2]" + act);
 	if (isActor){
 		var action = undefined;
 		var isSpl = false;
 		if (struct_exists(atkData, act)){
+			if (DEBUG_ENABLED) show_debug_message("[2]" + act);
 			action = struct_get(atkData, act);	
 		} else if (struct_exists(splData, act)){
+			if (DEBUG_ENABLED) show_debug_message("[2]" + act);
 			action = struct_get(splData, act);	
 			isSpl = true;
+		} else {
+			
+			action = act;
 		}
 		if (DEBUG_ENABLED) show_debug_message("[3]" + string(action));
 		var anim = undefined;
@@ -53,13 +59,20 @@ doAnim = function(act, isActor){
 			image_index = 0;
 			image_speed = 1;
 		}
-		var actSound = action[$"sound"];
-		var soundId = scrGetSound(actSound);
-		if (DEBUG_ENABLED) show_debug_message(string(soundId));
-		if (DEBUG_ENABLED) show_debug_message("[4]" + string(action));
-		audio_play_sound(soundId, 1, false);
-		if (anim == -1){
-			alarm[0] = (audio_sound_length(soundId) * room_speed) * .75;
+		var actSound = undefined;
+		if (struct_exists(action, "sound")){
+			actSound = action[$"sound"];
+		}
+		if (actSound != undefined){
+			var soundId = scrGetSound(actSound);
+			if (DEBUG_ENABLED) show_debug_message(string(soundId));
+			if (DEBUG_ENABLED) show_debug_message("[4]" + string(action));
+			audio_play_sound(soundId, 1, false);
+			if (anim == -1){
+				alarm[0] = (audio_sound_length(soundId) * room_speed) * .75;
+			}
+		} else {
+			alarm[0] = 15;
 		}
 	} else {
 		alarm[0] = 1;

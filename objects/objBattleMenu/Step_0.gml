@@ -7,10 +7,20 @@ if (active && (alarm[0] <=0)){
 		updateSelection(1);
 	}
 	if (upPress){
-		updateSelection(-1);
+		if (battleInfo.menuState != BMENUST.ACTION && selection == 0){
+			doFunction(BOPS.BACK);
+			audio_play_sound(sndBack,1,false);
+		} else {
+			updateSelection(-1);
+		}
 	}
 	if (downPress){
-		updateSelection(1);
+		if (battleInfo.menuState == BMENUST.ACTION){
+			doFunction(options[selection]);
+			audio_play_sound(sndChoose,1,false);
+		} else {
+			updateSelection(1);
+		}
 	}
 	if (interactPress){
 		switch(battleInfo.menuState){
@@ -35,9 +45,31 @@ if (active && (alarm[0] <=0)){
 						if (spell[$"type"] == "restoreSpell" || spell[$"type"] == "buffSpell"){
 							chooseTarget(battleInfo.team1);	
 						}
+						if (spell[$"type"] == "selfSpell"){
+							chooseTarget([battleInfo.activeFighter]);	
+						}
 					}
 				} else {
 					audio_play_sound(sndNoResource, 1, false);
+				}
+				break;
+			case BMENUST.ITEMS:
+				item = options[selection];
+				show_debug_message(string(item));
+				if (variable_struct_exists(item,"abil")){
+					if (item[$"abil"] == "heal" || item[$"abil"] == "restore"){
+						chooseTarget(battleInfo.team1);	
+					} else {
+						chooseTarget(battleInfo.team2);	
+					}	
+				}
+				break;
+			case BMENUST.FLEE:
+				if (selection == 1){
+					flee();
+				} else {
+					doFunction(BOPS.BACK);
+					audio_play_sound(sndBack,1,false);
 				}
 				break;
 			case BMENUST.TARGET:
@@ -47,8 +79,9 @@ if (active && (alarm[0] <=0)){
 		}
 		audio_play_sound(sndChoose,1,false);
 	}
-	if (sprint){
+	if (sprintPress){
 		doFunction(BOPS.BACK);
+		audio_play_sound(sndBack,1,false);
 	}
 
 }

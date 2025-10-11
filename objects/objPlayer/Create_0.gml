@@ -14,7 +14,7 @@ battlePlayer = {
 		int		: 5
 	},
 	attacks	: ["slash"],
-	spells	: ["lightning", "devsmite"],
+	spells	: ["lightning", "devsmite", "meditate"],
 	buffs	: [],
 	debuffs : [],
 	sprite	: "sprBattlePlayerT",
@@ -23,7 +23,8 @@ battlePlayer = {
 		str : 0.00,
 		dex : 0.10,
 		int : 0.00
-	}
+	},
+	desc : "It's you!."
 };
 
 loadCompanion = function(comp){

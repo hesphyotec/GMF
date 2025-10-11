@@ -16,6 +16,7 @@ menuBox.battleInfo = battleInfo;
 actors = [];
 actIndex = 0;
 action = "";
+item = undefined;
 operation = -1;
 target = undefined;
 
@@ -32,7 +33,8 @@ actionWait = {
 	act : undefined,
 	tar : undefined,
 	team : undefined,
-	isSpell : false
+	isSpell : false,
+	isItem : false
 }
 getChar = undefined;
 
@@ -74,8 +76,22 @@ doFunction = function(op){
 				menuBox.loadButtons(options);
 			}
 			break;
+		case BOPS.ITEM:
+			if (array_length(battleInfo.inventory) > 0){
+				options = battleInfo.inventory;
+				battleInfo.menuState = BMENUST.ITEMS;
+				operation = op;
+				menuBox.loadButtons(options);
+			}
+			break;
+		case BOPS.FLEE:
+			options = ["NO", "YES"];
+			battleInfo.menuState = BMENUST.FLEE;
+			operation = op;
+			menuBox.loadButtons(options);
+			break;
 		case BOPS.BACK:
-			if (battleInfo.menuState == BMENUST.ATTACK || battleInfo.menuState == BMENUST.SPELL){
+			if (battleInfo.menuState == BMENUST.ATTACK || battleInfo.menuState == BMENUST.SPELL || battleInfo.menuState == BMENUST.ITEMS || battleInfo.menuState == BMENUST.FLEE){
 				options = [BOPS.ATTACK, BOPS.SPELL, BOPS.ITEM, BOPS.FLEE];
 				battleInfo.menuState = BMENUST.ACTION;
 			}
@@ -87,27 +103,38 @@ doFunction = function(op){
 		case BOPS.TARGET:
 			switch(operation){
 				case BOPS.ATTACK:
-					doAnimation(action, battleInfo.activeFighter, target, battleInfo.team2, false);
+					doAnimation(action, battleInfo.activeFighter, target, battleInfo.team2, false, false);
 					break;
 				case BOPS.SPELL:
 					var spell = struct_get(splData, action);
 					if (DEBUG_ENABLED) show_debug_message(string(spell));
 					if (spell[$"type"] == "dmgSpell"){
-						doAnimation(action, battleInfo.activeFighter, target, battleInfo.team2, true);	
+						doAnimation(action, battleInfo.activeFighter, target, battleInfo.team2, true, false);	
 					}
 					if (spell[$"type"] == "restoreSpell" || spell[$"type"] == "buffSpell"){
-						doAnimation(action, battleInfo.activeFighter, target, battleInfo.team1, true);	
+						doAnimation(action, battleInfo.activeFighter, target, battleInfo.team1, true, false);	
+					}
+					if (spell[$"type"] == "selfSpell"){
+						doAnimation(action, battleInfo.activeFighter, target, battleInfo.team1, true, false);	
+					}
+					break;
+				case BOPS.ITEM:
+					if (item[$"abil"] == "heal" || item[$"abil"] == "restore"){
+						doAnimation(item, battleInfo.activeFighter, target, battleInfo.team1, false, true);	
+					} else {
+						doAnimation(item, battleInfo.activeFighter, target, battleInfo.team2, false, true);		
 					}
 					break;
 			}
 	}
 }
 
-doAnimation = function(action, actor, target, team, isSpell){
+doAnimation = function(action, actor, target, team, isSpell, isItem){
 	actionWait.act = action;
 	actionWait.tar = target;
 	actionWait.team = team;
 	actionWait.isSpell = isSpell;
+	actionWait.isItem = isItem;
 	var actor1 = actors[array_find_index(actors, actorGetChar(actor))];
 	var actor2 = actors[array_find_index(actors, actorGetChar(target))];
 	if (DEBUG_ENABLED) show_debug_message(action);
@@ -132,6 +159,8 @@ doEffect = function(act, tar, spd){
 		action = struct_get(atkData, act);	
 	} else if (variable_struct_exists(splData, act)){
 		action = struct_get(splData, act);	
+	} else {
+		action = act;	
 	}
 	if (DEBUG_ENABLED) show_debug_message("[6]" + string(action));
 	var eff = instance_create_layer(0, 0, "Effects", objBattleEffect);
@@ -148,7 +177,13 @@ animFinish = function(){
 			} else {
 				controller.doSpell(actionWait.act, actionWait.tar, battleInfo.team1);
 			}
-		} else {
+		} else if (actionWait.isItem){
+			if (actionWait.team == battleInfo.team2){
+				controller.doItem(actionWait.act, actionWait.tar, battleInfo.team2);
+			} else {
+				controller.doItem(actionWait.act, actionWait.tar, battleInfo.team1);
+			}
+		} else{
 			if (actionWait.team == battleInfo.team2){
 				controller.doAttack(actionWait.act, actionWait.tar, battleInfo.team2);
 			} else {
@@ -227,4 +262,9 @@ updateSelection = function(sel){
 	if (DEBUG_ENABLED) show_debug_message(string(options[selection]));
 	//alarm[0] = 10;
 	audio_play_sound(sndSelect,1,false);
+}
+
+flee = function(){
+	turnEnd();
+	controller.endBattle(false);
 }
