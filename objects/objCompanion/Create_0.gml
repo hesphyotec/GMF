@@ -8,19 +8,23 @@ initMove = function(_tarx, _tary, _spd){
 	if(x != _tarx){
 		moveTarget = _tarx;
 		if (x < moveTarget){
-			dir = Dirs.LEFT;	
+			dir = Dirs.LEFT;
+			sprite_index = sprNPCRight;
 		}
 		if (x > moveTarget){
-			dir = Dirs.RIGHT;	
+			dir = Dirs.RIGHT;
+			sprite_index = sprNPCLeft;
 		}
 	} 
 	if (y != _tary){
 		moveTarget = _tary;
 		if (y < moveTarget){
-			dir = Dirs.UP;	
+			dir = Dirs.UP;
+			sprite_index = sprNPCDown;
 		}
 		if (y > moveTarget){
-			dir = Dirs.DOWN;	
+			dir = Dirs.DOWN;
+			sprite_index = sprNPCUp;
 		}
 	}
 	spd = _spd;
@@ -29,6 +33,7 @@ initMove = function(_tarx, _tary, _spd){
 
 compMove = function(){
 	if (moving){
+		image_speed = 1;
 		if(dir == Dirs.LEFT || dir == Dirs.RIGHT){
 			x = approach(x, moveTarget, spd);
 			if (abs(x - moveTarget) <= spd/2){
@@ -43,6 +48,9 @@ compMove = function(){
 				moving = false;	
 			}
 		}
+	} else {
+		image_index = 0;
+		image_speed = 0;	
 	}
 }
 

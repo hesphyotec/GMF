@@ -1,5 +1,6 @@
 function scrDefineEnemies(){
 	enum ENCOUNTERS {
-		TEST = 1
+		TEST,
+		BANDIT1
 	}
 }

@@ -3,6 +3,7 @@
   "%Name":"objNPC",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
   "name":"objNPC",
@@ -33,8 +34,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprTestNPC",
-    "path":"sprites/sprTestNPC/sprTestNPC.yy",
+    "name":"sprNPCDown",
+    "path":"sprites/sprNPCDown/sprNPCDown.yy",
   },
   "spriteMaskId":null,
   "visible":true,

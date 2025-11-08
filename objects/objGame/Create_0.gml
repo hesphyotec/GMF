@@ -10,6 +10,7 @@ scrDefineMenuOptions();
 
 global.debug = false;
 global.battles = [];
+global.overworld = false;
 
 global.data = {
 	enemies		: scrLoadJSON("enemies.json"),

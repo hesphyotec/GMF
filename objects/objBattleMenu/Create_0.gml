@@ -7,28 +7,30 @@ spells = [];
 menuBox = instance_create_layer(64,192, "Menu", objBattleBox);
 battleInfo = {};
 menuBox.battleInfo = battleInfo;
-//fighter = {};
+fighter = undefined;
 //team1Chars = [];
 //team2Chars = [];
 
 
 
 actors = [];
+//activeAnimations = [];
 actIndex = 0;
 action = "";
 item = undefined;
 operation = -1;
 target = undefined;
 
-controller = undefined;
+context = undefined;
+menuBox.context = context;
 
 playerCharDrawY = 146;
-charDrawX = 128;
-charXOff = 64;
+charDrawX = 96;
+charXOff = 80;
 enemyCharDrawY = 96;
-enemyCharDrawOffX = 256;
+enemyCharDrawOffX = 192;
 
-animsWaiting = 0;
+//animsWaiting = 0;
 actionWait = {
 	act : undefined,
 	tar : undefined,
@@ -44,16 +46,20 @@ splData = global.data.moves[$"spells"];
 alarm[0] = 10;
 audio_group_load(audiogroup_default);
 
-turnStart = function(atks, spls){
+turnStart = function(ftr, atks, spls){
+	fighter = ftr;
+	menuBox.loadFighter(fighter);
 	attacks = atks;
 	spells = spls;
 	if (DEBUG_ENABLED) show_debug_message(string(spls));
 	options = [BOPS.ATTACK, BOPS.SPELL, BOPS.ITEM, BOPS.FLEE];	
 	active = true;
 	battleInfo.menuState = BMENUST.ACTION;
-	actIndex = array_find_index(actors, actorGetChar(battleInfo.activeFighter));
-	actors[actIndex].state = CHARSTATES.SELECTED;
-	if (DEBUG_ENABLED) show_debug_message("Menu state: " + string(battleInfo.menuState) + " Active: " + string(active));
+	if (DEBUG_ENABLED) show_debug_message("[Menu]" + string(actors));
+	actIndex = charGetActorInd(fighter);
+	if (DEBUG_ENABLED) show_debug_message("[Menu]" + string(actIndex) + " : " + string(fighter));
+	actors[actIndex].isSelected = true;
+	if (DEBUG_ENABLED) show_debug_message("[Menu] Menu state: " + string(battleInfo.menuState) + " Active: " + string(active));
 	menuBox.loadButtons(options);
 	menuBox.selected = selection;
 }
@@ -69,7 +75,7 @@ doFunction = function(op){
 			menuBox.loadButtons(options);
 			break;
 		case BOPS.SPELL:
-			if (array_length(battleInfo.activeFighter[$"spells"]) > 0){
+			if (array_length(fighter[$"spells"]) > 0){
 				options = spells;
 				battleInfo.menuState = BMENUST.SPELL;
 				operation = op;
@@ -103,57 +109,76 @@ doFunction = function(op){
 		case BOPS.TARGET:
 			switch(operation){
 				case BOPS.ATTACK:
-					doAnimation(action, battleInfo.activeFighter, target, battleInfo.team2, false, false);
+					doAction(action, fighter, target, battleInfo.team2, false, false);
 					break;
 				case BOPS.SPELL:
 					var spell = struct_get(splData, action);
-					if (DEBUG_ENABLED) show_debug_message(string(spell));
-					if (spell[$"type"] == "dmgSpell"){
-						doAnimation(action, battleInfo.activeFighter, target, battleInfo.team2, true, false);	
+					if (DEBUG_ENABLED) show_debug_message("[Menu]" + string(spell));
+					if (spell[$"type"] == "dmgSpell" || spell[$"type"] == "debuffSpell"){
+						doAction(action, fighter, target, battleInfo.team2, true, false);	
 					}
 					if (spell[$"type"] == "restoreSpell" || spell[$"type"] == "buffSpell"){
-						doAnimation(action, battleInfo.activeFighter, target, battleInfo.team1, true, false);	
+						doAction(action, fighter, target, battleInfo.team1, true, false);	
 					}
 					if (spell[$"type"] == "selfSpell"){
-						doAnimation(action, battleInfo.activeFighter, target, battleInfo.team1, true, false);	
+						doAction(action, fighter, target, battleInfo.team1, true, false);	
 					}
 					break;
 				case BOPS.ITEM:
 					if (item[$"abil"] == "heal" || item[$"abil"] == "restore"){
-						doAnimation(item, battleInfo.activeFighter, target, battleInfo.team1, false, true);	
+						doAction(item, fighter, target, battleInfo.team1, false, true);
 					} else {
-						doAnimation(item, battleInfo.activeFighter, target, battleInfo.team2, false, true);		
+						doAction(item, fighter, target, battleInfo.team2, false, true);		
 					}
 					break;
 			}
+			menuBox.loadButtons([BOPS.ATTACK, BOPS.SPELL, BOPS.ITEM, BOPS.FLEE]);
 	}
 }
 
-doAnimation = function(action, actor, target, team, isSpell, isItem){
-	actionWait.act = action;
-	actionWait.tar = target;
-	actionWait.team = team;
-	actionWait.isSpell = isSpell;
-	actionWait.isItem = isItem;
-	var actor1 = actors[array_find_index(actors, actorGetChar(actor))];
-	var actor2 = actors[array_find_index(actors, actorGetChar(target))];
-	if (DEBUG_ENABLED) show_debug_message(action);
-	actor1.doAnim(action, true);
-	++animsWaiting;
-	if (actor1 != actor2){
-		actor2.doAnim(action, false);
-		doEffect(action, actor2, 1);
-		++animsWaiting;
+doAction = function(action, actor, target, team, isSpell, isItem){
+	actionInfo = {
+		act : action,
+		actor : actor,
+		tar : target,
+		team : team,
+		isSpell : isSpell,
+		isItem : isItem,
+		actorChar : actors[charGetActorInd(actor)],
+		targetChar : actors[charGetActorInd(target)]
+	};
+	if (DEBUG_ENABLED) show_debug_message("[Menu]" + string(action));
+	if(!isItem){
+		if (isSpell){
+			var spell = struct_get(splData, action);
+			if(struct_exists(fighter, "mana")){
+				fighter[$"mana"] -= spell[$"cost"];
+			}
+			if(struct_exists(fighter, "energy")){
+				fighter[$"energy"] -= spell[$"cost"];
+			}
+		}
+		context.qteHandler.loadQTE(actor, target, action, team, isSpell, actionInfo);
+	} else {
+		context.controller.doItem(actor, action, target, team, true);
 	}
-	if (DEBUG_ENABLED) show_debug_message("doAnimation Action Wait Act: " + string(actionWait.act));
-	if (DEBUG_ENABLED) show_debug_message(string(actionWait));
-	battleInfo.menuState = BMENUST.ANIMATE;
-	menuBox.loadButtons([BOPS.ATTACK, BOPS.SPELL, BOPS.ITEM, BOPS.FLEE]);
-	active = false;
+	var activeActor = actors[charGetActorInd(actor)];
+	activeActor.startTimer(1);
+	
+}
+
+doAnimation = function(info){
+	var actor1 = actors[charGetActorInd(info.actor)];
+	actor1.doAnim(info.act, info, true);
+	if(charGetActorInd(info.tar) != -1){
+		var actor2 = actors[charGetActorInd(info.tar)];
+		actor2 = actors[charGetActorInd(info.tar)];
+		doEffect(info.act, actor2, 1);
+		actor2.doAnim(info.act, info, false);
+	}	
 }
 
 doEffect = function(act, tar, spd){
-	if (DEBUG_ENABLED) show_debug_message("[5]" + string(act));
 	var action = undefined;
 	if (variable_struct_exists(atkData, act)){
 		action = struct_get(atkData, act);	
@@ -162,49 +187,27 @@ doEffect = function(act, tar, spd){
 	} else {
 		action = act;	
 	}
-	if (DEBUG_ENABLED) show_debug_message("[6]" + string(action));
 	var eff = instance_create_layer(0, 0, "Effects", objBattleEffect);
-	eff.initEff(action, asset_get_index(action[$"sprite"]), tar, self, spd, true);
-	++animsWaiting;
-}
-
-animFinish = function(){
-	if (--animsWaiting <= 0){
-		if (DEBUG_ENABLED) show_debug_message("ANIM FINISH:" + string(actionWait.act) + string(actionWait.tar));
-		if (actionWait.isSpell){
-			if (actionWait.team == battleInfo.team2){
-				controller.doSpell(actionWait.act, actionWait.tar, battleInfo.team2);
-			} else {
-				controller.doSpell(actionWait.act, actionWait.tar, battleInfo.team1);
-			}
-		} else if (actionWait.isItem){
-			if (actionWait.team == battleInfo.team2){
-				controller.doItem(actionWait.act, actionWait.tar, battleInfo.team2);
-			} else {
-				controller.doItem(actionWait.act, actionWait.tar, battleInfo.team1);
-			}
-		} else{
-			if (actionWait.team == battleInfo.team2){
-				controller.doAttack(actionWait.act, actionWait.tar, battleInfo.team2);
-			} else {
-				controller.doAttack(actionWait.act, actionWait.tar, battleInfo.team1);
-			}
-		}
+	var anim = {
+		who		: eff,
+		done	: false
 	}
+	eff.initEff(action, asset_get_index(action[$"sprite"]), tar, self, spd, true);
 }
 
 turnEnd = function(){
-	if (DEBUG_ENABLED) show_debug_message("Menu Turn End");
+	if (DEBUG_ENABLED) show_debug_message("[Menu] Turn End");
 	options = [];
 	menuBox.loadButtons(options);
-	actors[actIndex].state = CHARSTATES.IDLE;
-	//alarm[0] = 15;
+	if (instance_exists(actors[actIndex])){
+		actors[actIndex].isSelected = false;
+	}
 	selection = 0;
 	active = false;
 	attacks = [];
 	spells = [];
 	battleInfo.menuState = BMENUST.ACTION;
-	//fighter = undefined;
+	fighter = undefined;
 }
 
 loadCharacters = function(){
@@ -212,11 +215,15 @@ loadCharacters = function(){
 		var char = instance_create_layer(charDrawX + i * charXOff, playerCharDrawY, "Actors", objBattleCharacter);
 		char.loadSprite(battleInfo.team1[i]);
 		char.isPlayerTeam = true;
+		char.context = context;
+		char.battleInfo = battleInfo;
 		array_push(actors, char);
 	}
 	for (var i = 0; i < array_length(battleInfo.team2); ++i){
 		var char = instance_create_layer(enemyCharDrawOffX + i * charXOff, enemyCharDrawY, "Actors", objBattleCharacter);
 		char.loadSprite(battleInfo.team2[i]);
+		char.context = context;
+		char.battleInfo = battleInfo;
 		array_push(actors, char);
 	}
 }
@@ -228,43 +235,41 @@ chooseTarget = function(team){
 	options = [];
 	var names = [];
 	for (var i = 0; i < array_length(team); ++i){
+		battleInfo.tarteam = team;
 		array_push(options, team[i]);
 		array_push(names, team[i][$"name"]);
 	}
 	menuBox.loadButtons(names);
 }
 
-charDied = function(){
-	//if (DEBUG_ENABLED) show_debug_message("Target: " + string(target) + string(team[target]));
-	//team1Chars = controller.team1;
-	//team2Chars = controller.team2;
-	//if(DEBUG_ENABLED) show_debug_message("[cDied 0] Enemy Team Remaining: " + string(array_length(objBattleController.team2)));
-	//if (team == objBattleController.team1){
-	//	array_delete(team1Chars, array_get_index(team1Chars, target), 1);
-	//} else {
-	//	array_delete(team2Chars, array_get_index(team2Chars, target), 1);
-	//}
-	//if(DEBUG_ENABLED) show_debug_message("[cDied 1] Enemy Team Remaining: " + string(array_length(objBattleController.team2)));
+charDied = function(ftr){
+	var ind = charGetActorInd(ftr);
+	actors[ind].doDied();
+	array_delete(actors, ind, 1);
 }
 
-actorGetChar = function(char){
-    var data = {char};
-    var func = function(e, i) {
-        return e.character == self.char;
-    };
-    return method(data, func);
+charGetActorInd = function(char){
+	for(var i = 0; i < array_length(actors); ++i){
+		if (actors[i].character[$"cid"] == char[$"cid"]){
+			return i;	
+		}
+	}
+	return -1;
 }
 
 updateSelection = function(sel){
 	selection = ((selection + sel) + array_length(options)) mod array_length(options);
 	menuBox.selected = selection;
-	if (DEBUG_ENABLED) show_debug_message(string(selection));
-	if (DEBUG_ENABLED) show_debug_message(string(options[selection]));
-	//alarm[0] = 10;
+	if (DEBUG_ENABLED) show_debug_message("[Menu] " + string(selection));
+	if (DEBUG_ENABLED) show_debug_message("[Menu] " + string(options[selection]));
 	audio_play_sound(sndSelect,1,false);
 }
 
 flee = function(){
 	turnEnd();
-	controller.endBattle(false);
+	context.controller.endBattle(false);
+}
+
+getActor = function(char){
+	return actors[charGetActorInd(char)];
 }

@@ -1,7 +1,12 @@
-if (room == rmTest){
-	character = instance_create_layer(0,0,"Instances",objOWPlayer);
+character = undefined;
+
+generatePlayer = function(){
+	character = instance_create_layer(room_width/2, room_height-32,"Instances", objOWPlayer);
 }
+
 battlePlayer = {
+	cid		: 0,
+	level	: 1,
 	name	: "Player",
 	hp		: 100,
 	mana	: 100,
@@ -13,8 +18,8 @@ battlePlayer = {
 		cspd	: 5,
 		int		: 5
 	},
-	attacks	: ["slash"],
-	spells	: ["lightning", "devsmite", "meditate"],
+	attacks	: ["slash", "jab"],
+	spells	: ["heal"],
 	buffs	: [],
 	debuffs : [],
 	sprite	: "sprBattlePlayerT",
@@ -37,5 +42,13 @@ loadCompanion = function(comp){
 	}
 };
 
-team = [battlePlayer, loadCompanion("veteran"), loadCompanion("healer"), loadCompanion("archer")];
+team = [battlePlayer];
+
+partyAdd = function(comp){
+	array_push(team, variable_clone(comp));
+	with(character){
+		var compChar = instance_create_layer(x, y, "Instances", objCompanion);
+		array_push(companions, compChar);
+	}
+}
 

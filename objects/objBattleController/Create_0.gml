@@ -1,17 +1,23 @@
-//team1 = [];
-//team2 = [];
+if (DEBUG_ENABLED) show_debug_message("[BController] Create event start");
 turn = 0;
-fighters = [];
 battleInfo = {
-	activeFighter	: undefined,
-	battleState		: BSTATES.START,
 	menuState		: BMENUST.ACTION,
 	isPlayerTurn	: false,
 	team1			: [],
 	team2			: [],
-	inventory		: global.playerData[0][$"inventory"]
+	inventory		: global.playerData[0][$"inventory"],
+	tarteam			: undefined,
+	waiting			: []
 };
 
+teams = [instance_create_layer(0,0,"Menu", objBattleTeamManager),instance_create_layer(0,0,"Menu", objBattleTeamManager)];
+
+context = {
+	controller	: id,
+	menu		: instance_create_layer(0,0, "Menu", objBattleMenu),
+	playerTeam	: teams[0],
+	qteHandler	: instance_create_layer(0, 0, "Menu", objQteHandler)
+}
 activeTurn = 0;
 //isPlayerTurn = false;
 diedMidTurn = false;
@@ -22,10 +28,12 @@ y = room_height / 2;
 random_set_seed(current_time);
 
 
-menu = instance_create_layer(0,0, "Menu", objBattleMenu);
-menu.controller = self;
-menu.battleInfo = battleInfo;
-menu.menuBox.battleInfo = battleInfo;
+context.menu.battleInfo = battleInfo;
+context.menu.context = context;
+context.menu.menuBox.battleInfo = battleInfo;
+context.menu.menuBox.context = context;
+context.qteHandler.context = context;
+context.qteHandler.battleInfo = battleInfo;
 
 enemyData = global.data.enemies;
 atkData = global.data.moves[$"attacks"];
@@ -34,13 +42,13 @@ itemData = global.data.items;
 bData = global.data.effects[$"buffs"];
 dbData = global.data.effects[$"debuffs"];
 
-//if (DEBUG_ENABLED) show_message(string(battleInfo.inventory[0][$"name"]));
+
 
 initBattle = function(){
-	show_debug_message("Starting Battle");
+	if (DEBUG_ENABLED) show_debug_message("Starting Battle");
 	show_debug_message(array_length(global.battles));
 	if (array_length(global.battles) <= 0) {
-	    show_debug_message("No battles queued!");
+	    if (DEBUG_ENABLED) show_debug_message("No battles queued!");
 	    return;
 	}
 
@@ -48,183 +56,153 @@ initBattle = function(){
 	var enemy = global.battles[0][1];
 	array_delete(global.battles, 0, 1);
 	
-	fighters = [];
 	battleInfo.team1 = playerTeam;
 	loadEncounter(enemy);
-	fighters = array_concat(battleInfo.team1, battleInfo.team2);
+
+	context.menu.loadCharacters();
 	
-	for (var i = 0; i < array_length(fighters); i++) {
-	    show_debug_message("Fighter " + string(i) + ": " + string(fighters[i]));
-	    if (!struct_exists(fighters[i], "stats")) {
-	        show_debug_message("!! Fighter missing stats struct !!");
-	    }
+	teams[0].loadTeam(battleInfo.team1);
+	teams[0].playerTeam = true;
+	teams[0].context = context;
+	teams[0].battleInfo = battleInfo;
+	
+	teams[1].loadTeam(battleInfo.team2);
+	teams[1].context = context;
+	teams[1].battleInfo = battleInfo;
+	
+	for(var i = 0; i < array_length(teams); ++i){
+		teams[i].startTurn();
 	}
-	
-	array_sort(fighters, scrCompareOrder);
-	show_debug_message("Fight order created: " + string(fighters));
-	//menu.battleInfo.team1Chars = team1;
-	//menu.team2Chars = team2;
-	menu.loadCharacters();
-	startTurn(fighters[0]);
+	//audio_play_sound(sndEggyBreakIn, 1, true);
+}
+
+endTeamTurn = function(ftr){
+	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(ftr) + " : " + string(battleInfo.team1));
+	if(scrCheckTeam(battleInfo.team1, ftr)){
+		if (DEBUG_ENABLED) show_debug_message("[BController] Ending turn for team 1");
+		teams[0].endTurn();
+	} else if(scrCheckTeam(battleInfo.team2, ftr)) {
+		if (DEBUG_ENABLED) show_debug_message("[BController] Ending turn for team 2");
+		teams[1].endTurn();
+	}	
 }
 
 loadEnemy = function(enemy){
 	if (struct_exists(enemyData, enemy)){
 		var foe = variable_clone(struct_get(enemyData, enemy));
-		show_debug_message("Loaded Enemy: " + string(foe));
+		if (DEBUG_ENABLED) show_debug_message("[BController] Loaded Enemy: " + string(foe));
 		return foe;
 	} else {
-		show_message("Error Loading Enemy!");	
+		if (DEBUG_ENABLED) show_message("[BController] Error Loading Enemy!");	
 	}
 }
 
 loadEncounter = function(encounter){
-	show_debug_message("Loading encounter id: " + string(encounter));
+	if (DEBUG_ENABLED) show_debug_message("[BController] Loading encounter id: " + string(encounter));
 	var foes = [];
 	switch(encounter){
 		case ENCOUNTERS.TEST:
 			foes = ["enemyTest", "bigRock"];
 			break;
+		case ENCOUNTERS.BANDIT1:
+			foes = ["banditGoon", "banditGoon", "banditGoon", "banditThug"];
+			break;
 	}
 	for (var i = 0; i < array_length(foes); ++i){
 		var foe = loadEnemy(foes[i]);
+		foe.cid = i + 128;
 		array_push(battleInfo.team2,foe);
 	}
 }
 
-startTurn = function(fighter){
-	if(DEBUG_ENABLED) show_debug_message("Starting turn for" + string(fighter[$"name"]));
-	if(DEBUG_ENABLED) show_debug_message("Current order: " + string(fighters));
-	if(DEBUG_ENABLED) show_debug_message("Enemy Team Remaining: " + string(array_length(battleInfo.team2)));
-	for(var i = 0; i < array_length(fighters); ++i){
-		show_debug_message("Current order [" + string(i) + "]: " + string(fighters[i][$"name"]));
-	}
-	battleInfo.isPlayerTurn = array_contains(battleInfo.team1, fighter);
-	++turn;
-	battleInfo.activeFighter = fighter;
-	if (battleInfo.isPlayerTurn){
-		alarm[0] = TURN_LENGTH;
-		menu.turnStart(battleInfo.activeFighter.attacks, battleInfo.activeFighter.spells);
-		battleInfo.battleState = BSTATES.SELECT;
-	} else {
-		enemyTurn(battleInfo.activeFighter);
-	}
-	for(var i = array_length(battleInfo.activeFighter[$"buffs"]) - 1; i >=0 ; --i){
-		if(array_length(battleInfo.activeFighter[$"buffs"]) > 0){
-			if (DEBUG_ENABLED) show_debug_message("Buff takes effect: " + string(battleInfo.activeFighter[$"buffs"][i]));
-			doBuff(battleInfo.activeFighter[$"buffs"][i], i);
-		}
-	}
-	for(var i = array_length(battleInfo.activeFighter[$"debuffs"]) - 1; i >=0 ; --i){
-		if(array_length(battleInfo.activeFighter[$"debuffs"]) > 0){
-			doDebuff(battleInfo.activeFighter[$"debuffs"][i], i);
-		}
-	}
-}
-
-doAttack = function(atk, tar, team){
-		menu.turnEnd();
-		show_debug_message(string(battleInfo.activeFighter[$"name"]) + " is attacking.");
-		battleInfo.battleState = BSTATES.ACTION;
+doAttack = function(ftr, atk, tar, team, str, final){
+		if (DEBUG_ENABLED) show_debug_message("[BController] " + string(ftr[$"name"]) + " is attacking.");
 		if (struct_exists(atkData, atk)){
 			var attack = struct_get(atkData, atk);
-			show_debug_message("Retrieved Attack: " + string(atk) + " : " + string(attack));
-			doDamage(tar, attack);
+			if (DEBUG_ENABLED) show_debug_message("[BController] Retrieved Attack: " + string(atk) + " : " + string(attack));
+			doDamage(ftr, tar, attack, str);
 		} else {
-			show_message("Error loading attack!");	
+			if (DEBUG_ENABLED) show_message("[BController] Error loading attack!");	
 		}
-		if(battleInfo.battleState == BSTATES.ACTION){
-			endTurn();
+		if(final){
+			endTeamTurn(ftr);
 		}
 	}
 	
-doSpell = function(spl, tar, team){
-	menu.turnEnd();
-	show_debug_message(string(battleInfo.activeFighter[$"name"]) + " is using a spell.");
-	battleInfo.battleState = BSTATES.ACTION;
+doSpell = function(ftr, spl, tar, team, str, final){
+	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(ftr[$"name"]) + " is using a spell.");
 	if (struct_exists(splData, spl)){
 		var spell = struct_get(splData, spl);
-		show_debug_message("Retrieved Spell: " + string(spl) + " : " + string(spell));
-		battleInfo.activeFighter[$"mana"] -= spell[$"cost"];
+		if (DEBUG_ENABLED) show_debug_message("[BController] Retrieved Spell: " + string(spl) + " : " + string(spell));
 		if(spell[$"type"] == "dmgSpell"){
-			doDamage(tar, spell);
+			doDamage(ftr, tar, spell, str);
 		} else if(spell[$"type"] == "restoreSpell"){
-			doHeal(tar, spell);
+			doHeal(ftr, tar, spell);
 		}
 		if (array_length(spell[$"effects"])){
-			var effData = global.data.effects;
-			var effect = {};
 			var spEffs = spell[$"effects"];
-			for (var i = 0; i < array_length(spEffs); ++i){
-				if (variable_struct_exists(effData[$"buffs"], spEffs[i])){
-					if (DEBUG_ENABLED) show_debug_message("Retrieved Buff: " + string(struct_get(effData[$"buffs"], spEffs[i])) + " : " + spEffs[i]);
-					array_push(tar[$"buffs"], spEffs[i]);
-					if (DEBUG_ENABLED) show_debug_message("Applied Buff: " + spEffs[i]);
-				} else if (variable_struct_exists(effData[$"debuffs"], spEffs[i])){
-					array_push(tar[$"debuffs"], spEffs[i]);
-				}
-			}
+			applyEffects(ftr, spEffs, tar);
 		}
 	} else {
-		show_message("Error loading spell!");	
+		if (DEBUG_ENABLED) show_message("[BController] Error loading spell!");	
 	}
-	if(battleInfo.battleState == BSTATES.ACTION){
-		endTurn();
+	if (struct_exists(ftr, "energy")){
+		if (ftr[$"energy"] <= 0){
+			applyEffects(ftr, ["recharge"], ftr);
+		}
+	}
+	if (final){
+		endTeamTurn(ftr);
 	}
 }
 
-doItem = function(item, tar, team){
-	menu.turnEnd();
-	show_debug_message(string(battleInfo.activeFighter[$"name"]) + " uses " + item[$"name"] + " on " + tar[$"name"]);
-	battleInfo.battleState = BSTATES.ACTION;
+applyEffects = function(ftr, spEffs, tar){
+	var effData = global.data.effects;
+	for (var i = 0; i < array_length(spEffs); ++i){
+		if (variable_struct_exists(effData[$"buffs"], spEffs[i])){
+			var buff = variable_clone(struct_get(effData[$"buffs"], spEffs[i]));
+			if (DEBUG_ENABLED) show_debug_message("[BController] Retrieved Buff: " + string(struct_get(effData[$"buffs"], spEffs[i])) + " : " + spEffs[i]);
+			if(scrCheckEffects(tar[$"buffs"], buff)){
+				array_delete(tar[$"buffs"], array_get_index(tar[$"buffs"], buff), 1);
+			}
+			buff.duration *= fps;
+			array_push(tar[$"buffs"], buff);
+			if (DEBUG_ENABLED) show_debug_message("[BController] Applied Buff: " + spEffs[i]);
+		} else if (variable_struct_exists(effData[$"debuffs"], spEffs[i])){
+			var debuff = variable_clone(struct_get(effData[$"debuffs"], spEffs[i]));
+			if(scrCheckEffects(tar[$"debuffs"], debuff)){
+				array_delete(tar[$"debuffs"], array_get_index(tar[$"debuffs"], debuff), 1);
+			}
+			debuff.duration *= fps;
+			debuff.source = ftr;
+			array_push(tar[$"debuffs"], debuff);
+		}
+	}
+}
+
+doItem = function(ftr, item, tar, team, final){
+	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(ftr[$"name"]) + " uses " + item[$"name"] + " on " + tar[$"name"]);
 	if(item[$"abil"] == "heal"){
-		doHeal(tar, item);
+		doHeal(ftr, tar, item);
 	} else if(item[$"abil"] == "restore"){
-		doRestore(tar, item);
+		doRestore(ftr, tar, item);
 	}
 	if (array_length(item[$"effects"])){
-		var effData = global.data.effects;
-		var effect = {};
 		var itEffs = item[$"effects"];
-		for (var i = 0; i < array_length(itEffs); ++i){
-			if (variable_struct_exists(effData[$"buffs"], itEffs[i])){
-				if (DEBUG_ENABLED) show_debug_message("Retrieved Buff: " + string(struct_get(effData[$"buffs"], spEffs[i])) + " : " + spEffs[i]);
-				array_push(tar[$"buffs"], itEffs[i]);
-				if (DEBUG_ENABLED) show_debug_message("Applied Buff: " + itEffs[i]);
-			} else if (variable_struct_exists(effData[$"debuffs"], itEffs[i])){
-				array_push(tar[$"debuffs"], itEffs[i]);
-			}
-		}
+		applyEffects(ftr, itEffs, tar);
 	}
-	if(battleInfo.battleState == BSTATES.ACTION){
-		endTurn();
+	if (final){
+		endTeamTurn(ftr);
+	}
+	if(--item[$"quantity"] <= 0){
+		array_delete(battleInfo.inventory, scrGetEffect(battleInfo.inventory, item), 1);	
 	}
 }
 
-endTurn = function(){
-	if(DEBUG_ENABLED) show_debug_message("Ending Turn.");
-	if(DEBUG_ENABLED) show_debug_message("[7] Enemy Team Remaining: " + string(array_length(battleInfo.team2)));
-	if(array_contains(fighters, battleInfo.activeFighter)){
-		var ind = array_get_index(fighters, battleInfo.activeFighter);
-		array_delete(fighters, ind, 1);
-		array_push(fighters, battleInfo.activeFighter);
+doMiss = function(ftr, final){
+	if (final){
+		endTeamTurn(ftr);
 	}
-	if(DEBUG_ENABLED) show_debug_message("Enemy Team Remaining: " + string(array_length(battleInfo.team2)));
-	if (array_length(battleInfo.team2) <= 0){
-		endBattle(true);
-		return;
-	}
-	var defeated = 0;
-	for (var i = 0; i < array_length(battleInfo.team1); i++){
-		if (battleInfo.team1[i].hp <= 0){
-			defeated++;	
-		}
-	}
-	if (defeated == array_length(battleInfo.team1)){
-		endBattle(false);
-		return;
-	}
-	startTurn(fighters[0]);
 }
 
 endBattle = function(victory){
@@ -235,20 +213,19 @@ endBattle = function(victory){
 		show_message("You lost!");
 		// Send back to last town	
 	}
-	room_goto(rmTest);
+	room_goto(rmHCastleTest);
 }
 
-doDamage = function(target, action){
-	if (DEBUG_ENABLED) show_debug_message(string(battleInfo.activeFighter[$"stats"]) + " : " + action[$"scale"]);
-	var dmgMult = ceil(struct_get(battleInfo.activeFighter[$"stats"], action[$"scale"]) / 2);
+doDamage = function(ftr, target, action, str = 1){
+	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(ftr[$"stats"]) + " : " + action[$"scale"]);
+	var dmgMult = ceil(struct_get(ftr[$"stats"], action[$"scale"])/5);
 	var resistMult = 1.0;
 	var tarResMult = struct_get(target[$"resistances"], action[$"scale"]);
 	var bonusMult = 0.0;
 	if (struct_exists(target, "buffs") && struct_exists(target, "debuffs")){
 		if (array_length(target[$"buffs"]) > 0){
 			for (var i = 0; i < array_length(target[$"buffs"]); ++i){
-				var buff = target[$"buffs"][i];
-				var buffData = struct_get(bData, buff);
+				var buffData = target[$"buffs"][i];
 				if (struct_exists(buffData, "abil") && struct_exists(buffData, "pow") && struct_exists(buffData, "type")){
 					if (buffData[$"abil"] == "resist"){
 						if (buffData[$"type"] == action[$"scale"]){
@@ -256,14 +233,13 @@ doDamage = function(target, action){
 						}
 					}
 				} else {
-					show_debug_message("Error: Malformed Buff Struct!");	
+					if (DEBUG_ENABLED) show_debug_message("[BController] Error: Malformed Buff Struct!");	
 				}
 			}
 		}
 		if (array_length(target[$"debuffs"]) > 0){
 			for (var i = 0; i < array_length(target[$"debuffs"]); ++i){
-				var debuff = target[$"debuffs"][i];
-				var debuffData = struct_get(dbData, debuff);
+				var debuffData = target[$"debuffs"][i];
 				if (struct_exists(debuffData, "abil") && struct_exists(debuffData, "pow") && struct_exists(debuffData, "type")){
 					if (debuffData[$"abil"] == "weakness"){
 						if (debuffData[$"type"] == action[$"scale"]){
@@ -271,162 +247,130 @@ doDamage = function(target, action){
 						}
 					}
 				} else {
-					show_debug_message("Error: Malformed Debuff Struct!");	
+					if (DEBUG_ENABLED) show_debug_message("[BController] Error: Malformed Debuff Struct!");	
 				}
 			}
 		}
 	}
 	resistMult = 1.0 - (tarResMult + bonusMult);
-	if (DEBUG_ENABLED) show_debug_message(string(action[$"damage"]) + " : " + string(dmgMult) + " : " + string(resistMult) + " : " + string(action));
+	if (DEBUG_ENABLED) show_debug_message("[BController] " +string(action[$"damage"]) + " : " + string(dmgMult) + " : " + string(resistMult) + " : " + string(action));
 	var dmg = 0;
 	if(struct_exists(action, "damage")){
-		dmg = ceil((action[$"damage"] * dmgMult) * (resistMult));
+		dmg = ceil((action[$"damage"] * dmgMult) * (resistMult) * str);
 	} else if (struct_exists(action, "pow")){
-		dmg = ceil((action[$"pow"] * dmgMult) * (resistMult));
+		dmg = ceil((action[$"pow"] * dmgMult) * (resistMult) * str);
 	}
 	target.hp -= dmg;
-	show_debug_message(string(target[$"name"]) + " takes " + string(dmg) + "damage.");
+	if (DEBUG_ENABLED) show_debug_message("[BController]" + string(target[$"name"]) + " takes " + string(dmg) + "damage.");
 	var isPlayer = array_contains(battleInfo.team1, target);
-	if(DEBUG_ENABLED) show_debug_message("[1] Enemy Team Remaining: " + string(array_length(battleInfo.team2)));
+	if(DEBUG_ENABLED) show_debug_message("[BController] Enemy Team Remaining pre death: " + string(array_length(battleInfo.team2)));
 	if (target.hp <= 0){
 		if (!isPlayer){
-			doDeath(target, battleInfo.team2);
+			doDeath(ftr, target, battleInfo.team2);
 		} else {
-			doDowned(target, battleInfo.team1);
+			doDowned(ftr, target, battleInfo.team1);
 		}
-		array_delete(fighters, array_get_index(fighters, target), 1);
 	}
-	if(DEBUG_ENABLED) show_debug_message("[6] Enemy Team Remaining: " + string(array_length(battleInfo.team2)));
+	if(DEBUG_ENABLED) show_debug_message("[BController] Enemy Team Remaining post death: " + string(array_length(battleInfo.team2)));
 }
 
-doDeath = function(target, team){
+doDeath = function(ftr, target, team){
 	var tarInd = 0;
 	if (team == battleInfo.team1){
-		tarInd = array_get_index(battleInfo.team1, target);
-		if (DEBUG_ENABLED) show_debug_message("Target: " + string(target) + string(team[tarInd]));
+		tarInd = scrTeamCharGetInd(battleInfo.team1, target);
+		if (DEBUG_ENABLED) show_debug_message("[BController] Target: " + string(target) + string(team[tarInd]));
 		audio_play_sound(sndDowned, 1, false);
 		array_delete(battleInfo.team1, tarInd, 1);
+		teams[0].charDied(target);
+		context.menu.chooseTarget(battleInfo.tarteam);
 	} else {
-		tarInd = array_get_index(battleInfo.team2, target);
-		if (DEBUG_ENABLED) show_debug_message("Target: " + string(target) + string(team[tarInd]));
-		if (DEBUG_ENABLED) show_debug_message("Enemy team before death: " + string(battleInfo.team2));
+		tarInd = scrTeamCharGetInd(battleInfo.team2, target);
+		if (DEBUG_ENABLED) show_debug_message("[BController] Target: " + string(target) + string(team[tarInd]));
+		if (DEBUG_ENABLED) show_debug_message("[BController] Enemy team before death: " + string(battleInfo.team2));
 		array_delete(battleInfo.team2, tarInd, 1);
+		teams[1].charDied(target);
 		audio_play_sound(sndMonsterDeath, 1, false);
-		if (DEBUG_ENABLED) show_debug_message("Enemy team after death: " + string(battleInfo.team2));
+		if (DEBUG_ENABLED) show_debug_message("[BController] Enemy team after death: " + string(battleInfo.team2));
 	}
-	menu.charDied();
-	if (target == battleInfo.activeFighter){
-		menu.turnEnd();
-		endTurn();
+	context.menu.charDied(target);
+	if (target == ftr || target = context.menu.fighter){
+		endTeamTurn(target);
 	}
-	show_debug_message(string(target[$"name"]) + " is dead.");
+	if (DEBUG_ENABLED) show_debug_message("[BController]" + string(target[$"name"]) + " is dead.");
 }
 
-doDowned = function(target, team){
+doDowned = function(ftr, target, team){
 	array_delete(team, array_get_index(team, target), 1);
 	audio_play_sound(sndDowned, 1, false);
-	//menu.charDowned(target, team);
-	if (target == battleInfo.activeFighter){
-		menu.turnEnd();
-		endTurn();
+	if (target == ftr || target = context.menu.fighter){
+		endTeamTurn(target);
 	}
-	show_debug_message(string(target[$"name"]) + " is down.");
+	teams[0].charDowned(target);
+	context.menu.chooseTarget(battleInfo.tarteam);
+	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(target[$"name"]) + " is down.");
 }
 
-doHeal = function(target, act){
+doHeal = function(ftr, target, act){
 	var heal = 0;
 	if (struct_exists(act, "heal")){	//If is a spell
-		heal = act[$"heal"] * (struct_get(battleInfo.activeFighter[$"stats"], act[$"scale"]) div 2);
+		heal = act[$"heal"] * (struct_get(ftr[$"stats"], act[$"scale"]) div 2);
 	} else {		// If is an item
 		heal = act[$"pow"];
 	}
 	target.hp = min(target.stats.maxhp, target.hp + heal);
-	show_debug_message(string(target[$"name"]) + " heals " + string(heal) + "hp.");
+	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(target[$"name"]) + " heals " + string(heal) + "hp.");
 }
 
-doRestore = function(target, act){
+doRestore = function(ftr, target, act){
 	var res = act[$"pow"];
 	target.mana = min(target.stats.maxmana, target.mana + res);
-	show_debug_message(string(target[$"name"]) + " regained " + string(res) + "mana.");
+	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(target[$"name"]) + " regained " + string(res) + "mana.");
 }
 
-doBuff = function(bff, ind){
+doBuff = function(ftr, bff, ind){
 	var earlyTurnEnd = false;
 	if (struct_exists(bData, bff)){
 		var buff = struct_get(bData, bff);
-		if (DEBUG_ENABLED) show_debug_message(string(buff));
+		if (DEBUG_ENABLED) show_debug_message("[BController]" + string(buff));
 		if (struct_exists(buff, "abil")){
 			if (buff[$"abil"] == "meditate"){
-				doRestore(battleInfo.activeFighter, buff);
+				doRestore(ftr, ftr, buff);
 				earlyTurnEnd = true;
 			}
 		}
 		if(--buff[$"duration"] <= 0){
-			array_delete(battleInfo.activeFighter[$"buffs"], ind, 1);	
+			array_delete(ftr[$"buffs"], ind, 1);	
 		}
 		if(earlyTurnEnd){
-			if (DEBUG_ENABLED) show_debug_message("Aborting turn");
-			menu.turnEnd();
-			endTurn();
+			if (DEBUG_ENABLED) show_debug_message("[BController] Aborting turn");
+			//menu.turnEnd();
+			endTeamTurn(ftr);
 		}
 	} else {
-		show_message("Error loading Debuffs!");	
+		if (DEBUG_ENABLED) show_message("[BController] Error loading Debuffs!");	
 	}
 }
-doDebuff = function(db, ind){
+doDebuff = function(ftr, db, ind){
 	var earlyTurnEnd = false;
 	if (struct_exists(dbData, db)){
 		var debuff = struct_get(dbData, db);
 		if (struct_exists(debuff, "abil")){
 			if (debuff[$"abil"] == "damage"){
-				doDamage(battleInfo.activeFighter, debuff);
+				doDamage(ftr, ftr, debuff);
 			}
 		}
 		if(--debuff[$"duration"] <= 0){
-			array_delete(battleInfo.activeFighter[$"debuffs"], ind, 1);	
+			array_delete(ftr[$"debuffs"], ind, 1);	
 		}
 		if(earlyTurnEnd){
-			menu.turnEnd();
-			endTurn();
+			endTeamTurn(ftr);
 		}
 	} else {
-		show_message("Error loading Debuffs!");	
+		if (DEBUG_ENABLED) show_message("[BController] Error loading Debuffs!");	
 	}
 }
+
 if (array_length(global.battles) > 0){
 	initBattle();
 }
 
-enemyTurn = function(enemy){
-	var actions = array_concat(enemy[$"attacks"], enemy[$"spells"]);
-	var choice = -1;
-	var action = "";
-	if (array_length(actions) > 0){
-		choice = irandom(array_length(actions) - 1);
-		action = actions[choice];
-	} else {
-		// UH WTF ERROR?????	
-		show_message("No actions loaded!");
-	}
-	
-	battleInfo.battleState = BSTATES.ACTION;
-	if(DEBUG_ENABLED) show_debug_message("Animations waiting at enemy turn: " + string(objBattleMenu.animsWaiting));
-	
-	if (struct_exists(atkData, action)){
-		var tIndex = irandom(array_length(battleInfo.team1) - 1);
-		var target = battleInfo.team1[tIndex];
-		menu.doAnimation(action, enemy, target, battleInfo.team1, false);
-	} else if (struct_exists(splData, action)){
-		if (struct_exists(struct_get(splData, action), "damage")){
-			var tIndex = irandom(array_length(battleInfo.team1) - 1);
-			var target = battleInfo.team1[tIndex];
-			menu.doAnimation(action, enemy, target, battleInfo.team1, true);
-		}
-		if (struct_exists(struct_get(splData, action), "heal")){
-			var tIndex = irandom(array_length(battleInfo.team2) - 1);
-			var target = battleInfo.team2[tIndex];
-			menu.doAnimation(action, enemy, target, battleInfo.team2, true);
-		}
-	}
-	
-}

@@ -3,7 +3,7 @@ moving = false;
 dir = Dirs.DOWN;
 moveTarget = 0;
 moveQueue = [[x, y],[x, y]];
-companions = [instance_create_layer(x,y,"Instances", objCompanion), instance_create_layer(x,y,"Instances", objCompanion), instance_create_layer(x,y,"Instances", objCompanion)];
+companions = [];
 inMenu = false;
 
 playerMove = function(){
@@ -11,6 +11,7 @@ playerMove = function(){
 		moving = true;
 		if (up){
 			dir = Dirs.UP;
+			sprite_index = sprPlayerTempUp;
 			if (!place_meeting(x, y - TILE_SIZE, objWall)){
 				moveTarget = y - TILE_SIZE;
 				moveComps();
@@ -19,6 +20,7 @@ playerMove = function(){
 			}
 		} else if (left){
 			dir = Dirs.LEFT;
+			sprite_index = sprPlayerTempLeft;
 			if (!place_meeting(x - TILE_SIZE, y, objWall)){
 				moveTarget = x - TILE_SIZE;
 				moveComps();
@@ -27,6 +29,7 @@ playerMove = function(){
 			}
 		} else if (right){
 			dir = Dirs.RIGHT;
+			sprite_index = sprPlayerTempRight;
 			if (!place_meeting(x + TILE_SIZE, y, objWall)){
 				moveTarget = x + TILE_SIZE;
 				moveComps();
@@ -35,6 +38,7 @@ playerMove = function(){
 			}
 		} else if (down){
 			dir = Dirs.DOWN;
+			sprite_index = sprPlayerTempDown;
 			if (!place_meeting(x, y + TILE_SIZE, objWall)){
 				moveTarget = y + TILE_SIZE;
 				moveComps();
@@ -45,6 +49,7 @@ playerMove = function(){
 	}
 	
 	if (moving){
+		image_speed = 1;
 		if(dir == Dirs.LEFT || dir == Dirs.RIGHT){
 			x = approach(x, moveTarget, spd);
 			if (abs(x - moveTarget) <= spd/2){
@@ -59,6 +64,9 @@ playerMove = function(){
 				moving = false;	
 			}
 		}
+	} else {
+		image_index = 0;
+		image_speed = 0;
 	}
 }
 

@@ -1,13 +1,14 @@
 {
     "hppotion" : {
-        "name"  : "Health Potion",
-        "abil"  : "heal",
-        "pow"   : 50  
+        "name"      : "Health Potion",
+        "abil"      : "heal",
+        "pow"       : 50,
+        "quantity"  : 3
     },
     "manapotion" : {
         "name"  : "Mana Potion",
         "abil"  : "restore",
-        "pow"   : 50  
+        "pow"   : 50,
+        "quantity"  : 3
     }
-
 }

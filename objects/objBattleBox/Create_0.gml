@@ -1,16 +1,19 @@
 options = [];
 selected = 0;
+context = undefined;
+fighter = undefined;
 draw_set_font(fntBattle);
 
 columns = 2;
-bOffX = 96;
+bOffX = 32;
 bOffY = 32;
+spacing = 16;
 borderOffX = 8;
 borderOffY = 8;
 battleInfo = objBattleController.battleInfo;
 
 battleInfo.menuState = BMENUST.ACTION;
-//currentChar = undefined;
+
 attackData = global.data.moves[$"attacks"];
 spellData = global.data.moves[$"spells"];
 itemData = global.data.items;
@@ -19,9 +22,6 @@ currBox = {
 	X : 0,
 	Y : 0
 }
-
-//currBoxX = 0;
-//currBoxY = 0;
 
 actionBox = {
 	activeY			: display_get_gui_height(),
@@ -32,13 +32,7 @@ actionBox = {
 	menuHeaderY		: 100 * MENU_GUI_SCALE,
 	menuTextY		: 80 * MENU_GUI_SCALE
 }
-//actionBoxActiveY = display_get_gui_height();
-//actionBoxInactiveY = display_get_gui_height() + 92 * MENU_GUI_SCALE;
-//actionBoxX = [91 * MENU_GUI_SCALE, 152 * MENU_GUI_SCALE, 213 * MENU_GUI_SCALE, 274 * MENU_GUI_SCALE];
-//actionMenuTextOffX = 4 * MENU_GUI_SCALE;
-//actionMenuTextSpaceY = 16 * MENU_GUI_SCALE;
-//actionMenuHeaderY = 100 * MENU_GUI_SCALE;
-//actionMenuTextY = 80 * MENU_GUI_SCALE;
+
 currNameTextY = display_get_gui_height() - 88 * MENU_GUI_SCALE;
 currHPTextY = display_get_gui_height() - 72 * MENU_GUI_SCALE;
 infoBoxX = 188 * MENU_GUI_SCALE; 
@@ -84,4 +78,8 @@ getOpText = function(op){
 	}
 	
 	return "ERROR";
+}
+
+loadFighter = function(ftr){
+	fighter = ftr;	
 }

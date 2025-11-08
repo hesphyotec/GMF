@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"sndChargeSpell",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":2.8902268,
+  "exportDir":"",
+  "name":"sndChargeSpell",
+  "parent":{
+    "name":"BattleSounds",
+    "path":"folders/Sounds/Battle/BattleSounds.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"sndChargeSpell.wav",
+  "volume":1.0,
+}

@@ -1,10 +1,10 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprBatBox",
   "bboxMode":0,
-  "bbox_bottom":287,
+  "bbox_bottom":95,
   "bbox_left":0,
-  "bbox_right":767,
+  "bbox_right":255,
   "bbox_top":0,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -12,11 +12,11 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"43cb23ed-8074-4e2a-accb-70dea61cba1d","name":"43cb23ed-8074-4e2a-accb-70dea61cba1d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"43cb23ed-8074-4e2a-accb-70dea61cba1d","name":"43cb23ed-8074-4e2a-accb-70dea61cba1d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
-  "height":288,
+  "height":96,
   "HTile":false,
   "layers":[
     {"$GMImageLayer":"","%Name":"bcc15e0a-5e75-4959-8219-623a8ab2f402","blendMode":0,"displayName":"default","isLocked":false,"name":"bcc15e0a-5e75-4959-8219-623a8ab2f402","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
@@ -78,7 +78,7 @@
     "visibleRange":null,
     "volume":1.0,
     "xorigin":0,
-    "yorigin":288,
+    "yorigin":96,
   },
   "swatchColours":null,
   "swfPrecision":0.5,
@@ -88,5 +88,5 @@
   },
   "type":0,
   "VTile":false,
-  "width":768,
+  "width":256,
 }

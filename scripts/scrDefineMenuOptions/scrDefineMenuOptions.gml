@@ -14,6 +14,8 @@ function scrDefineMenuOptions(){
 		TARGET,
 		ANIMATE,
 		ITEMS,
-		FLEE
+		FLEE,
+		WAIT,
+		QTE
 	}
 }

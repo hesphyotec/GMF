@@ -1,1 +1,1 @@
-objBattleMenu.animFinish();
+//objBattleMenu.animFinish(character);

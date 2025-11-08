@@ -1,12 +1,115 @@
 {
 	"npc_test" : {
-		"dialogue" : [
-			"I'm just a rock. I'm chillin'.",
-			"Skibidi Rizzma!"
+		"test" : {
+			"dialogue" : [
+				"Welcome to the testing castle.",
+				"Gather a party, and interact with the purple guy to start a battle."
+				]
+		}
+	},
+	"veteran" : {
+		"recruit" : {
+			"dialogue" :[
+				"Hey buddy. Want me to join your party?"
 			],
-		"choices" : [
-			"I'm killing myself.",
-			"Shut the fuck up."
+			"choices" : [
+				"Yes",
+				"No"
+			],
+			"result" : [
+				{
+					"op" : "recruit",
+					"comp" : "veteran"
+				},
+				{
+					"op" : "endDiag"
+				}
 			]
+		}
+
+	},
+	"assassin" : {
+		"recruit" : {
+			"dialogue" :[
+				"Shall the shadow follow the light?"
+			],
+			"choices" : [
+				"Yes",
+				"No"
+			],
+			"result" : [
+				{
+					"op" : "recruit",
+					"comp" : "assassin"
+				},
+				{
+					"op" : "endDiag"
+				}
+			]
+		}
+
+	},
+	"archer" : {
+		"recruit" : {
+			"dialogue" :[
+				"Yo, want me to tag along"
+			],
+			"choices" : [
+				"Yes",
+				"No"
+			],
+			"result" : [
+				{
+					"op" : "recruit",
+					"comp" : "archer"
+				},
+				{
+					"op" : "endDiag"
+				}
+			]
+		}
+
+	},
+	"mage" : {
+		"recruit" : {
+			"dialogue" :[
+				"So, you want me to join, right?"
+			],
+			"choices" : [
+				"Yes",
+				"No"
+			],
+			"result" : [
+				{
+					"op" : "recruit",
+					"comp" : "mage"
+				},
+				{
+					"op" : "endDiag"
+				}
+			]
+		}
+
+	},
+	"tinkerer" : {
+		"recruit" : {
+			"dialogue" :[
+				"Mhm? *He reaches out his hand*"
+			],
+			"choices" : [
+				"Yes",
+				"No"
+			],
+			"result" : [
+				{
+					"op" : "recruit",
+					"comp" : "tinkerer"
+				},
+				{
+					"op" : "endDiag"
+				}
+			]
+		}
+
 	}
 }

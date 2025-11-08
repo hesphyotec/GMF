@@ -29,24 +29,24 @@ if (active && (alarm[0] <=0)){
 				break;
 			case BMENUST.ATTACK:
 				action = options[selection];
-				if (DEBUG_ENABLED) show_debug_message("Enemies: " + string(battleInfo.team2));
+				if (DEBUG_ENABLED) show_debug_message("[Menu] Enemies: " + string(battleInfo.team2));
 				chooseTarget(battleInfo.team2);
 				break;
 			case BMENUST.SPELL:
 				action = options[selection];
 				var spell = struct_get(splData, action);
-				show_debug_message(string(spell));
-				if (spell[$"cost"] <= battleInfo.activeFighter[$"mana"]){
+				if (DEBUG_ENABLED) show_debug_message("[Menu]" + string(spell));
+				if (spell[$"cost"] <= fighter[$"mana"] || spell[$"cost"] <= fighter[$"energy"] || !(struct_exists(fighter, "mana")) || struct_exists(fighter, "energy")){
 					if (variable_struct_exists(spell,"type")){
-						if (spell[$"type"] == "dmgSpell"){
-							if (DEBUG_ENABLED) show_debug_message("Enemies: " + string(battleInfo.team2) + string(battleInfo.team2));
+						if (spell[$"type"] == "dmgSpell" || spell[$"type"] == "debuffSpell"){
+							if (DEBUG_ENABLED) show_debug_message("[Menu] Enemies: " + string(battleInfo.team2) + string(battleInfo.team2));
 							chooseTarget(battleInfo.team2);	
 						}	
 						if (spell[$"type"] == "restoreSpell" || spell[$"type"] == "buffSpell"){
 							chooseTarget(battleInfo.team1);	
 						}
 						if (spell[$"type"] == "selfSpell"){
-							chooseTarget([battleInfo.activeFighter]);	
+							chooseTarget([fighter]);	
 						}
 					}
 				} else {
@@ -55,7 +55,7 @@ if (active && (alarm[0] <=0)){
 				break;
 			case BMENUST.ITEMS:
 				item = options[selection];
-				show_debug_message(string(item));
+				if (DEBUG_ENABLED) show_debug_message("[Menu]" + string(item));
 				if (variable_struct_exists(item,"abil")){
 					if (item[$"abil"] == "heal" || item[$"abil"] == "restore"){
 						chooseTarget(battleInfo.team1);	
@@ -74,6 +74,7 @@ if (active && (alarm[0] <=0)){
 				break;
 			case BMENUST.TARGET:
 				target = options[selection];
+				if (DEBUG_ENABLED) show_debug_message("[Menu]" + string(target[$"cid"]));
 				doFunction(BOPS.TARGET);
 				break;
 		}
@@ -84,4 +85,11 @@ if (active && (alarm[0] <=0)){
 		audio_play_sound(sndBack,1,false);
 	}
 
+}
+
+if (fighter != undefined){
+	if (fighter[$"hp"] <= 0){
+		turnEnd();
+		context.playerTeam.endTurn();
+	}
 }

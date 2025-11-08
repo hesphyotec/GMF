@@ -31,8 +31,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprTestCompanion",
-    "path":"sprites/sprTestCompanion/sprTestCompanion.yy",
+    "name":"sprNPCDown",
+    "path":"sprites/sprNPCDown/sprNPCDown.yy",
   },
   "spriteMaskId":null,
   "visible":true,

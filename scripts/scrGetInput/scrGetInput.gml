@@ -28,4 +28,11 @@ function scrGetInput(){
 	upPress			= (up && !prevUp);
 	sprintPress		= (sprint && !prevSprint);
 	interactPress	= (interact && !prevInteract);
+	
+	leftRelease			= (!left && prevLeft);
+	rightRelease		= (!right && prevRight);
+	downRelease			= (!down && prevDown);
+	upRelease			= (!up && prevUp);
+	sprintRelease		= (!sprint && prevSprint);
+	interactRelease		= (!interact && prevInteract);
 }

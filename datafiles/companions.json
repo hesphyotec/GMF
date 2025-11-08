@@ -1,18 +1,18 @@
 {
 	"veteran" : {
+		"cid" : 1,
 		"name" : "Tyralt",
+		"level" : 1,
 		"hp": 200,
-		"mana" : 0,
 		"stats" : {
 			"maxhp" : 200,
-			"maxmana" : 0,
-			"str" : 8,
-			"dex" : 2,
-			"int" : 0,
-			"cspd" : 2
+			"str" : 7,
+			"dex" : 3,
+			"int" : 1,
+			"cspd" : 3
 		},
-		"attacks" : ["slash"],
-		"spells" : ["hackdown", "chop"],
+		"attacks" : ["slash", "jab"],
+		"spells" : ["taunt"],
 		"buffs": [],
 		"debuffs": [],
 		"sprite" : "sprBattleVetT",
@@ -24,20 +24,22 @@
 		},
 		"desc" : "Ex-soldier from the Impish War. Smells like booze and cigarrettes."
 	},
-	"healer" : {
+	"mage" : {
+		"cid" : 2,
 		"name" : "Yvette",
-		"hp" : 75,
+		"level" : 1,
+		"hp" : 90,
 		"mana" : 100,
 		"stats" : {
-			"maxhp" : 75,
+			"maxhp" : 90,
 			"maxmana" : 100,
-			"str" : 1,
-			"dex" : 4,
-			"int" : 8,
-			"cspd" : 8
+			"str" : 3,
+			"dex" : 5,
+			"int" : 7,
+			"cspd" : 7
 		},
-		"attacks" : ["bonk"],
-		"spells" : ["heal", "fireball", "ironskin", "meditate"],
+		"attacks" : ["staff"],
+		"spells" : ["heal", "ironskin"],
 		"buffs": [],
 		"debuffs": [],
 		"sprite" : "sprBattleHealerT",
@@ -50,19 +52,19 @@
 		"desc" : "Scholar of the White Magi. Clumsy but knows her stuff."
 	},
 	"archer" : {
+		"cid" : 3,
 		"name" : "Blumiere",
-		"hp" : 120,
-		"mana" : 0,
+		"level" : 1,
+		"hp" : 90,
 		"stats" : {
-			"maxhp" : 120,
-			"maxmana" : 0,
+			"maxhp" : 90,
 			"str" : 3,
 			"dex" : 7,
-			"int" : 0,
-			"cspd" : 7
+			"int" : 5,
+			"cspd" : 6
 		},
-		"attacks" : ["bowshot", "punch"],
-		"spells" : [],
+		"attacks" : ["bowshot", "aStab"],
+		"spells" : ["focus"],
 		"buffs": [],
 		"debuffs": [],
 		"sprite" : "sprBattleArcherT",
@@ -73,5 +75,59 @@
 			"int" : 0.00
 		},
 		"desc" : "Master Hunter. Doesn't seem very social."
+	},
+	"assassin" : {
+		"cid" : 4,
+		"name" : "Kizura",
+		"level" : 1,
+		"hp" : 75,
+		"mana" : 100,
+		"stats" : {
+			"maxhp" : 75,
+			"maxmana" : 100,
+			"str" : 5,
+			"dex" : 7,
+			"int" : 5,
+			"cspd" : 7
+		},
+		"attacks" : ["knifeToss", "stab"],
+		"spells" : ["cloak"],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "sprBattleAssassinT",
+		"splash" : "sprAssassinSplash",
+		"resistances" : {
+			"str" : 0.00,
+			"dex" : 0.00,
+			"int" : 0.00
+		},
+		"desc" : "Strange mercenary. Smells of blood and flowers."
+	},
+	"tinkerer" : {
+		"cid" : 5,
+		"name" : "Nemy",
+		"level" : 1,
+		"hp" : 150,
+		"energy" : 3,
+		"stats" : {
+			"maxhp" : 150,
+			"maxenergy" : 3,
+			"str" : 4,
+			"dex" : 2,
+			"int" : 8,
+			"cspd" : 2
+		},
+		"attacks" : ["pistolShot", "pistolWhip"],
+		"spells" : ["zap"],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "sprBattleTinkererT",
+		"splash" : "sprTinkererSplash",
+		"resistances" : {
+			"str" : 0.10,
+			"dex" : 0.00,
+			"int" : 0.10
+		},
+		"desc" : "Mysterious scientist. He tries to talk but his voice is muffled."
 	}
 }

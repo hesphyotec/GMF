@@ -6,7 +6,9 @@
 			"scale" : "str",
 			"sound" : "Hit1",
 			"sprite" : "sprSlash",
-			"type" : "attack"
+			"type" : "attack",
+			"action" : "timedHit",
+			"speed" : 2
 		},
 		"punch" : {
 			"name" : "Punch",
@@ -14,8 +16,17 @@
 			"scale" : "str",
 			"sound" : "Hit1",
 			"sprite" : "sprSlash",
-			"type" : "attack"
-			
+			"type" : "attack",
+			"action" : "instant"
+		},
+		"pistolWhip" : {
+			"name" : "Pistol Whip",
+			"damage" : 5,
+			"scale" : "str",
+			"sound" : "Hit1",
+			"sprite" : "sprSlash",
+			"type" : "attack",
+			"action" : "instant"
 		},
 		"bowshot" : {
 			"name" : "Bow Shot",
@@ -24,31 +35,85 @@
 			"sound" : "Bowshot",
 			"sprite" : "sprSlash",
 			"type" : "attack",
-			"desc" : "What a trusty bow."
+			"desc" : "What a trusty bow.",
+			"action" : "aimCharge",
+			"speed" : 1
 		},
-		"bonk" : {
+		"staff" : {
 			"name" : "Staff Strike",
 			"damage" : 5,
 			"scale" : "str",
 			"sound" : "Hit1",
 			"sprite" : "sprSlash",
-			"type" : "attack"
+			"type" : "attack",
+			"action" : "instant"
 		},
 		"smash" : {
 			"name" : "Rock Smash",
-			"damage" : 25,
+			"damage" : 5,
 			"scale" : "str",
 			"sound" : "Hit1",
 			"sprite" : "sprSlash",
-			"type" : "attack"
+			"type" : "attack",
+			"action" : "instant"
 		},
 		"roll" : {
 			"name" : "Rock n' Roll",
-			"damage" : 10,
+			"damage" : 5,
 			"scale" : "str",
 			"sound" : "Hit1",
 			"sprite" : "sprSlash",
-			"type" : "attack"
+			"type" : "attack",
+			"action" : "instant"
+		},
+		"knifeToss" : {
+			"name" : "Knife Toss",
+			"damage" : 20,
+			"scale" : "dex",
+			"sound" : "Bowshot",
+			"sprite" : "sprSlash",
+			"type" : "attack",
+			"desc" : "Throws a dagger.",
+			"action" : "aimCharge",
+			"speed" : 2
+		},
+		"aStab" : {
+			"name" : "Arrow Stab",
+			"damage" : 10,
+			"scale" : "dex",
+			"sound" : "Hit1",
+			"sprite" : "sprSlash",
+			"type" : "attack",
+			"action" : "instant"
+		},
+		"stab" : {
+			"name" : "Stab",
+			"damage" : 10,
+			"scale" : "dex",
+			"sound" : "Hit1",
+			"sprite" : "sprSlash",
+			"type" : "attack",
+			"action" : "instant"
+		},
+		"jab" : {
+			"name" : "Jab",
+			"damage" : 5,
+			"scale" : "str",
+			"sound" : "Hit1",
+			"sprite" : "sprSlash",
+			"type" : "attack",
+			"action" : "instant"
+		},
+		"pistolShot" : {
+			"name" : "Pistol",
+			"damage" : 25,
+			"scale" : "int",
+			"sound" : "Fireball",
+			"sprite" : "sprFireball",
+			"type" : "attack",
+			"desc" : "It's a gun, a dinky one though.",
+			"action" : "aimCharge",
+			"speed" : 1
 		}
 	},
 	"spells" : {
@@ -57,22 +122,38 @@
 			"damage" : 20,
 			"scale" : "int",
 			"cost" : 25,
-			"effects" : ["burn 1"],
+			"effects" : ["burn1"],
 			"sound" : "Fireball",
 			"sprite" : "sprFireball",
 			"type" : "dmgSpell",
-			"desc" : "Sets enemies ablaze."
+			"desc" : "Sets enemies ablaze.",
+			"action" : "spellCharge",
+			"speed" : 1
+		},
+		"zap" : {
+			"name" : "Zap",
+			"damage" : 15,
+			"scale" : "int",
+			"cost" : 1,
+			"effects" : ["stun1"],
+			"sound" : "Lightning",
+			"sprite" : "sprLightning",
+			"type" : "dmgSpell",
+			"desc" : "Small bolt of lighting. Stuns enemies for a short amount of time.",
+			"action" : "spellCharge",
+			"speed" : 1
 		},
 		"heal" : {
 			"name" : "Heal",
-			"heal" : 10,
+			"heal" : 40,
 			"scale" : "int",
 			"cost" : 30,
 			"effects" : [],
 			"sound" : "Heal",
 			"sprite" : "sprSlash",
 			"type" : "restoreSpell",
-			"desc" : "It takes a gentle touch."
+			"desc" : "It takes a gentle touch.",
+			"action" : "instant"
 		},
 		"lightning" : {
 			"name" : "Lightning",
@@ -83,7 +164,9 @@
 			"sound" : "Lightning",
 			"sprite" : "sprLightning",
 			"type" : "dmgSpell",
-			"desc" : "Invokes a holy wrath."
+			"desc" : "Invokes a holy wrath.",
+			"action" : "spellCharge",
+			"speed" : 1
 		},
 		"devsmite" : {
 			"name" : "HOLY SMITE",
@@ -94,7 +177,8 @@
 			"sound" : "Obliterate",
 			"sprite" : "sprSlash",
 			"type" : "dmgSpell",
-			"desc" : "Die."
+			"desc" : "Die.",
+			"action" : "instant"
 		},
 		"ironskin" : {
 			"name" : "Ironskin",
@@ -104,7 +188,8 @@
 			"sound" : "Heal",
 			"sprite" : "sprLightning",
 			"type" : "buffSpell",
-			"desc" : "Increases resistance to physical attacks."
+			"desc" : "Increases resistance to physical attacks.",
+			"action" : "instant"
 		},
 		"meditate" : {
 			"name" : "Meditate",
@@ -114,7 +199,30 @@
 			"sound" : "Heal",
 			"sprite" : "sprLightning",
 			"type" : "selfSpell",
-			"desc" : "User falls into deep trance to regain mana for 2 turns."
+			"desc" : "User falls into deep trance to regain mana for 2 turns.",
+			"action" : "instant"
+		},
+		"focus" : {
+			"name" : "Focus",
+			"scale" : "int",
+			"cost" : 0,
+			"effects" : ["focused"],
+			"sound" : "Heal",
+			"sprite" : "sprLightning",
+			"type" : "selfSpell",
+			"desc" : "Increases damage done next turn, slows next attack.",
+			"action" : "instant"
+		},
+		"cloak" : {
+			"name" : "Cloak",
+			"scale" : "int",
+			"cost" : 25,
+			"effects" : ["stealth1"],
+			"sound" : "Heal",
+			"sprite" : "sprLightning",
+			"type" : "selfSpell",
+			"desc" : "User becomes untargetable until their next turn",
+			"action" : "instant"
 		},
 		"hackdown" : {
 			"name" : "Hack Down",
@@ -125,7 +233,10 @@
 			"sound" : "Hit1",
 			"sprite" : "sprSlash",
 			"type" : "dmgSpell",
-			"desc" : "Devastating three hit combo."
+			"desc" : "Devastating three hit combo.",
+			"action" : "multiHit",
+			"speed" : 3,
+			"hits" : 3
 		},
 		"chop" : {
 			"name" : "Chop",
@@ -136,7 +247,34 @@
 			"sound" : "Hit1",
 			"sprite" : "sprSlash",
 			"type" : "dmgSpell",
-			"desc" : "Cuts the enemy's armor."
+			"desc" : "Cuts the enemy's armor.",
+			"action" : "timedHit",
+			"speed" : 3
+		},
+		"taunt" : {
+			"name" : "Taunt",
+			"cost" : 0,
+			"scale" : "int",
+			"effects" : ["taunted"],
+			"sound" : "Hit1",
+			"sprite" : "sprSlash",
+			"type" : "debuffSpell",
+			"desc" : "Forces a target to focus the user.",
+			"action" : "instant"
+		},
+		"knifeSpam" : {
+			"name" : "Dagger Storm",
+			"damage" : 10,
+			"cost" : 50,
+			"effects" : [],
+			"scale" : "int",
+			"sound" : "Hit1",
+			"sprite" : "sprSlash",
+			"type" : "dmgSpell",
+			"desc" : "Unleashes a rain of blades.",
+			"action" : "multiAim",
+			"speed" : 1,
+			"hits" : 5
 		}
 	}
 }

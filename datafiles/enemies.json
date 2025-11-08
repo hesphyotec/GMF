@@ -1,10 +1,10 @@
 {
 	"enemyTest" : {
 		"name" : "Rock",
-		"hp" : 500,
+		"hp" : 1000,
 		"mana" : 100,
 		"stats" : {
-			"maxhp" : 500,
+			"maxhp" : 1000,
 			"maxmana" : 100,
 			"str" : 4,
 			"dex" : 4,
@@ -23,17 +23,89 @@
 		},
 		"desc" : "Friendly rock. Why are you fighting him?"
 	},
-	"bigRock" : {
-		"name" : "Killer Rock",
-		"hp" : 1000,
+	"banditGoon" : {
+		"name" : "Goon",
+		"hp" : 100,
 		"mana" : 100,
 		"stats" : {
-			"maxhp" : 1000,
+			"maxhp" : 100,
+			"maxmana" : 100,
+			"str" : 4,
+			"dex" : 5,
+			"int" : 2,
+			"cspd" : 5
+		},
+		"attacks" : ["slash", "stab"],
+		"spells" : [],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "sprHumanGoon",
+		"resistances" : {
+			"str" : 0.25,
+			"dex" : 0.00,
+			"int" : 0.00
+		},
+		"desc" : "Some bandit. His face seems a little crooked."
+	},
+	"banditThug" : {
+		"name" : "Thug",
+		"hp" : 250,
+		"mana" : 100,
+		"stats" : {
+			"maxhp" : 250,
+			"maxmana" : 100,
+			"str" : 6,
+			"dex" : 4,
+			"int" : 3,
+			"cspd" : 4
+		},
+		"attacks" : ["slash", "stab", "pistolShot"],
+		"spells" : [],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "sprHumanThug",
+		"resistances" : {
+			"str" : 0.25,
+			"dex" : 0.00,
+			"int" : 0.00
+		},
+		"desc" : "Tough guy, he's packing some heat."
+	},
+	"banditBoss" : {
+		"name" : "Bandit Leader",
+		"hp" : 500,
+		"mana" : 100,
+		"stats" : {
+			"maxhp" : 500,
+			"maxmana" : 100,
+			"str" : 5,
+			"dex" : 8,
+			"int" : 2,
+			"cspd" : 3
+		},
+		"attacks" : ["knifeToss", "stab", "pistolShot"],
+		"spells" : ["heal"],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "sprBattleRock",
+		"resistances" : {
+			"str" : 0.25,
+			"dex" : 0.25,
+			"int" : 0.25
+		},
+		"desc" : "Looks like a leader of sorts."
+	},
+	"bigRock" : {
+		"name" : "Killer Rock",
+		"hp" : 1500,
+		"mana" : 100,
+		"stats" : {
+			"maxhp" : 1500,
 			"maxmana" : 100,
 			"str" : 10,
 			"dex" : 2,
 			"int" : 2,
-			"cspd" : 1
+			"cspd" : 2
 		},
 		"attacks" : ["smash", "roll"],
 		"spells" : ["fireball"],

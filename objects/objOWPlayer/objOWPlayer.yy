@@ -32,8 +32,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprPlayerT",
-    "path":"sprites/sprPlayerT/sprPlayerT.yy",
+    "name":"sprPlayerTempDown",
+    "path":"sprites/sprPlayerTempDown/sprPlayerTempDown.yy",
   },
   "spriteMaskId":null,
   "visible":true,

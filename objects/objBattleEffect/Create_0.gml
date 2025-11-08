@@ -17,6 +17,4 @@ initEff = function(act, spr, tar, men, spd, onTarget){
 		x = target.x;
 		y = target.y - sprite_get_height(target.sprite_index)/2;
 	}
-	
-	//layer = "Effects";
 }

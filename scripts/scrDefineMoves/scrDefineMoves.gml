@@ -9,4 +9,11 @@ function scrDefineMoves(){
 		HEAL,
 		LIGHTNING
 	}
+	enum QTEMODE {
+		TIMEDHIT,
+		MULTIHIT,
+		AIM,
+		MULTIAIM,
+		SPELLCHARGE
+	}
 }

@@ -1,4 +1,4 @@
 if (menuRef != undefined){
-	menuRef.animFinish();
+	//menuRef.animFinish();
 	instance_destroy(self);
 }

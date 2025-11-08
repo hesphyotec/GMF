@@ -8,6 +8,10 @@ function scrDefineBattleStates(){
 	enum CHARSTATES{
 		SELECTED,
 		IDLE,
-		ATTACK
+		ATTACK,
+		WAITING,
+		ANIMATING,
+		STUNNED,
+		CHANNELING
 	}
 }

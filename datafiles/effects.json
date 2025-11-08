@@ -5,7 +5,21 @@
 			"abil" : "resist",
 			"type" : "str",
 			"pow" : 0.5,
-			"duration" : 5
+			"duration" : 60,
+			"icon" : "sprBStrRes1"
+		},
+		"focused" : {
+			"name" : "Focused",
+			"abil" : "focus",
+			"pow" : 0.25,
+			"duration" : 60,
+			"icon" : "sprBStrRes1"
+		},
+		"stealth1" : {
+			"name" : "Stealthed",
+			"abil" : "stealth",
+			"duration" : 60,
+			"icon" : "sprBStrRes1"
 		},
 		"meditate1" : {
 			"name" : "Meditate I",
@@ -15,20 +29,43 @@
 		}
 	},
 	"debuffs" : {
-		"burn 1" : {
+		"burn1" : {
 			"name" : "Burning I",
 			"abil" : "damage",
 			"pow" : 5,
 			"type" : "int",
 			"scale" : "int",
-			"duration" : 3
+			"duration" : 3,
+			"icon" : "sprDbBurn1"
+		},
+		"taunted" : {
+			"name" : "Taunted",
+			"abil" : "taunt",
+			"type" : "int",
+			"duration" : 30,
+			"icon" : "sprBStrRes1"
+		},
+		"stun1" : {
+			"name" : "Stunned",
+			"abil" : "stun",
+			"type" : "int",
+			"duration" : 5,
+			"icon" : "sprBMeditate"
 		},
 		"strWeakness1" : {
 			"name" : "Physical Weakness I",
 			"abil" : "weakness",
 			"type" : "str",
 			"pow" : 0.5,
-			"duration" : 3
+			"duration" : 3,
+			"icon" : "sprDbStrWeak1"
+		},
+		"recharge" : {
+			"name" : "Recharge",
+			"abil" : "recharge",
+			"type" : "int",
+			"duration" : 10,
+			"icon" : "sprBMeditate"
 		}
 	}
 }
