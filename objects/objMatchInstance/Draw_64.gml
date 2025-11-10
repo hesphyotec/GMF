@@ -1,0 +1,1 @@
+draw_text(0, 0, "Connections: " + string(array_length(sockets)));

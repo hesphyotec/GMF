@@ -5,6 +5,7 @@ moveTarget = 0;
 moveQueue = [[x, y],[x, y]];
 companions = [];
 inMenu = false;
+mapSpace = [floor(x / TILE_SIZE), floor(y / TILE_SIZE)];
 
 playerMove = function(){
 	if ((up || left || right || down ) && !moving){
@@ -12,7 +13,7 @@ playerMove = function(){
 		if (up){
 			dir = Dirs.UP;
 			sprite_index = sprPlayerTempUp;
-			if (!place_meeting(x, y - TILE_SIZE, objWall)){
+			if (scrMapCanMove(mapSpace[0], mapSpace[1]-1)){
 				moveTarget = y - TILE_SIZE;
 				moveComps();
 			} else {
@@ -21,7 +22,7 @@ playerMove = function(){
 		} else if (left){
 			dir = Dirs.LEFT;
 			sprite_index = sprPlayerTempLeft;
-			if (!place_meeting(x - TILE_SIZE, y, objWall)){
+			if (scrMapCanMove(mapSpace[0]-1, mapSpace[1])){
 				moveTarget = x - TILE_SIZE;
 				moveComps();
 			} else {
@@ -30,7 +31,7 @@ playerMove = function(){
 		} else if (right){
 			dir = Dirs.RIGHT;
 			sprite_index = sprPlayerTempRight;
-			if (!place_meeting(x + TILE_SIZE, y, objWall)){
+			if (scrMapCanMove(mapSpace[0]+1, mapSpace[1])){
 				moveTarget = x + TILE_SIZE;
 				moveComps();
 			} else {
@@ -39,13 +40,14 @@ playerMove = function(){
 		} else if (down){
 			dir = Dirs.DOWN;
 			sprite_index = sprPlayerTempDown;
-			if (!place_meeting(x, y + TILE_SIZE, objWall)){
+			if (scrMapCanMove(mapSpace[0], mapSpace[1]+1)){
 				moveTarget = y + TILE_SIZE;
 				moveComps();
 			} else {
 				moving = false;	
 			}
 		}
+		scrSendKey(global.server, up, down, left, right)
 	}
 	
 	if (moving){
@@ -64,6 +66,7 @@ playerMove = function(){
 				moving = false;	
 			}
 		}
+		mapSpace = [floor(x / TILE_SIZE), floor(y / TILE_SIZE)];
 	} else {
 		image_index = 0;
 		image_speed = 0;
@@ -116,5 +119,11 @@ updateMoves = function(){
 	array_insert(moveQueue, 0, [x,y]);
 	if (array_length(moveQueue) > MAX_COMPANIONS){
 		array_delete(moveQueue,3,1);	
+	}
+}
+
+serverMove = function(_x, _y){
+	if (global.server >= 0){
+		scrSendTarPos(global.server, _x, _y);	
 	}
 }

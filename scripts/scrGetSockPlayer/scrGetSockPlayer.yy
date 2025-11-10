@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrGetSockPlayer",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrGetSockPlayer",
+  "parent":{
+    "name":"Networking",
+    "path":"folders/Scripts/Networking.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

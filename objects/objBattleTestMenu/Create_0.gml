@@ -1,5 +1,7 @@
 enum TESTOPS{
 	START,
+	SERVER,
+	OVERWORLD,
 	BUILDTEAM,
 	SELECTMEM,
 	CHOOSEFIGHT,
@@ -15,7 +17,7 @@ enum CHARS{
 }
 
 state = TESTOPS.START;
-options = [TESTOPS.BUILDTEAM, TESTOPS.QUIT];
+options = [TESTOPS.BUILDTEAM, TESTOPS.SERVER, TESTOPS.OVERWORLD, TESTOPS.QUIT];
 selected = 0;
 members = 0;
 
@@ -36,6 +38,12 @@ doOperation = function(op){
 			break;
 		case TESTOPS.START:
 			scrStartBattle(rmTestSelect, objPlayer.team, ENCOUNTERS.BANDIT1);
+			break;
+		case TESTOPS.SERVER:
+			room_goto(rmServer);
+			break;
+		case TESTOPS.OVERWORLD:
+			room_goto(rmHCastleTest);
 			break;
 		case TESTOPS.QUIT:
 			game_end(0);
@@ -72,7 +80,14 @@ updateSelection = function(dir){
 getOpText = function(op){
 	if (op == TESTOPS.BUILDTEAM){
 		return "Build Team.";
-	} else if (op == TESTOPS.QUIT){
+	}
+	if (op == TESTOPS.SERVER){
+		return "Start Server";
+	}
+	if (op == TESTOPS.OVERWORLD){
+		return "Start Client";
+	}
+	if (op == TESTOPS.QUIT){
 		return "Quit";
 	}
 }

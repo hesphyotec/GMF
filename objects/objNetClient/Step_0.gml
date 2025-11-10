@@ -1,4 +1,4 @@
 scrGetInput();
-if (server >= 0){
-	//scrSendKey(buffer, socket, up, down, left, right);	
+if (global.server >= 0){
+
 }

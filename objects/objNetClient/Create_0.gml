@@ -1,27 +1,48 @@
 socket = network_create_socket(network_socket_tcp);
-server = network_connect(socket, "127.0.0.1", 22566);
+global.server = network_connect(socket, "127.0.0.1", 22566);
+global.isServer = false;
 
-if (server < 0){
-	show_message("Connection to server failed!");	
+if (global.server < 0){
+	show_message("Connection to server failed!");
+	objGame.generatePlayer(-1);
+	global.players[0].generatePlayer();
 } else {
-	show_message("Connected!");
-	scrInitPlayer(socket);
+	if (DEBUG_ENABLED) show_debug_message("Connected!");
+	scrInitPlayer(global.server);
 }
 
 //buffer = buffer_create(2048, buffer_grow, 1);
 handleData = function(){
+	if (DEBUG_ENABLED) show_debug_message("Packet Recieved!");
 	var buff = async_load[?"buffer"];
 	var op = buffer_read(buff, buffer_u8);
 	switch(op){
 		case NET.PLAYERADDED:
+			if (DEBUG_ENABLED) show_debug_message("Player Added");
+			addPlayer();
 			break;
 		case NET.OPPONENTADDED:
+			if (DEBUG_ENABLED) show_debug_message("Opponent Added");
 			addOpponent();
+			break;
+		case NET.MOVE:
+		if (DEBUG_ENABLED) show_debug_message("Moving Network Player");
+			var mTar = buffer_read(buff, buffer_u16);
+			var dir = buffer_read(buff, buffer_u16);
+			if (DEBUG_ENABLED) show_debug_message("Moving Network Player");
+			global.players[1].character.receiveMove(mTar, dir);
 			break;
 	}
 }
 
 addOpponent = function(){
-	var opp = instance_create_layer(64, 64, "Instances", objNetPlayer);
+	var opp = instance_create_layer(0,0, "Instances", objPlayer);
 	array_push(global.players, opp);
+	objGame.generatePlayer(-1);
+	global.players[1].generateNetPlayer();
+}
+
+addPlayer = function(){
+	objGame.generatePlayer(-1);
+	global.players[0].generatePlayer();
 }

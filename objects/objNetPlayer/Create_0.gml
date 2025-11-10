@@ -6,69 +6,35 @@ moveQueue = [[x, y],[x, y]];
 companions = [];
 inMenu = false;
 
+receiveMove = function(mTar, _dir){
+	if (DEBUG_ENABLED) show_debug_message("Move Received");
+	if (!moving){
+		moving = true;
+	}
+	moveTarget = mTar;
+	dir = _dir;
+}
 playerMove = function(){
-	//if ((up || left || right || down ) && !moving){
-	//	moving = true;
-	//	if (up){
-	//		dir = Dirs.UP;
-	//		sprite_index = sprPlayerTempUp;
-	//		if (!place_meeting(x, y - TILE_SIZE, objWall)){
-	//			moveTarget = y - TILE_SIZE;
-	//			moveComps();
-	//		} else {
-	//			moving = false;	
-	//		}
-	//	} else if (left){
-	//		dir = Dirs.LEFT;
-	//		sprite_index = sprPlayerTempLeft;
-	//		if (!place_meeting(x - TILE_SIZE, y, objWall)){
-	//			moveTarget = x - TILE_SIZE;
-	//			moveComps();
-	//		} else {
-	//			moving = false;	
-	//		}
-	//	} else if (right){
-	//		dir = Dirs.RIGHT;
-	//		sprite_index = sprPlayerTempRight;
-	//		if (!place_meeting(x + TILE_SIZE, y, objWall)){
-	//			moveTarget = x + TILE_SIZE;
-	//			moveComps();
-	//		} else {
-	//			moving = false;	
-	//		}
-	//	} else if (down){
-	//		dir = Dirs.DOWN;
-	//		sprite_index = sprPlayerTempDown;
-	//		if (!place_meeting(x, y + TILE_SIZE, objWall)){
-	//			moveTarget = y + TILE_SIZE;
-	//			moveComps();
-	//		} else {
-	//			moving = false;	
-	//		}
-	//	}
-	//}
-	
-	//if (moving){
-	//	image_speed = 1;
-	//	if(dir == Dirs.LEFT || dir == Dirs.RIGHT){
-	//		x = approach(x, moveTarget, spd);
-	//		if (abs(x - moveTarget) <= spd/2){
-	//			x = moveTarget;
-	//			moving = false;	
-	//		}
-	//	}
-	//	if(dir == Dirs.UP || dir == Dirs.DOWN){
-	//		y = approach(y, moveTarget, spd);
-	//		if (abs(y - moveTarget) <= spd/2){
-	//			y = moveTarget;
-	//			moving = false;	
-	//		}
-	//	}
-	//} else {
-	//	image_index = 0;
-	//	image_speed = 0;
-	//}
-	
+	if (moving){
+		image_speed = 1;
+		if(dir == Dirs.LEFT || dir == Dirs.RIGHT){
+			x = approach(x, moveTarget, spd);
+			if (abs(x - moveTarget) <= spd/2){
+				x = moveTarget;
+				moving = false;	
+			}
+		}
+		if(dir == Dirs.UP || dir == Dirs.DOWN){
+			y = approach(y, moveTarget, spd);
+			if (abs(y - moveTarget) <= spd/2){
+				y = moveTarget;
+				moving = false;	
+			}
+		}
+	} else {
+		image_index = 0;
+		image_speed = 0;
+	}
 }
 
 approach = function(_start, _tar, _step){
@@ -84,34 +50,6 @@ moveComps = function(){
 	}
 }
 
-playerInteract = function(){
-	if (interactPress){
-		var toCheckx = x;
-		var toChecky = y;
-		switch(dir){
-			case Dirs.LEFT:
-				toCheckx = x - TILE_SIZE;
-				break;
-			case Dirs.RIGHT:
-				toCheckx = x + TILE_SIZE;
-				break;
-			case Dirs.UP:
-				toChecky = y - TILE_SIZE;
-				break;
-			case Dirs.DOWN:
-				toChecky = y + TILE_SIZE;
-				break;
-		}
-		if (place_meeting(toCheckx, toChecky, objNPC)){
-			var npc = instance_place(toCheckx, toChecky, objNPC);
-			if (npc.type != NPC.HOSTILE){
-				npc.onInteract();	
-			} else if (npc.type == NPC.HOSTILE){
-				npc.onInteract(objPlayer.team);
-			}
-		}
-	}
-}
 
 updateMoves = function(){
 	array_insert(moveQueue, 0, [x,y]);

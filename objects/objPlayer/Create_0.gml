@@ -1,7 +1,13 @@
 character = undefined;
+sockId = -1;
+currMap = {};
 
 generatePlayer = function(){
 	character = instance_create_layer(room_width/2, room_height-32,"Instances", objOWPlayer);
+}
+
+generateNetPlayer = function(){
+	character = instance_create_layer(room_width/2, room_height-32,"Instances", objNetPlayer);
 }
 
 battlePlayer = {
@@ -52,3 +58,27 @@ partyAdd = function(comp){
 	}
 }
 
+if (global.isServer){
+	X = 0;
+	Y = 0;
+	
+	getMTar = function(_up, _down, _left, _right){
+		var dir = 0;
+		var moveTarget = 0;
+		if (_up){
+			dir = Dirs.UP;
+			moveTarget = Y - TILE_SIZE;
+			Y = moveTarget;
+		} else if (_left){
+			dir = Dirs.LEFT;
+			moveTarget = X - TILE_SIZE;
+		} else if (_right){
+			dir = Dirs.RIGHT;
+			moveTarget = X + TILE_SIZE;
+		} else if (_down){
+			dir = Dirs.DOWN;
+			moveTarget = Y + TILE_SIZE;
+		}
+		return [moveTarget, dir];
+	}
+}

@@ -5,6 +5,7 @@ function scrNetworkMacros(){
 		ADDPLAYER,
 		PLAYERADDED,
 		OPPONENTADDED,
-		KEY	
+		KEY,
+		MOVE
 	}
 }
