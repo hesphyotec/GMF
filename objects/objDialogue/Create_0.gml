@@ -42,9 +42,10 @@ writeDiag = function(){
 			result = results[selection];
 			if (struct_exists(result, "op")){
 				if(result[$"op"] == "recruit"){
-					if (array_length(objPlayer.team) < 4){
-						with(objPlayer){
-							partyAdd(struct_get(global.data.companions, other.result[$"comp"]));
+					if (array_length(global.players[0].team) < 4){
+						with(global.players[0]){
+							audio_play_sound(sndLightning, 1, false);
+							partyAdd(other.result[$"comp"]);
 							audio_play_sound(sndGet,1, false);
 						}
 						instance_destroy(source);

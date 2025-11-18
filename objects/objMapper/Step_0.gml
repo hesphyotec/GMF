@@ -1,4 +1,4 @@
 scrGetInput();
 if (interactPress){
-	getRoomMap();
+	//getRoomMap();
 }

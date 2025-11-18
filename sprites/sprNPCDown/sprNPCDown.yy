@@ -26,7 +26,7 @@
   ],
   "name":"sprNPCDown",
   "nineSlice":null,
-  "origin":7,
+  "origin":6,
   "parent":{
     "name":"Characters",
     "path":"folders/Sprites/Temp/Characters.yy",
@@ -87,7 +87,7 @@
     ],
     "visibleRange":null,
     "volume":1.0,
-    "xorigin":16,
+    "xorigin":0,
     "yorigin":32,
   },
   "swatchColours":null,

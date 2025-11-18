@@ -51,34 +51,52 @@ loadCompanion = function(comp){
 team = [battlePlayer];
 
 partyAdd = function(comp){
-	array_push(team, variable_clone(comp));
+	var companion = struct_get(global.data.companions, comp);
+	array_push(team, variable_clone(companion));
+	if (!global.isServer){
+		with(character){
+			var compChar = instance_create_layer(x, y, "Instances", objCompanion);
+			array_push(companions, compChar);
+		}
+		scrNetAddComp(global.server, comp);
+	}
+}
+
+oppPartyAdd = function(comp){
+	var companion = struct_get(global.data.companions, comp);
+	array_push(team, variable_clone(companion));
 	with(character){
 		var compChar = instance_create_layer(x, y, "Instances", objCompanion);
 		array_push(companions, compChar);
 	}
 }
 
-if (global.isServer){
-	X = 0;
-	Y = 0;
-	
-	getMTar = function(_up, _down, _left, _right){
+mapPos = [0, 0];
+
+getMTar = function(_up, _down, _left, _right){
 		var dir = 0;
-		var moveTarget = 0;
+		var moveTarget = mapPos;
 		if (_up){
 			dir = Dirs.UP;
-			moveTarget = Y - TILE_SIZE;
-			Y = moveTarget;
+			if(scrMapCanMove(currMap, mapPos[0], mapPos[1]-1)){
+				moveTarget[1]--;
+			}
 		} else if (_left){
 			dir = Dirs.LEFT;
-			moveTarget = X - TILE_SIZE;
+			if(scrMapCanMove(currMap, mapPos[0]-1, mapPos[1])){
+				moveTarget[0]--;
+			}
 		} else if (_right){
 			dir = Dirs.RIGHT;
-			moveTarget = X + TILE_SIZE;
+			if(scrMapCanMove(currMap, mapPos[0]+1, mapPos[1])){
+				moveTarget[0]++;
+			}
 		} else if (_down){
 			dir = Dirs.DOWN;
-			moveTarget = Y + TILE_SIZE;
+			if(scrMapCanMove(currMap, mapPos[0], mapPos[1]+1)){
+				moveTarget[1]++;
+			}
 		}
+		mapPos = moveTarget;
 		return [moveTarget, dir];
 	}
-}

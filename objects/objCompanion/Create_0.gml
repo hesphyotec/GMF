@@ -4,25 +4,24 @@ moveTarget = 0;
 spd = 0;
 dir = Dirs.DOWN;
 
-initMove = function(_tarx, _tary, _spd){
-	if(x != _tarx){
-		moveTarget = _tarx;
-		if (x < moveTarget){
+initMove = function(_tar, _spd){
+	moveTarget = _tar;
+	if(x != (moveTarget[0] * TILE_SIZE)){
+		if (x < (moveTarget[0] * TILE_SIZE)){
 			dir = Dirs.LEFT;
 			sprite_index = sprNPCRight;
 		}
-		if (x > moveTarget){
+		if (x > (moveTarget[0] * TILE_SIZE)){
 			dir = Dirs.RIGHT;
 			sprite_index = sprNPCLeft;
 		}
 	} 
-	if (y != _tary){
-		moveTarget = _tary;
-		if (y < moveTarget){
+	if (y != (moveTarget[1] * TILE_SIZE)){
+		if (y < (moveTarget[1] * TILE_SIZE)){
 			dir = Dirs.UP;
 			sprite_index = sprNPCDown;
 		}
-		if (y > moveTarget){
+		if (y > (moveTarget[1] * TILE_SIZE)){
 			dir = Dirs.DOWN;
 			sprite_index = sprNPCUp;
 		}
@@ -35,16 +34,16 @@ compMove = function(){
 	if (moving){
 		image_speed = 1;
 		if(dir == Dirs.LEFT || dir == Dirs.RIGHT){
-			x = approach(x, moveTarget, spd);
-			if (abs(x - moveTarget) <= spd/2){
-				x = moveTarget;
+			x = approach(x, (moveTarget[0] * TILE_SIZE), spd);
+			if (abs(x - (moveTarget[0] * TILE_SIZE)) <= spd/2){
+				x = (moveTarget[0] * TILE_SIZE);
 				moving = false;	
 			}
 		}
 		if(dir == Dirs.UP || dir == Dirs.DOWN){
-			y = approach(y, moveTarget, spd);
-			if (abs(y - moveTarget) <= spd/2){
-				y = moveTarget;
+			y = approach(y, (moveTarget[1] * TILE_SIZE), spd);
+			if (abs(y - (moveTarget[1] * TILE_SIZE)) <= spd/2){
+				y = (moveTarget[1] * TILE_SIZE);
 				moving = false;	
 			}
 		}
