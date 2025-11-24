@@ -30,18 +30,16 @@ handleData = function(){
 			var mTarX = buffer_read(buff, buffer_u16);
 			var mTarY = buffer_read(buff, buffer_u16);
 			var mTar = [mTarX, mTarY];
-			var dir = buffer_read(buff, buffer_u16);
 			if (DEBUG_ENABLED) show_debug_message("Moving Network Player");
-			global.players[1].character.receiveMove(mTar, dir);
+			global.players[1].character.receiveMove(mTar);
 			break;
 		case NET.PMOVE:
 			if (DEBUG_ENABLED) show_debug_message("Moving Local Player");
 			var mTarX = buffer_read(buff, buffer_u16);
 			var mTarY = buffer_read(buff, buffer_u16);
 			var mTar = [mTarX, mTarY];
-			var dir = buffer_read(buff, buffer_u16);
 			if (DEBUG_ENABLED) show_debug_message("Moving Local Player");
-			global.players[0].character.receiveMove(mTar, dir);
+			global.players[0].character.receiveMove(mTar);
 			break;
 		case NET.OPPADDCOMP:
 			var comp = buffer_read(buff, buffer_string);

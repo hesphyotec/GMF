@@ -48,9 +48,9 @@ handleData = function(){
 			if (DEBUG_ENABLED) show_debug_message("Position: " + string(mTar));
 			for(var i = array_length(sockets) - 1; i >= 0; --i){
 				if (sock != sockets[i]){
-					scrSendTarPos(sockets[i], mTar[0][0], mTar[0][1], mTar[1]);
+					scrSendTarPos(sockets[i], mTar[0][0], mTar[0][1]);
 				} else {
-					scrSendPlayerTarPos(sockets[i], mTar[0][0], mTar[0][1], mTar[1]);
+					scrSendPlayerTarPos(sockets[i], mTar[0][0], mTar[0][1]);
 				}
 			}
 			if(array_length(global.players) == 2){

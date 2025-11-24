@@ -2,18 +2,29 @@ spd = 2;
 moving = false;
 dir = Dirs.DOWN;
 mapSpace = [floor(x / TILE_SIZE), floor(y / TILE_SIZE)];
-moveTarget = mapSpace;
-moveQueue = [[x, y],[x, y]];
+moveTarget = variable_clone(mapSpace);
+moveQueue = [variable_clone(mapSpace),variable_clone(mapSpace)];
+incomingMoves = [];
 companions = [];
 inMenu = false;
 
-receiveMove = function(mTar, _dir){
+receiveMove = function(mTar){
 	if (DEBUG_ENABLED) show_debug_message("Move Received");
 	if (!moving){
 		moving = true;
 	}
-	moveTarget = mTar;
-	dir = _dir;
+	
+	array_push(incomingMoves, mTar);
+	if (mTar[0] < mapSpace[0]){
+		dir = Dirs.LEFT;
+	} else if (mTar[0] > mapSpace[0]){
+		dir = Dirs.RIGHT;
+	} else if (mTar[1] < mapSpace[1]){
+		dir = Dirs.UP;
+	} else if (mTar[1] > mapSpace[1]){
+		dir = Dirs.DOWN;
+	}
+	
 	switch(dir){
 		case Dirs.UP:
 			sprite_index = sprPlayerTempUp;
@@ -31,13 +42,19 @@ receiveMove = function(mTar, _dir){
 	moveComps();
 }
 playerMove = function(){
+	if (mapSpace[0] == moveTarget[0] && mapSpace[1] == moveTarget[1]){
+		if (array_length(incomingMoves) > 0){
+			moveTarget = variable_clone(incomingMoves[0]);
+			array_delete(incomingMoves, 0, 1);
+		}
+	}
 	if (moving){
 		image_speed = 1;
 		if(dir == Dirs.LEFT || dir == Dirs.RIGHT){
 			x = approach(x, (moveTarget[0] * TILE_SIZE), spd);
 			if (abs(x - (moveTarget[0] * TILE_SIZE)) <= spd/2){
 				x = (moveTarget[0] * TILE_SIZE);
-				moving = false;	
+				moving = false;
 			}
 		}
 		if(dir == Dirs.UP || dir == Dirs.DOWN){

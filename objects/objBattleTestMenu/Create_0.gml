@@ -25,6 +25,7 @@ doOperation = function(op){
 	switch(op){
 		case TESTOPS.BUILDTEAM:
 			state = TESTOPS.BUILDTEAM;
+			objGame.generatePlayer(-1);
 			options = [CHARS.VETERAN, CHARS.ARCHER, CHARS.ASSASSIN, CHARS.HEALER, CHARS.TINKERER];
 			break;
 		case TESTOPS.SELECTMEM:

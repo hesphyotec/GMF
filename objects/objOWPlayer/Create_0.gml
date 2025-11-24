@@ -2,58 +2,63 @@ spd = 2;
 moving = false;
 dir = Dirs.DOWN;
 moveTarget = [0,0];
-moveQueue = [[x, y],[x, y]];
 companions = [];
 inMenu = false;
 mapSpace = [floor(x / TILE_SIZE), floor(y / TILE_SIZE)];
-moveTarget = mapSpace;
+moveQueue = [variable_clone(mapSpace), variable_clone(mapSpace)];
+moveTarget = variable_clone(mapSpace);
 
 playerMove = function(){
-	if (global.server >= 0){
-		if ((up || left || right || down ) && !moving){
-			scrSendKey(global.server, up, down, left, right);
-		}
-	} else {
-		if ((up || left || right || down ) && !moving){
-			moving = true;
-			if (up){
-				dir = Dirs.UP;
-				sprite_index = sprPlayerTempUp;
-				if (scrMapCanMove(global.map, mapSpace[0], mapSpace[1]-1)){
-					moveTarget[1]--;
-					moveComps();
-				} else {
-					moving = false;	
+	if ((up || left || right || down ) && !moving){
+		moving = true;
+		if (up){
+			dir = Dirs.UP;
+			sprite_index = sprPlayerTempUp;
+			if (scrMapCanMove(global.map, mapSpace[0], mapSpace[1]-1)){
+				moveTarget[1]--;
+				moveComps();
+				if (global.server >= 0){
+					scrSendKey(global.server, up, down, left, right);
 				}
-			} else if (left){
-				dir = Dirs.LEFT;
-				sprite_index = sprPlayerTempLeft;
-				if (scrMapCanMove(global.map, mapSpace[0]-1, mapSpace[1])){
-					moveTarget[0]--;
-					moveComps();
-				} else {
-					moving = false;	
-				}
-			} else if (right){
-				dir = Dirs.RIGHT;
-				sprite_index = sprPlayerTempRight;
-				if (scrMapCanMove(global.map, mapSpace[0]+1, mapSpace[1])){
-					moveTarget[0]++;
-					moveComps();
-				} else {
-					moving = false;	
-				}
-			} else if (down){
-				dir = Dirs.DOWN;
-				sprite_index = sprPlayerTempDown;
-				if (scrMapCanMove(global.map, mapSpace[0], mapSpace[1]+1)){
-					moveTarget[1]++;
-					moveComps();
-				} else {
-					moving = false;	
-				}
+			} else {
+				moving = false;	
 			}
-			scrSendKey(global.server, up, down, left, right)
+		} else if (left){
+			dir = Dirs.LEFT;
+			sprite_index = sprPlayerTempLeft;
+			if (scrMapCanMove(global.map, mapSpace[0]-1, mapSpace[1])){
+				moveTarget[0]--;
+				moveComps();
+				if (global.server >= 0){
+					scrSendKey(global.server, up, down, left, right);
+				}
+			} else {
+				moving = false;	
+			}
+		} else if (right){
+			dir = Dirs.RIGHT;
+			sprite_index = sprPlayerTempRight;
+			if (scrMapCanMove(global.map, mapSpace[0]+1, mapSpace[1])){
+				moveTarget[0]++;
+				moveComps();
+				if (global.server >= 0){
+					scrSendKey(global.server, up, down, left, right);
+				}
+			} else {
+				moving = false;	
+			}
+		} else if (down){
+			dir = Dirs.DOWN;
+			sprite_index = sprPlayerTempDown;
+			if (scrMapCanMove(global.map, mapSpace[0], mapSpace[1]+1)){
+				moveTarget[1]++;
+				moveComps();
+				if (global.server >= 0){
+					scrSendKey(global.server, up, down, left, right);
+				}
+			} else {
+				moving = false;	
+			}
 		}
 	}
 	if (moving){
@@ -79,28 +84,46 @@ playerMove = function(){
 	}
 }
 
-receiveMove = function(mTar, _dir){
+receiveMove = function(mTar){
 	if (DEBUG_ENABLED) show_debug_message("Move Received");
-	if (!moving){
-		moving = true;
+	var badMove = true;
+	for(var i = 0; i < array_length(moveQueue); ++i){
+		if(mTar[0] == moveQueue[i][0] && mTar[1] == moveQueue[i][1]){
+			badMove = false;
+		}
 	}
-	moveTarget = mTar;
-	dir = _dir;
-	switch(dir){
-		case Dirs.UP:
-			sprite_index = sprPlayerTempUp;
-			break;
-		case Dirs.DOWN:
-			sprite_index = sprPlayerTempDown;
-			break;
-		case Dirs.LEFT:
-			sprite_index = sprPlayerTempLeft;
-			break;
-		case Dirs.RIGHT:
-			sprite_index = sprPlayerTempRight;
-			break;
+	if (mTar[0] == moveTarget[0] && mTar[1] == moveTarget[1]) badMove = false;
+	if (badMove){
+		if (DEBUG_ENABLED) show_debug_message("Correcting move!");
+		if (!moving){
+			moving = true;
+		}
+		moveTarget = variable_clone(mTar);
+		if (mTar[0] < mapSpace[0]){
+			dir = Dirs.LEFT;
+		} else if (mTar[0] > mapSpace[0]){
+			dir = Dirs.RIGHT;
+		} else if (mTar[1] < mapSpace[1]){
+			dir = Dirs.UP;
+		} else if (mTar[1] > mapSpace[1]){
+			dir = Dirs.DOWN;
+		}
+		switch(dir){
+			case Dirs.UP:
+				sprite_index = sprPlayerTempUp;
+				break;
+			case Dirs.DOWN:
+				sprite_index = sprPlayerTempDown;
+				break;
+			case Dirs.LEFT:
+				sprite_index = sprPlayerTempLeft;
+				break;
+			case Dirs.RIGHT:
+				sprite_index = sprPlayerTempRight;
+				break;
+		}
+		moveComps();
 	}
-	moveComps();
 }
 
 approach = function(_start, _tar, _step){
