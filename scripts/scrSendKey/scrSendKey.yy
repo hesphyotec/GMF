@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scrSendKey",
   "parent":{
-    "name":"Networking",
-    "path":"folders/Scripts/Networking.yy",
+    "name":"Data",
+    "path":"folders/Scripts/Networking/Data.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

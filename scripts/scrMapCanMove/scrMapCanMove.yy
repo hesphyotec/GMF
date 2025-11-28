@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scrMapCanMove",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"Overworld",
+    "path":"folders/Scripts/Overworld.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

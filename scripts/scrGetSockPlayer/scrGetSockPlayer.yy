@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scrGetSockPlayer",
   "parent":{
-    "name":"Networking",
-    "path":"folders/Scripts/Networking.yy",
+    "name":"Helper",
+    "path":"folders/Scripts/Networking/Helper.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

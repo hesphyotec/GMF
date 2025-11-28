@@ -11,6 +11,7 @@ global.isServer = false;
 global.debug = false;
 global.battles = [];
 global.overworld = false;
+global.isPlayerBattle = false;
 
 global.data = {
 	enemies		: scrLoadJSON("enemies.json"),
@@ -26,6 +27,10 @@ global.players = [];
 global.playerData = [];
 
 generatePlayer = function(sock){
+	var race = true;
+	if(array_length(global.players) > 0){
+		race = false;	
+	}
 	var player = instance_create_layer(0, 0, "Instances", objPlayer);
 	player.sockId = sock;
 	player.currMap = scrLoadMap("testmap.txt");
@@ -33,9 +38,14 @@ generatePlayer = function(sock){
 		global.map = player.currMap;
 	}	
 	player.mapPos = [floor(player.currMap.width / 2), player.currMap.height-1];
+	if(race){
+		player.battlePlayer = player.loadCompanion("humanplayer");
+	} else {
+		player.battlePlayer = player.loadCompanion("impplayer");	
+	}
 	array_push(global.players, player);
 	var playerInfo = {
-		stats		: global.players[0].battlePlayer,
+		stats		: player.battlePlayer,
 		inventory	: [global.data.items[$"hppotion"], global.data.items[$"manapotion"]]
 	}
 	array_push(global.playerData, playerInfo);	

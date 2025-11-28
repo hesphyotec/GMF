@@ -26,7 +26,7 @@
   "origin":6,
   "parent":{
     "name":"Healer",
-    "path":"folders/Sprites/Battle/Characters/Healer.yy",
+    "path":"folders/Sprites/Battle/Characters/Humans/Healer.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

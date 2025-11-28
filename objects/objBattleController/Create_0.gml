@@ -1,5 +1,6 @@
 if (DEBUG_ENABLED) show_debug_message("[BController] Create event start");
 turn = 0;
+isNetBattle = global.isPlayerBattle;
 battleInfo = {
 	menuState		: BMENUST.ACTION,
 	isPlayerTurn	: false,
@@ -57,7 +58,11 @@ initBattle = function(){
 	array_delete(global.battles, 0, 1);
 	
 	battleInfo.team1 = playerTeam;
-	loadEncounter(enemy);
+	if(!global.isPlayerBattle){
+		loadEncounter(enemy);
+	} else {
+		battleInfo.team2 = enemy;	
+	}
 
 	context.menu.loadCharacters();
 	
@@ -117,42 +122,50 @@ loadEncounter = function(encounter){
 
 doAttack = function(ftr, atk, tar, team, str, final){
 		if (DEBUG_ENABLED) show_debug_message("[BController] " + string(ftr[$"name"]) + " is attacking.");
-		if (struct_exists(atkData, atk)){
-			var attack = struct_get(atkData, atk);
-			if (DEBUG_ENABLED) show_debug_message("[BController] Retrieved Attack: " + string(atk) + " : " + string(attack));
-			doDamage(ftr, tar, attack, str);
+		if (global.isPlayerBattle){
+			//scrNBAttack(ftr.id, atk, tar.id, self?, str, final);	
 		} else {
-			if (DEBUG_ENABLED) show_message("[BController] Error loading attack!");	
-		}
-		if(final){
-			endTeamTurn(ftr);
+			if (struct_exists(atkData, atk)){
+				var attack = struct_get(atkData, atk);
+				if (DEBUG_ENABLED) show_debug_message("[BController] Retrieved Attack: " + string(atk) + " : " + string(attack));
+				doDamage(ftr, tar, attack, str);
+			} else {
+				if (DEBUG_ENABLED) show_message("[BController] Error loading attack!");	
+			}
+			if(final){
+				endTeamTurn(ftr);
+			}
 		}
 	}
 	
 doSpell = function(ftr, spl, tar, team, str, final){
 	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(ftr[$"name"]) + " is using a spell.");
-	if (struct_exists(splData, spl)){
-		var spell = struct_get(splData, spl);
-		if (DEBUG_ENABLED) show_debug_message("[BController] Retrieved Spell: " + string(spl) + " : " + string(spell));
-		if(spell[$"type"] == "dmgSpell"){
-			doDamage(ftr, tar, spell, str);
-		} else if(spell[$"type"] == "restoreSpell"){
-			doHeal(ftr, tar, spell);
-		}
-		if (array_length(spell[$"effects"])){
-			var spEffs = spell[$"effects"];
-			applyEffects(ftr, spEffs, tar);
-		}
+	if (global.isPlayerBattle){
+		//scrNBSpell(ftr.id, spl, tar.id, self?, str, final);		
 	} else {
-		if (DEBUG_ENABLED) show_message("[BController] Error loading spell!");	
-	}
-	if (struct_exists(ftr, "energy")){
-		if (ftr[$"energy"] <= 0){
-			applyEffects(ftr, ["recharge"], ftr);
+		if (struct_exists(splData, spl)){
+			var spell = struct_get(splData, spl);
+			if (DEBUG_ENABLED) show_debug_message("[BController] Retrieved Spell: " + string(spl) + " : " + string(spell));
+			if(spell[$"type"] == "dmgSpell"){
+				doDamage(ftr, tar, spell, str);
+			} else if(spell[$"type"] == "restoreSpell"){
+				doHeal(ftr, tar, spell);
+			}
+			if (array_length(spell[$"effects"])){
+				var spEffs = spell[$"effects"];
+				applyEffects(ftr, spEffs, tar);
+			}
+		} else {
+			if (DEBUG_ENABLED) show_message("[BController] Error loading spell!");	
 		}
-	}
-	if (final){
-		endTeamTurn(ftr);
+		if (struct_exists(ftr, "energy")){
+			if (ftr[$"energy"] <= 0){
+				applyEffects(ftr, ["recharge"], ftr);
+			}
+		}
+		if (final){
+			endTeamTurn(ftr);
+		}
 	}
 }
 
@@ -182,20 +195,24 @@ applyEffects = function(ftr, spEffs, tar){
 
 doItem = function(ftr, item, tar, team, final){
 	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(ftr[$"name"]) + " uses " + item[$"name"] + " on " + tar[$"name"]);
-	if(item[$"abil"] == "heal"){
-		doHeal(ftr, tar, item);
-	} else if(item[$"abil"] == "restore"){
-		doRestore(ftr, tar, item);
-	}
-	if (array_length(item[$"effects"])){
-		var itEffs = item[$"effects"];
-		applyEffects(ftr, itEffs, tar);
-	}
-	if (final){
-		endTeamTurn(ftr);
-	}
-	if(--item[$"quantity"] <= 0){
-		array_delete(battleInfo.inventory, scrGetEffect(battleInfo.inventory, item), 1);	
+	if(global.isPlayerBattle){
+		//scrNBItem(ftr.id, item, tar.id, self?, final);		
+	} else {
+		if(item[$"abil"] == "heal"){
+			doHeal(ftr, tar, item);
+		} else if(item[$"abil"] == "restore"){
+			doRestore(ftr, tar, item);
+		}
+		if (array_length(item[$"effects"])){
+			var itEffs = item[$"effects"];
+			applyEffects(ftr, itEffs, tar);
+		}
+		if (final){
+			endTeamTurn(ftr);
+		}
+		if(--item[$"quantity"] <= 0){
+			array_delete(battleInfo.inventory, scrGetEffect(battleInfo.inventory, item), 1);	
+		}
 	}
 }
 

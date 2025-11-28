@@ -2,14 +2,14 @@
 #macro MAXCLIENTS 2
 global.isServer = true;
 scrNetworkMacros();
-server = network_create_server(network_socket_tcp, PORT, MAXCLIENTS);
-if (server < 0){
+global.server = network_create_server(network_socket_tcp, PORT, MAXCLIENTS);
+if (global.server < 0){
 	//Failsafe code here
 	
 }
 
 clients = {};
-sockets = [];
+global.sockets = [];
 
 ply1Pos = [0,0];
 ply2Pos = [0,0];
@@ -23,19 +23,14 @@ handleData = function(){
 	switch(op){
 		case NET.ADDPLAYER:
 			if (DEBUG_ENABLED) show_debug_message("Player connected!");
-			for(var i = array_length(sockets) - 1; i >= 0; --i){
-				if (sockets[i] == sock){
-					if (DEBUG_ENABLED) show_debug_message("Sending player to generate!");
+			var ifSource = function(sock){
+				if (DEBUG_ENABLED) show_debug_message("Sending player to generate!");
 					if(array_length(global.players) > 0){
 						addOpponent(sock);
 					}
 					addPlayer(sock);
-					
-				} else {
-					if (DEBUG_ENABLED) show_debug_message("Sending Opponent to generate!");
-					addOpponent(sockets[i]);
-				}
 			}
+			scrSendAllButSource(sock, ifSource, addOpponent);
 			break;
 		case NET.KEY:
 			if (DEBUG_ENABLED) show_debug_message("Key Received");
@@ -46,13 +41,29 @@ handleData = function(){
 			var plyr = scrGetSockPlayer(sock);
 			var mTar = plyr.getMTar(_up, _down, _left, _right);
 			if (DEBUG_ENABLED) show_debug_message("Position: " + string(mTar));
-			for(var i = array_length(sockets) - 1; i >= 0; --i){
-				if (sock != sockets[i]){
-					scrSendTarPos(sockets[i], mTar[0][0], mTar[0][1]);
-				} else {
-					scrSendPlayerTarPos(sockets[i], mTar[0][0], mTar[0][1]);
-				}
+			var plyrPos = {
+				X : mTar[0][0],
+				Y : mTar[0][1]
 			}
+			
+			
+			var ifNotSource = method(plyrPos, function(sock){
+				return scrSendTarPos(sock, X, Y);
+			});
+			
+			var ifSource = method(plyrPos, function(sock){
+				return scrSendPlayerTarPos(sock, X, Y);
+			});
+			
+			scrSendAllButSource(sock, ifSource, ifNotSource);
+			
+			//for(var i = array_length(global.sockets) - 1; i >= 0; --i){
+			//	if (sock != global.sockets[i]){
+			//		scrSendTarPos(global.sockets[i], mTar[0][0], mTar[0][1]);
+			//	} else {
+			//		scrSendPlayerTarPos(global.sockets[i], mTar[0][0], mTar[0][1]);
+			//	}
+			//}
 			if(array_length(global.players) == 2){
 				ply1Pos = global.players[0].mapPos;
 				ply2Pos = global.players[1].mapPos;
@@ -64,22 +75,59 @@ handleData = function(){
 			var ply = scrGetSockPlayer(sock);
 			ply.X = _x;
 			ply.Y = _y;
-			for(var i = array_length(sockets) - 1; i >= 0; --i){
-				if (sock != sockets[i]){
-					scrSendTarPos(sockets[i], ply.X, ply.Y);
-				}
+			//for(var i = array_length(global.sockets) - 1; i >= 0; --i){
+			//	if (sock != global.sockets[i]){
+			//		scrSendTarPos(global.sockets[i], ply.X, ply.Y);
+			//	}
+			//}
+			
+			var plyrPos = {
+				X : mTar[0][0],
+				Y : mTar[0][1]
 			}
+			
+			var ifNotSource = method(plyrPos, function(sock){
+				return scrSendTarPos(sock, X, Y);
+			});
+			
+			var ifSource = function(sock){
+				return;
+			};
+			
+			scrSendAllButSource(sock, ifSource, ifNotSource);
+			
 			break;
 		case NET.ADDCOMP:
 			var comp = buffer_read(buff, buffer_string);
 			var ply = scrGetSockPlayer(sock);
 			ply.partyAdd(comp);
-			for(var i = array_length(sockets) - 1; i >= 0; --i){
-				if (sock != sockets[i]){
-					scrNetUpdateComps(sockets[i], comp);
-				}
+			
+			var dat = {
+				compAdd : comp	
 			}
+			
+			var ifNotSource = method(dat, function(sock){
+				return scrNetUpdateComps(sock, compAdd);
+			});
+			
+			var ifSource = function(sock){
+				return;
+			};
+			
+			scrSendAllButSource(sock, ifSource, ifNotSource);
+			
+			//for(var i = array_length(global.sockets) - 1; i >= 0; --i){
+			//	if (sock != global.sockets[i]){
+			//		scrNetUpdateComps(global.sockets[i], comp);
+			//	}
+			//}
 			if(DEBUG_ENABLED) show_debug_message(string(ply.team));
+			break;
+		case NET.STARTBATTLE:
+			for(var i = array_length(global.sockets) - 1; i >= 0; --i){
+				scrStartNetBattle(global.sockets[i]);
+			}
+			instance_create_layer(0,0, "Instances", objNetBattleController);
 			break;
 	}
 }

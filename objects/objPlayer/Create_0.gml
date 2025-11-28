@@ -48,7 +48,11 @@ loadCompanion = function(comp){
 	}
 };
 
-team = [battlePlayer];
+team = [];
+
+if(global.server < 0){
+	team = [battlePlayer];
+}
 
 partyAdd = function(comp){
 	var companion = struct_get(global.data.companions, comp);

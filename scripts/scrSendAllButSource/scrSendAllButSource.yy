@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrSendAllButSource",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrSendAllButSource",
+  "parent":{
+    "name":"Helper",
+    "path":"folders/Scripts/Networking/Helper.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

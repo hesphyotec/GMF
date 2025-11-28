@@ -26,7 +26,7 @@
   "origin":6,
   "parent":{
     "name":"Human Player",
-    "path":"folders/Sprites/Battle/Characters/Human Player.yy",
+    "path":"folders/Sprites/Battle/Characters/Humans/Human Player.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

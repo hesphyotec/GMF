@@ -17,9 +17,6 @@ playerMove = function(){
 			if (scrMapCanMove(global.map, mapSpace[0], mapSpace[1]-1)){
 				moveTarget[1]--;
 				moveComps();
-				if (global.server >= 0){
-					scrSendKey(global.server, up, down, left, right);
-				}
 			} else {
 				moving = false;	
 			}
@@ -29,9 +26,6 @@ playerMove = function(){
 			if (scrMapCanMove(global.map, mapSpace[0]-1, mapSpace[1])){
 				moveTarget[0]--;
 				moveComps();
-				if (global.server >= 0){
-					scrSendKey(global.server, up, down, left, right);
-				}
 			} else {
 				moving = false;	
 			}
@@ -41,9 +35,6 @@ playerMove = function(){
 			if (scrMapCanMove(global.map, mapSpace[0]+1, mapSpace[1])){
 				moveTarget[0]++;
 				moveComps();
-				if (global.server >= 0){
-					scrSendKey(global.server, up, down, left, right);
-				}
 			} else {
 				moving = false;	
 			}
@@ -53,9 +44,6 @@ playerMove = function(){
 			if (scrMapCanMove(global.map, mapSpace[0], mapSpace[1]+1)){
 				moveTarget[1]++;
 				moveComps();
-				if (global.server >= 0){
-					scrSendKey(global.server, up, down, left, right);
-				}
 			} else {
 				moving = false;	
 			}
@@ -164,6 +152,9 @@ playerInteract = function(){
 			} else if (npc.type == NPC.HOSTILE){
 				npc.onInteract(global.players[0].team);
 			}
+		}
+		if (place_meeting(toCheckx, toChecky, objNetPlayer)){
+			scrInitNetBattle(global.server);
 		}
 	}
 }

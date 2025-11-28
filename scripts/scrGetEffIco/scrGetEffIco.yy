@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scrGetEffIco",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"Loading",
+    "path":"folders/Scripts/Loading.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -2,6 +2,7 @@ context = undefined;
 battleInfo = undefined;
 
 playerTeam = false;
+netTeam = false;
 allwait = true;
 
 atkData = global.data.moves[$"attacks"];
@@ -28,7 +29,7 @@ startTurn = function(){
 		if (playerTeam){
 			context.menu.turnStart(fighter, fighter.attacks, fighter.spells);
 			battleInfo.menuState = BMENUST.ACTION;
-		} else {
+		} else if (!netTeam){
 			enemyTurn(fighter);
 		}
 		//for(var i = array_length(fighter[$"buffs"]) - 1; i >=0 ; --i){

@@ -9,6 +9,7 @@ function scrNetworkMacros(){
 		MOVE,
 		ADDCOMP,
 		OPPADDCOMP,
-		PMOVE
+		PMOVE,
+		STARTBATTLE
 	}
 }

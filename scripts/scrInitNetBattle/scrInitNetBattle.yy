@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrInitNetBattle",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrInitNetBattle",
+  "parent":{
+    "name":"Signal",
+    "path":"folders/Scripts/Networking/Signal.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -45,6 +45,10 @@ handleData = function(){
 			var comp = buffer_read(buff, buffer_string);
 			global.players[1].oppPartyAdd(comp);
 			break;
+		case NET.STARTBATTLE:
+			scrStartBattle(rmHCastleTest, global.players[0].team, global.players[1].team);
+			global.isPlayerBattle = true;
+			break;
 	}
 }
 

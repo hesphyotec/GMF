@@ -26,7 +26,7 @@
   "origin":6,
   "parent":{
     "name":"Assassin",
-    "path":"folders/Sprites/Battle/Characters/Assassin.yy",
+    "path":"folders/Sprites/Battle/Characters/Humans/Assassin.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

@@ -26,7 +26,7 @@
   "origin":6,
   "parent":{
     "name":"Archer",
-    "path":"folders/Sprites/Battle/Characters/Archer.yy",
+    "path":"folders/Sprites/Battle/Characters/Humans/Archer.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

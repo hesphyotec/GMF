@@ -26,7 +26,7 @@
   "origin":6,
   "parent":{
     "name":"Veteran",
-    "path":"folders/Sprites/Battle/Characters/Veteran.yy",
+    "path":"folders/Sprites/Battle/Characters/Humans/Veteran.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

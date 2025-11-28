@@ -1,4 +1,4 @@
-draw_text(0, 0, "Connections: " + string(array_length(sockets)));
+draw_text(0, 0, "Connections: " + string(array_length(global.sockets)));
 draw_text(0, 16, "Player 1 Position " + string(ply1Pos[0]) + " : " + string(ply1Pos[1]));
 draw_text(0, 32, "Player 2 Position " + string(ply2Pos[0]) + " : " + string(ply2Pos[1]));
 if (array_length(global.players) == 2){

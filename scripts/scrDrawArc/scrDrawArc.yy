@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scrDrawArc",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"Graphical",
+    "path":"folders/Scripts/Graphical.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

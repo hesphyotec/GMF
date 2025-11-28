@@ -26,7 +26,7 @@
   "origin":6,
   "parent":{
     "name":"Tinkerer",
-    "path":"folders/Sprites/Battle/Characters/Tinkerer.yy",
+    "path":"folders/Sprites/Battle/Characters/Humans/Tinkerer.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
