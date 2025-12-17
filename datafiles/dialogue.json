@@ -111,5 +111,110 @@
 			]
 		}
 
+	},
+	"warlock" : {
+		"recruit" : {
+			"dialogue" :[
+				"Come now. We have work to do, friend."
+			],
+			"choices" : [
+				"Yes",
+				"No"
+			],
+			"result" : [
+				{
+					"op" : "recruit",
+					"comp" : "warlock"
+				},
+				{
+					"op" : "endDiag"
+				}
+			]
+		}
+
+	},
+	"berserker" : {
+		"recruit" : {
+			"dialogue" :[
+				"LET'S KILL THEM."
+			],
+			"choices" : [
+				"Yes",
+				"No"
+			],
+			"result" : [
+				{
+					"op" : "recruit",
+					"comp" : "berserker"
+				},
+				{
+					"op" : "endDiag"
+				}
+			]
+		}
+
+	},
+	"witch" : {
+		"recruit" : {
+			"dialogue" :[
+				"Oho, you ask for my help? How interesting."
+			],
+			"choices" : [
+				"Yes",
+				"No"
+			],
+			"result" : [
+				{
+					"op" : "recruit",
+					"comp" : "witch"
+				},
+				{
+					"op" : "endDiag"
+				}
+			]
+		}
+
+	},
+	"blademaster" : {
+		"recruit" : {
+			"dialogue" :[
+				"Fine, I guess I'll join ya."
+			],
+			"choices" : [
+				"Yes",
+				"No"
+			],
+			"result" : [
+				{
+					"op" : "recruit",
+					"comp" : "blademaster"
+				},
+				{
+					"op" : "endDiag"
+				}
+			]
+		}
+
+	},
+	"enchantress" : {
+		"recruit" : {
+			"dialogue" :[
+				"Really? You want me to join?"
+			],
+			"choices" : [
+				"Yes",
+				"No"
+			],
+			"result" : [
+				{
+					"op" : "recruit",
+					"comp" : "enchantress"
+				},
+				{
+					"op" : "endDiag"
+				}
+			]
+		}
+
 	}
 }

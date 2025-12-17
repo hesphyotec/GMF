@@ -8,8 +8,8 @@
   "name":"objTinkererNPC",
   "overriddenProperties":[],
   "parent":{
-    "name":"Companions",
-    "path":"folders/Objects/Overworld/NPCS/Companions.yy",
+    "name":"Humans",
+    "path":"folders/Objects/Overworld/NPCS/Companions/Humans.yy",
   },
   "parentObjectId":{
     "name":"objNPC",

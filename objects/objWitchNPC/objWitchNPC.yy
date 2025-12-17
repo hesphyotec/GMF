@@ -1,15 +1,15 @@
 {
   "$GMObject":"",
-  "%Name":"objAssassinNPC",
+  "%Name":"objWitchNPC",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"objAssassinNPC",
+  "name":"objWitchNPC",
   "overriddenProperties":[],
   "parent":{
-    "name":"Humans",
-    "path":"folders/Objects/Overworld/NPCS/Companions/Humans.yy",
+    "name":"Imps",
+    "path":"folders/Objects/Overworld/NPCS/Companions/Imps.yy",
   },
   "parentObjectId":{
     "name":"objNPC",
