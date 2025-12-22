@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"serverLog",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"serverLog",
+  "parent":{
+    "name":"Helper",
+    "path":"folders/Scripts/Networking/Helper.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

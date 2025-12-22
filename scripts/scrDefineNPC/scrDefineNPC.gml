@@ -4,4 +4,9 @@ function scrDefineNPC(){
 		FRIENDLY,
 		HOSTILE
 	}
+	
+	enum RACE{
+		HUMAN,
+		IMP
+	}
 }

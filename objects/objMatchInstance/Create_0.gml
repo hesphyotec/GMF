@@ -15,37 +15,53 @@ ply1Pos = [0,0];
 ply2Pos = [0,0];
 
 handleData = function(){
-	if (DEBUG_ENABLED) show_debug_message("Packet Being Handled!");
+	serverLog("Packet Being Handled!");
 	var buff = async_load[?"buffer"];
 	var sock = async_load[?"id"];
 	var op = buffer_read(buff, buffer_u8);
-	if (DEBUG_ENABLED) show_debug_message(op);
+	serverLog(op);
 	switch(op){
 		case NET.ADDPLAYER:
-			if (DEBUG_ENABLED) show_debug_message("Player connected!");
+			serverLog("Player connected!");
 			var ifSource = function(sock){
-				if (DEBUG_ENABLED) show_debug_message("Sending player to generate!");
-					if(array_length(global.players) > 0){
-						addOpponent(sock);
-					}
-					addPlayer(sock);
+				serverLog("Sending player to generate!");
+				var race = RACE.HUMAN;
+				if(array_length(global.players) > 0){
+					race = RACE.IMP;	
+				}
+				
+				var opRace = RACE.HUMAN;
+				if (race ==	RACE.HUMAN){
+					opRace = RACE.IMP;	
+				}
+				addPlayer(sock, race);
+				if(array_length(global.players) > 0){
+					addOpponent(sock, opRace);
+				}
 			}
-			scrSendAllButSource(sock, ifSource, addOpponent);
+			var ifNotSource = function(sock){
+				serverLog("Sending player to generate!");
+				var race = RACE.HUMAN;
+				if(array_length(global.players) > 0){
+					race = RACE.IMP;	
+				}
+				addOpponent(sock, race);
+			}
+			scrSendAllButSource(sock, ifSource, ifNotSource);
 			break;
 		case NET.KEY:
-			if (DEBUG_ENABLED) show_debug_message("Key Received");
+			serverLog("Key Received");
 			var _up = buffer_read(buff, buffer_u8);
 			var _down = buffer_read(buff, buffer_u8);
 			var _left = buffer_read(buff, buffer_u8);
 			var _right = buffer_read(buff, buffer_u8);
 			var plyr = scrGetSockPlayer(sock);
 			var mTar = plyr.getMTar(_up, _down, _left, _right);
-			if (DEBUG_ENABLED) show_debug_message("Position: " + string(mTar));
+			serverLog("Position: " + string(mTar));
 			var plyrPos = {
 				X : mTar[0][0],
 				Y : mTar[0][1]
 			}
-			
 			
 			var ifNotSource = method(plyrPos, function(sock){
 				return scrSendTarPos(sock, X, Y);
@@ -121,7 +137,7 @@ handleData = function(){
 			//		scrNetUpdateComps(global.sockets[i], comp);
 			//	}
 			//}
-			if(DEBUG_ENABLED) show_debug_message(string(ply.team));
+			serverLog(string(ply.team));
 			break;
 		case NET.STARTBATTLE:
 			for(var i = array_length(global.sockets) - 1; i >= 0; --i){
@@ -132,13 +148,13 @@ handleData = function(){
 	}
 }
 
-addPlayer = function(sock){
+addPlayer = function(sock, race){
 	if (array_length(global.players) < MAXCLIENTS){
-		objGame.generatePlayer(sock);
-		scrInitPlayerServ(sock);
+		objGame.generatePlayer(sock, race);
+		scrInitPlayerServ(sock, race);
 	}
 }
 
-addOpponent = function(sock){
-	scrInitNetPlayerServ(sock);
+addOpponent = function(sock, race){
+	scrInitNetPlayerServ(sock, race);
 }

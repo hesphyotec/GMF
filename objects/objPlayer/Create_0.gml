@@ -1,4 +1,5 @@
 character = undefined;
+race = RACE.HUMAN;
 sockId = -1;
 currMap = {};
 
@@ -78,29 +79,21 @@ oppPartyAdd = function(comp){
 mapPos = [0, 0];
 
 getMTar = function(_up, _down, _left, _right){
-		var dir = 0;
-		var moveTarget = mapPos;
-		if (_up){
-			dir = Dirs.UP;
-			if(scrMapCanMove(currMap, mapPos[0], mapPos[1]-1)){
-				moveTarget[1]--;
-			}
-		} else if (_left){
-			dir = Dirs.LEFT;
-			if(scrMapCanMove(currMap, mapPos[0]-1, mapPos[1])){
-				moveTarget[0]--;
-			}
-		} else if (_right){
-			dir = Dirs.RIGHT;
-			if(scrMapCanMove(currMap, mapPos[0]+1, mapPos[1])){
-				moveTarget[0]++;
-			}
-		} else if (_down){
-			dir = Dirs.DOWN;
-			if(scrMapCanMove(currMap, mapPos[0], mapPos[1]+1)){
-				moveTarget[1]++;
-			}
-		}
-		mapPos = moveTarget;
-		return [moveTarget, dir];
+	var dir = 0;
+	var moveTarget = mapPos;
+	if (_up){
+		dir = Dirs.UP;
+		moveTarget[1]--;
+	} else if (_left){
+		dir = Dirs.LEFT;
+		moveTarget[0]--;
+	} else if (_right){
+		dir = Dirs.RIGHT;
+		moveTarget[0]++;
+	} else if (_down){
+		dir = Dirs.DOWN;
+		moveTarget[1]++;
 	}
+	mapPos = moveTarget;
+	return [moveTarget, dir];
+}

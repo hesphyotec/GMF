@@ -12,6 +12,7 @@ global.debug = false;
 global.battles = [];
 global.overworld = false;
 global.isPlayerBattle = false;
+global.server = -1;
 
 global.data = {
 	enemies		: scrLoadJSON("enemies.json"),
@@ -26,23 +27,22 @@ global.map = undefined;
 global.players = [];
 global.playerData = [];
 
-generatePlayer = function(sock){
-	var race = true;
-	if(array_length(global.players) > 0){
-		race = false;	
-	}
+generatePlayer = function(sock, race){
 	var player = instance_create_layer(0, 0, "Instances", objPlayer);
 	player.sockId = sock;
-	player.currMap = scrLoadMap("testmap.txt");
-	if (!global.isServer){
-		global.map = player.currMap;
-	}	
-	player.mapPos = [floor(player.currMap.width / 2), player.currMap.height-1];
-	if(race){
+	player.race = race;
+	//player.currMap = scrLoadMap("testmap.txt");
+	//if (!global.isServer){
+	//	global.map = player.currMap;
+	//}	
+	player.mapPos = [7, 19];
+	if(race == RACE.HUMAN){
 		player.battlePlayer = player.loadCompanion("humanplayer");
 	} else {
 		player.battlePlayer = player.loadCompanion("impplayer");	
 	}
+	array_insert(player.team, 0, player.battlePlayer);
+	clientLog("Race: " + string(race));
 	array_push(global.players, player);
 	var playerInfo = {
 		stats		: player.battlePlayer,

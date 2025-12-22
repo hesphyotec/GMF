@@ -6,6 +6,7 @@ if (global.server == eventId){
 	if (DEBUG_ENABLED) show_debug_message(string(type));
 	switch(type){
 		case network_type_connect:
+			serverLog("Player with socket: " + string(sock) + " Connected!");
 			array_push(global.sockets, sock);
 			break;
 		case network_type_disconnect:
@@ -14,6 +15,7 @@ if (global.server == eventId){
 			var plr = scrGetSockPlayer(sock);
 			var playerInd = array_get_index(global.players, plr);
 			array_delete(global.players, playerInd, 1);
+			serverLog("Player with socket: " + string(sock) + " Disconnected!");
 			break;
 	}
 } else {
