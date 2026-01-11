@@ -13,12 +13,18 @@ drawLog = function(){
 	if (array_length(textlog) > 0){
 		draw_set_halign(fa_left);
 		draw_set_font(fntHP);
+		
+		var tY = display_get_gui_height() - 16;
+		
 		for(var i = start; i < array_length(textlog); ++i){
-			draw_text_ext(logTextPadding, display_get_gui_height() - (logTextSpacing * (i - start)) - 16, textlog[i], logTextSpacing, display_get_gui_width() - logTextPadding);
+			var h = string_height_ext(textlog[i], logTextSpacing, display_get_gui_width() - logTextPadding);
+			draw_text_ext(logTextPadding, tY - (logTextSpacing * (i - start)) - h, textlog[i], logTextSpacing, display_get_gui_width() - logTextPadding);
+			tY -= h;
 		}
 		//draw_set_halign(fa_center);
 	}
 }
+
 
 scroll = function(dir){
 	switch(dir){

@@ -2,7 +2,7 @@ scrGetInput();
 if(active){
 	switch(mode){
 		case QTEMODE.TIMEDHIT:
-			if (interactPress){
+			if (interactPress || lClickPress){
 				if (DEBUG_ENABLED) show_debug_message("[qteHandler] Action pressed!");
 				doAction();
 				break;
@@ -13,7 +13,7 @@ if(active){
 			}
 			break;
 		case QTEMODE.MULTIHIT:
-			if (interactPress){
+			if (interactPress || lClickPress){
 				if (DEBUG_ENABLED) show_debug_message("[qteHandler] Action pressed!");
 				doAction();
 				break;
@@ -24,7 +24,7 @@ if(active){
 			}
 			break;
 		case QTEMODE.MULTIAIM:
-			if (interactPress){
+			if (interactPress || lClickPress){
 				if (DEBUG_ENABLED) show_debug_message("[qteHandler] Action pressed!");
 				doAction();
 				break;
@@ -37,7 +37,7 @@ if(active){
 			}
 			break;
 		case QTEMODE.AIM:
-			if (interactPress){
+			if (interactPress || lClickPress){
 				if (chargeCircle.radius > range){
 					doMiss();	
 				}
@@ -51,18 +51,18 @@ if(active){
 			}
 			break;
 		case QTEMODE.SPELLCHARGE:
-			if(interactPress){
+			if(interactPress || lClickPress){
 				charging = true;
 				audio_play_sound(sndChargeSpell, 1, false);
 			}
-			if(charging && interact){
+			if(charging && (interact || lClick)){
 				chargeCircle.radius += rate;
 				if (chargeCircle.radius > range){
 					if (DEBUG_ENABLED) show_debug_message("[qteHandler] Action pressed!");
 					doMiss();	
 				}
 			}
-			if (interactRelease && charging){
+			if ((interactRelease || lClickRelease) && charging){
 				if (DEBUG_ENABLED) show_debug_message("[qteHandler] Action pressed!");
 				charging = false;
 				audio_stop_sound(sndChargeSpell);

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scrInitPlayerServ",
   "parent":{
-    "name":"Signal",
-    "path":"folders/Scripts/Networking/Signal.yy",
+    "name":"Data",
+    "path":"folders/Scripts/Networking/Data.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

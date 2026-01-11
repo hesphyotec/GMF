@@ -5,6 +5,7 @@ function scrInitPlayerServ(socket, race){
 	buffer_seek(buff, buffer_seek_start, 0);
 	buffer_write(buff, buffer_u8, NET.PLAYERADDED);
 	buffer_write(buff, buffer_u8, race);
+	buffer_write(buff, buffer_u8, socket);
 	network_send_packet(socket, buff, buffer_tell(buff));
 	buffer_delete(buff);
 }

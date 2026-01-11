@@ -51,16 +51,17 @@ turnStart = function(ftr, atks, spls){
 	menuBox.loadFighter(fighter);
 	attacks = atks;
 	spells = spls;
-	if (DEBUG_ENABLED) show_debug_message(string(spls));
+	if (DEBUG_ENABLED) clientLog(string(spls));
 	options = [BOPS.ATTACK, BOPS.SPELL, BOPS.ITEM, BOPS.FLEE];	
 	active = true;
 	battleInfo.menuState = BMENUST.ACTION;
-	if (DEBUG_ENABLED) show_debug_message("[Menu]" + string(actors));
+	if (DEBUG_ENABLED) clientLog("[Menu]" + string(actors));
 	actIndex = charGetActorInd(fighter);
-	if (DEBUG_ENABLED) show_debug_message("[Menu]" + string(actIndex) + " : " + string(fighter));
+	if (DEBUG_ENABLED) clientLog("[Menu]" + string(actIndex) + " : " + string(fighter));
 	actors[actIndex].isSelected = true;
-	if (DEBUG_ENABLED) show_debug_message("[Menu] Menu state: " + string(battleInfo.menuState) + " Active: " + string(active));
+	if (DEBUG_ENABLED) clientLog("[Menu] Menu state: " + string(battleInfo.menuState) + " Active: " + string(active));
 	menuBox.loadButtons(options);
+	menuBox.loadGUICards();
 	menuBox.selected = selection;
 }
 
@@ -73,6 +74,8 @@ doFunction = function(op){
 			battleInfo.menuState = BMENUST.ATTACK;
 			operation = op;
 			menuBox.loadButtons(options);
+			menuBox.loadGUIButtons();
+			menuBox.loadContainerCard(op);
 			break;
 		case BOPS.SPELL:
 			if (array_length(fighter[$"spells"]) > 0){
@@ -80,6 +83,8 @@ doFunction = function(op){
 				battleInfo.menuState = BMENUST.SPELL;
 				operation = op;
 				menuBox.loadButtons(options);
+				menuBox.loadGUIButtons();
+				menuBox.loadContainerCard(op);
 			}
 			break;
 		case BOPS.ITEM:
@@ -88,6 +93,8 @@ doFunction = function(op){
 				battleInfo.menuState = BMENUST.ITEMS;
 				operation = op;
 				menuBox.loadButtons(options);
+				menuBox.loadGUIButtons();
+				menuBox.loadContainerCard(op);
 			}
 			break;
 		case BOPS.FLEE:
@@ -95,16 +102,23 @@ doFunction = function(op){
 			battleInfo.menuState = BMENUST.FLEE;
 			operation = op;
 			menuBox.loadButtons(options);
+			menuBox.loadGUIButtons();
+			menuBox.loadContainerCard(op);
 			break;
 		case BOPS.BACK:
 			if (battleInfo.menuState == BMENUST.ATTACK || battleInfo.menuState == BMENUST.SPELL || battleInfo.menuState == BMENUST.ITEMS || battleInfo.menuState == BMENUST.FLEE){
 				options = [BOPS.ATTACK, BOPS.SPELL, BOPS.ITEM, BOPS.FLEE];
 				battleInfo.menuState = BMENUST.ACTION;
+				menuBox.loadButtons(options);
+				menuBox.loadGUIButtons();
+				menuBox.loadGUICards();
 			}
 			if (battleInfo.menuState == BMENUST.TARGET){
 				doFunction(operation);
+				menuBox.loadButtons(options);
+				menuBox.loadGUIButtons();
+				menuBox.loadContainerCard(operation);
 			}
-			menuBox.loadButtons(options);
 			break;
 		case BOPS.TARGET:
 			switch(operation){
@@ -113,7 +127,7 @@ doFunction = function(op){
 					break;
 				case BOPS.SPELL:
 					var spell = struct_get(splData, action);
-					if (DEBUG_ENABLED) show_debug_message("[Menu]" + string(spell));
+					if (DEBUG_ENABLED) clientLog("[Menu]" + string(spell));
 					if (spell[$"type"] == "dmgSpell" || spell[$"type"] == "debuffSpell"){
 						doAction(action, fighter, target, battleInfo.team2, true, false);	
 					}
@@ -137,6 +151,9 @@ doFunction = function(op){
 }
 
 doAction = function(action, actor, target, team, isSpell, isItem){
+	menuBox.clearButtons();
+	menuBox.clearCards();
+	menuBox.clearMasks();
 	actionInfo = {
 		act : action,
 		actor : actor,
@@ -147,7 +164,25 @@ doAction = function(action, actor, target, team, isSpell, isItem){
 		actorChar : actors[charGetActorInd(actor)],
 		targetChar : actors[charGetActorInd(target)]
 	};
-	if (DEBUG_ENABLED) show_debug_message("[Menu]" + string(action));
+	if (DEBUG_ENABLED) clientLog("[Menu]" + string(action));
+	if (global.isPlayerBattle){
+		clientLog("Sending Action!");
+		var tempTeam = true;
+		if (team == battleInfo.team1){
+			tempTeam = false;
+		}
+		var actData = {
+			action : action,
+			actor : actor,
+			target : target,
+			team : tempTeam,
+			isSpell : isSpell,
+			isItem : isItem
+		}
+		scrNBActionEvent(global.server, actData);
+		return;
+	}
+	
 	if(!isItem){
 		if (isSpell){
 			var spell = struct_get(splData, action);
@@ -158,13 +193,12 @@ doAction = function(action, actor, target, team, isSpell, isItem){
 				fighter[$"energy"] -= spell[$"cost"];
 			}
 		}
-		context.qteHandler.loadQTE(actor, target, action, team, isSpell, actionInfo);
+		context.qteHandler.loadQTE(actionInfo);
 	} else {
 		context.controller.doItem(actor, action, target, team, true);
 	}
 	var activeActor = actors[charGetActorInd(actor)];
 	activeActor.startTimer(1);
-	
 }
 
 doAnimation = function(info){
@@ -196,7 +230,7 @@ doEffect = function(act, tar, spd){
 }
 
 turnEnd = function(){
-	if (DEBUG_ENABLED) show_debug_message("[Menu] Turn End");
+	if (DEBUG_ENABLED) clientLog("[Menu] Turn End");
 	options = [];
 	menuBox.loadButtons(options);
 	if (instance_exists(actors[actIndex])){
@@ -240,6 +274,9 @@ chooseTarget = function(team){
 		array_push(names, team[i][$"name"]);
 	}
 	menuBox.loadButtons(names);
+	menuBox.loadGUIButtons();
+	menuBox.loadContainerCard("TARGET");
+	menuBox.loadCharMasks(team);
 }
 
 charDied = function(ftr){
@@ -260,8 +297,8 @@ charGetActorInd = function(char){
 updateSelection = function(sel){
 	selection = ((selection + sel) + array_length(options)) mod array_length(options);
 	menuBox.selected = selection;
-	if (DEBUG_ENABLED) show_debug_message("[Menu] " + string(selection));
-	if (DEBUG_ENABLED) show_debug_message("[Menu] " + string(options[selection]));
+	if (DEBUG_ENABLED) clientLog("[Menu] " + string(selection));
+	if (DEBUG_ENABLED) clientLog("[Menu] " + string(options[selection]));
 	audio_play_sound(sndSelect,1,false);
 }
 
@@ -272,4 +309,54 @@ flee = function(){
 
 getActor = function(char){
 	return actors[charGetActorInd(char)];
+}
+
+netStartQTE = function(){
+	objQteHandler.loadQTE(actionInfo);	
+}
+
+selectAttack = function(){
+	action = options[selection];
+	if (DEBUG_ENABLED) show_debug_message("[Menu] Enemies: " + string(battleInfo.team2));
+	chooseTarget(battleInfo.team2);
+}
+
+selectSpell = function(){
+	action = options[selection];
+	var spell = struct_get(splData, action);
+	if (DEBUG_ENABLED) show_debug_message("[Menu]" + string(spell));
+	if (spell[$"cost"] <= fighter[$"mana"] || spell[$"cost"] <= fighter[$"energy"] || !(struct_exists(fighter, "mana")) || struct_exists(fighter, "energy")){
+		if (variable_struct_exists(spell,"type")){
+			if (spell[$"type"] == "dmgSpell" || spell[$"type"] == "debuffSpell"){
+				if (DEBUG_ENABLED) show_debug_message("[Menu] Enemies: " + string(battleInfo.team2) + string(battleInfo.team2));
+				chooseTarget(battleInfo.team2);	
+			}	
+			if (spell[$"type"] == "restoreSpell" || spell[$"type"] == "buffSpell"){
+				chooseTarget(battleInfo.team1);	
+			}
+			if (spell[$"type"] == "selfSpell"){
+				chooseTarget([fighter]);	
+			}
+		}
+	} else {
+		audio_play_sound(sndNoResource, 1, false);
+	}
+}
+
+selectItem = function(){
+	item = options[selection];
+	if (DEBUG_ENABLED) show_debug_message("[Menu]" + string(item));
+	if (variable_struct_exists(item,"abil")){
+		if (item[$"abil"] == "heal" || item[$"abil"] == "restore"){
+			chooseTarget(battleInfo.team1);	
+		} else {
+			chooseTarget(battleInfo.team2);	
+		}	
+	}
+}
+
+selectTarget = function(){
+	target = options[selection];
+	if (DEBUG_ENABLED) show_debug_message("[Menu]" + string(target[$"cid"]));
+	doFunction(BOPS.TARGET);
 }

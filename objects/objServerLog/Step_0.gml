@@ -1,6 +1,6 @@
-if (mouse_check_button(mouse_wheel_up())){
+if (mouse_wheel_up()){
 	scroll(Dirs.UP);	
 }
-if (mouse_check_button(mouse_wheel_down())){
+if (mouse_wheel_down()){
 	scroll(Dirs.DOWN);	
 }

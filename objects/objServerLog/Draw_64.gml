@@ -1,1 +1,3 @@
-drawLog();
+if(global.isServer){
+	drawLog();
+}

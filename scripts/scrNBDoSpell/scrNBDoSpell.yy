@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrNBDoSpell",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrNBDoSpell",
+  "parent":{
+    "name":"Data",
+    "path":"folders/Scripts/Networking/Data.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

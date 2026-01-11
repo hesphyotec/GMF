@@ -1,5 +1,6 @@
 {	"humanplayer" : {
 		"cid" : 0,
+		"key" : "humanplayer",
 		"name" : "Player",
 		"level" : 1,
 		"hp": 100,
@@ -15,7 +16,7 @@
 		"buffs": [],
 		"debuffs": [],
 		"sprite" : "sprBattlePlayerT",
-		"splash" : "sprPlayerSplash",
+		"splash" : "sprHumanPlayerSplash",
 		"resistances" : {
 			"str" : 0.25,
 			"dex" : 0.10,
@@ -25,6 +26,7 @@
 	},
 	"veteran" : {
 		"cid" : 1,
+		"key" : "veteran",
 		"name" : "Tyralt",
 		"level" : 1,
 		"hp": 200,
@@ -50,6 +52,7 @@
 	},
 	"mage" : {
 		"cid" : 2,
+		"key" : "mage",
 		"name" : "Yvette",
 		"level" : 1,
 		"hp" : 90,
@@ -77,6 +80,7 @@
 	},
 	"archer" : {
 		"cid" : 3,
+		"key" : "archer",
 		"name" : "Blumiere",
 		"level" : 1,
 		"hp" : 90,
@@ -102,6 +106,7 @@
 	},
 	"assassin" : {
 		"cid" : 4,
+		"key" : "assassin",
 		"name" : "Kizura",
 		"level" : 1,
 		"hp" : 75,
@@ -129,6 +134,7 @@
 	},
 	"tinkerer" : {
 		"cid" : 5,
+		"key" : "tinkerer",
 		"name" : "Nemy",
 		"level" : 1,
 		"hp" : 150,
@@ -156,6 +162,7 @@
 	},
 	"impplayer" : {
 		"cid" : 12,
+		"key" : "impplayer",
 		"name" : "Player",
 		"level" : 1,
 		"hp": 100,
@@ -181,6 +188,7 @@
 	},
 	"warlock" : {
 		"cid" : 13,
+		"key" : "warlock",
 		"name" : "Azen",
 		"level" : 1,
 		"hp": 150,
@@ -206,6 +214,7 @@
 	},
 	"berserker" : {
 		"cid" : 14,
+		"key" : "berserker",
 		"name" : "Kezlan",
 		"level" : 1,
 		"hp": 100,
@@ -231,6 +240,7 @@
 	},
 	"witch" : {
 		"cid" : 15,
+		"key" : "witch",
 		"name" : "Naara",
 		"level" : 1,
 		"hp": 90,
@@ -256,6 +266,7 @@
 	},
 	"blademaster" : {
 		"cid" : 16,
+		"key" : "blademaster",
 		"name" : "Ili",
 		"level" : 1,
 		"hp": 120,
@@ -281,6 +292,7 @@
 	},
 	"enchantress" : {
 		"cid" : 17,
+		"key" : "enchantress",
 		"name" : "Yasluz",
 		"level" : 1,
 		"hp": 70,

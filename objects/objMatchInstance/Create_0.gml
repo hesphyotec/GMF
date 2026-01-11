@@ -34,10 +34,10 @@ handleData = function(){
 				if (race ==	RACE.HUMAN){
 					opRace = RACE.IMP;	
 				}
-				addPlayer(sock, race);
 				if(array_length(global.players) > 0){
-					addOpponent(sock, opRace);
+					addExistingOpponent(sock, global.players[0]);
 				}
+				addPlayer(sock, race);	
 			}
 			var ifNotSource = function(sock){
 				serverLog("Sending player to generate!");
@@ -143,7 +143,58 @@ handleData = function(){
 			for(var i = array_length(global.sockets) - 1; i >= 0; --i){
 				scrStartNetBattle(global.sockets[i]);
 			}
+			array_insert(global.battles, 0, [global.players[0].team, global.players[1].team]);
 			instance_create_layer(0,0, "Instances", objNetBattleController);
+			break;
+		case NET.ACTION:
+			var jstring = buffer_read(buff, buffer_string);
+			var actionInfo = json_parse(jstring);
+			actionInfo.player = scrGetSockPlayer(sock);
+			serverLog(actionInfo.player);
+			serverLog("Action Event Received!");
+			serverLog(string(actionInfo));
+			objNetBattleController.doNetAction(actionInfo);
+			break;
+		case NET.DOATTACK:
+			var actInfo = json_parse(buffer_read(buff, buffer_string));
+			var str = buffer_read(buff, buffer_u8);
+			var final = buffer_read(buff, buffer_bool);
+			
+			var tTeam = objNetBattleController.battleInfo.team1;
+			if (!scrCheckTeam(tTeam, actInfo.tar)){
+				tTeam = objNetBattleController.battleInfo.team2;	
+			}
+			var target = tTeam[scrTeamCharGetInd(tTeam,actInfo.tar)];
+			var data = {
+				act : actInfo
+			}
+			scrSendAllSock(method(data, function(socket){
+				scrNBDoAnim(socket, act);
+			}));
+			objNetBattleController.doAttack(actInfo.actor, actInfo.act, target, actInfo.team, str, final);
+			break;
+		case NET.DOSPELL:
+			var actInfo = json_parse(buffer_read(buff, buffer_string));
+			var str = buffer_read(buff, buffer_u8);
+			var final = buffer_read(buff, buffer_bool);
+			
+			var tTeam = objNetBattleController.battleInfo.team1;
+			if (!scrCheckTeam(tTeam, actInfo.tar)){
+				tTeam = objNetBattleController.battleInfo.team2;	
+			}
+			var target = tTeam[scrTeamCharGetInd(tTeam,actInfo.tar)];
+			var data = {
+				act : actInfo
+			}
+			scrSendAllSock(method(data, function(socket){
+				scrNBDoAnim(socket, act);
+			}));
+			objNetBattleController.doSpell(actInfo.actor, actInfo.act, target, actInfo.team, str, final);
+			break;
+		case NET.QTEMISS:
+			var ftr = json_parse(buffer_read(buff, buffer_string));
+			var final = buffer_read(buff, buffer_bool);
+			objNetBattleController.doMiss(ftr, final);
 			break;
 	}
 }
@@ -157,4 +208,9 @@ addPlayer = function(sock, race){
 
 addOpponent = function(sock, race){
 	scrInitNetPlayerServ(sock, race);
+}
+
+addExistingOpponent = function(sock, player){
+	var opp = player.getSnapshot();
+	scrInitExistingNetPlayerServ(sock, opp);
 }

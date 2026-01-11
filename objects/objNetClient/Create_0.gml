@@ -2,14 +2,6 @@ socket = network_create_socket(network_socket_tcp);
 global.server = network_connect(socket, "127.0.0.1", 22566);
 global.isServer = false;
 
-if (global.server < 0){
-	clientLog("Connection to server failed!");
-	objGame.generatePlayer(-1, RACE.HUMAN);
-	global.players[0].generatePlayer();
-} else {
-	clientLog("Connected!");
-	scrInitPlayer(global.server);
-}
 
 //buffer = buffer_create(2048, buffer_grow, 1);
 handleData = function(){
@@ -21,11 +13,18 @@ handleData = function(){
 			if (DEBUG_ENABLED) clientLog("Player Added");
 			var race = buffer_read(buff, buffer_u8);
 			addPlayer(race);
+			var sock = buffer_read(buff, buffer_u8);
+			global.socket = sock;
 			break;
 		case NET.OPPONENTADDED:
 			if (DEBUG_ENABLED) clientLog("Opponent Added");
 			var race = buffer_read(buff, buffer_u8);
 			addOpponent(race);
+			break;
+		case NET.INITEXISTING:
+			var oppData = json_parse(buffer_read(buff, buffer_string));
+			clientLog("Loading Opponent (Existing)");
+			addExistingOpponent(oppData);
 			break;
 		case NET.MOVE:
 			if (DEBUG_ENABLED) clientLog("Moving Network Player");
@@ -51,15 +50,61 @@ handleData = function(){
 			scrStartBattle(rmHCastleTest, global.players[0].team, global.players[1].team);
 			global.isPlayerBattle = true;
 			break;
+		case NET.READYCHAR:
+			var fname = buffer_read(buff, buffer_string);
+			clientLog(fname + " is ready!");
+			objBattleController.context.playerTeam.charReady(scrGetCharFromName(fname));	
+			break;
+		case NET.UPDATECHAR:
+			var char = json_parse(buffer_read(buff, buffer_string));
+			clientLog("Update incoming for: " + char.key);
+			objBattleController.netUpdateChar(char);
+			break;
+		case NET.STARTQTE:
+			objBattleMenu.netStartQTE();
+			break;
+		case NET.ENDTURN:
+			var char = json_parse(buffer_read(buff, buffer_string));
+			objBattleController.endTeamTurn(char);
+			var actor = objBattleMenu.getActor(char);
+			actor.startTimer(1);
+			break;
+		case NET.DOANIM:
+			var actInfo = json_parse(buffer_read(buff, buffer_string));
+			objBattleMenu.doAnimation(actInfo);
+			break;
+		case NET.CHARDOWNED:
+			var char = json_parse(buffer_read(buff, buffer_string));
+			objBattleController.doNetDowned(char);
+			break;
+			
 	}
 }
 
 addOpponent = function(race){
-	objGame.generatePlayer(-1, race);
-	global.players[1].generateNetPlayer();
+	var opp = objGame.generatePlayer(-1, race);
+	opp.generateNetPlayer();
+}
+
+addExistingOpponent = function(opp){
+	var opponent = objGame.generatePlayer(opp.sockId, opp.race);
+	opponent.team = opp.team;
+	opponent.mapPos = opp.mapPos
+	opponent.generateNetPlayer();
+	opponent.character.x = opp.mapPos[0] * TILE_SIZE;
+	opponent.character.y = opp.mapPos[1] * TILE_SIZE;
 }
 
 addPlayer = function(race){
-	objGame.generatePlayer(-1, race);
-	global.players[0].generatePlayer();
+	var player = objGame.generatePlayer(global.socket, race);
+	player.generatePlayer();
+}
+
+if (global.server < 0){
+	//global.server = network_connect(socket, "25.48.104.187", 22566);
+	//scrInitPlayer(global.server);
+	addPlayer(RACE.HUMAN);
+} else {
+	clientLog("Connected!");
+	scrInitPlayer(global.server);
 }

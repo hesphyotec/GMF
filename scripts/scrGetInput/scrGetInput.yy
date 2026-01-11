@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scrGetInput",
   "parent":{
-    "name":"Overworld",
-    "path":"folders/Scripts/Overworld.yy",
+    "name":"Helper",
+    "path":"folders/Scripts/Helper.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

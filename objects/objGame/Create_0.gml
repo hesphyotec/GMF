@@ -13,6 +13,7 @@ global.battles = [];
 global.overworld = false;
 global.isPlayerBattle = false;
 global.server = -1;
+global.socket = -1;
 
 global.data = {
 	enemies		: scrLoadJSON("enemies.json"),
@@ -43,10 +44,34 @@ generatePlayer = function(sock, race){
 	}
 	array_insert(player.team, 0, player.battlePlayer);
 	clientLog("Race: " + string(race));
-	array_push(global.players, player);
-	var playerInfo = {
-		stats		: player.battlePlayer,
-		inventory	: [global.data.items[$"hppotion"], global.data.items[$"manapotion"]]
+	
+	if(global.socket == sock){
+		array_insert(global.players, 0, player);
+	
+		var playerInfo = {
+			stats		: player.battlePlayer,
+			inventory	: [global.data.items[$"hppotion"], global.data.items[$"manapotion"]]
+		}
+		array_insert(global.playerData, 0, playerInfo);	
+	} else {
+		if (array_length(global.players) <= 0){
+			array_insert(global.players, 0, player);
+	
+			var playerInfo = {
+				stats		: player.battlePlayer,
+				inventory	: [global.data.items[$"hppotion"], global.data.items[$"manapotion"]]
+			}
+			array_insert(global.playerData, 0, playerInfo);	
+		} else {
+			array_push(global.players, player);
+	
+			var playerInfo = {
+				stats		: player.battlePlayer,
+				inventory	: [global.data.items[$"hppotion"], global.data.items[$"manapotion"]]
+			}
+			array_push(global.playerData, playerInfo);	
+		}
 	}
-	array_push(global.playerData, playerInfo);	
+	
+	return player;
 }

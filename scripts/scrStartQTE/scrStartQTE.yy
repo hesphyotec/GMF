@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrStartQTE",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrStartQTE",
+  "parent":{
+    "name":"Signal",
+    "path":"folders/Scripts/Networking/Signal.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

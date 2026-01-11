@@ -1,4 +1,4 @@
-if (DEBUG_ENABLED) show_debug_message("[BController] Create event start");
+if (DEBUG_ENABLED) serverLog("[BController] Create event start");
 turn = 0;
 
 teams = [instance_create_layer(0,0,"Instances", objNetBattleTeamManager),instance_create_layer(0,0,"Instances", objNetBattleTeamManager)];
@@ -30,10 +30,10 @@ bData = global.data.effects[$"buffs"];
 dbData = global.data.effects[$"debuffs"];
 
 initBattle = function(){
-	if (DEBUG_ENABLED) show_debug_message("Starting Battle");
-	show_debug_message(array_length(global.battles));
+	if (DEBUG_ENABLED) serverLog("Starting Battle");
+	serverLog(array_length(global.battles));
 	if (array_length(global.battles) <= 0) {
-	    if (DEBUG_ENABLED) show_debug_message("No battles queued!");
+	    if (DEBUG_ENABLED) serverLog("No battles queued!");
 	    return;
 	}
 
@@ -42,13 +42,13 @@ initBattle = function(){
 	battleInfo.team1 = global.players[0].team;
 	battleInfo.team2 = global.players[1].team;
 	
-	teams[0].loadTeam(battleInfo.team1);
-	teams[0].player = global.players[0];
 	teams[0].context = context;
+	teams[0].player = global.players[0];
+	teams[0].loadTeam(battleInfo.team1);
 	
-	teams[1].loadTeam(battleInfo.team2);
-	teams[1].player = global.players[1];
 	teams[1].context = context;
+	teams[1].player = global.players[1];
+	teams[1].loadTeam(battleInfo.team2);
 	
 	for(var i = 0; i < array_length(teams); ++i){
 		teams[i].startTurn();
@@ -57,12 +57,12 @@ initBattle = function(){
 }
 
 endTeamTurn = function(ftr){
-	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(ftr) + " : " + string(battleInfo.team1));
+	if (DEBUG_ENABLED) serverLog("[BController] " + string(ftr) + " : " + string(battleInfo.team1));
 	if(scrCheckTeam(battleInfo.team1, ftr)){
-		if (DEBUG_ENABLED) show_debug_message("[BController] Ending turn for team 1");
+		if (DEBUG_ENABLED) serverLog("[BController] Ending turn for team 1");
 		teams[0].endTurn();
 	} else if(scrCheckTeam(battleInfo.team2, ftr)) {
-		if (DEBUG_ENABLED) show_debug_message("[BController] Ending turn for team 2");
+		if (DEBUG_ENABLED) serverLog("[BController] Ending turn for team 2");
 		teams[1].endTurn();
 	}	
 }
@@ -70,15 +70,15 @@ endTeamTurn = function(ftr){
 loadEnemy = function(enemy){
 	if (struct_exists(enemyData, enemy)){
 		var foe = variable_clone(struct_get(enemyData, enemy));
-		if (DEBUG_ENABLED) show_debug_message("[BController] Loaded Enemy: " + string(foe));
+		if (DEBUG_ENABLED) serverLog("[BController] Loaded Enemy: " + string(foe));
 		return foe;
 	} else {
-		if (DEBUG_ENABLED) show_message("[BController] Error Loading Enemy!");	
+		if (DEBUG_ENABLED) serverLog("[BController] Error Loading Enemy!");	
 	}
 }
 
 loadEncounter = function(encounter){
-	if (DEBUG_ENABLED) show_debug_message("[BController] Loading encounter id: " + string(encounter));
+	if (DEBUG_ENABLED) serverLog("[BController] Loading encounter id: " + string(encounter));
 	var foes = [];
 	switch(encounter){
 		case ENCOUNTERS.TEST:
@@ -96,24 +96,25 @@ loadEncounter = function(encounter){
 }
 
 doAttack = function(ftr, atk, tar, team, str, final){
-		if (DEBUG_ENABLED) show_debug_message("[BController] " + string(ftr[$"name"]) + " is attacking.");
+		if (DEBUG_ENABLED) serverLog("[BController] " + string(ftr[$"name"]) + " is attacking.");
 		if (struct_exists(atkData, atk)){
 			var attack = struct_get(atkData, atk);
-			if (DEBUG_ENABLED) show_debug_message("[BController] Retrieved Attack: " + string(atk) + " : " + string(attack));
+			if (DEBUG_ENABLED) serverLog("[BController] Retrieved Attack: " + string(atk) + " : " + string(attack));
 			doDamage(ftr, tar, attack, str);
 		} else {
-			if (DEBUG_ENABLED) show_message("[BController] Error loading attack!");	
+			if (DEBUG_ENABLED) serverLog("[BController] Error loading attack!");	
 		}
 		if(final){
 			endTeamTurn(ftr);
 		}
+		
 	}
 	
 doSpell = function(ftr, spl, tar, team, str, final){
-	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(ftr[$"name"]) + " is using a spell.");
+	if (DEBUG_ENABLED) serverLog("[BController] " + string(ftr[$"name"]) + " is using a spell.");
 	if (struct_exists(splData, spl)){
 		var spell = struct_get(splData, spl);
-		if (DEBUG_ENABLED) show_debug_message("[BController] Retrieved Spell: " + string(spl) + " : " + string(spell));
+		if (DEBUG_ENABLED) serverLog("[BController] Retrieved Spell: " + string(spl) + " : " + string(spell));
 		if(spell[$"type"] == "dmgSpell"){
 			doDamage(ftr, tar, spell, str);
 		} else if(spell[$"type"] == "restoreSpell"){
@@ -124,7 +125,7 @@ doSpell = function(ftr, spl, tar, team, str, final){
 			applyEffects(ftr, spEffs, tar);
 		}
 	} else {
-		if (DEBUG_ENABLED) show_message("[BController] Error loading spell!");	
+		if (DEBUG_ENABLED) serverLog("[BController] Error loading spell!");	
 	}
 	if (struct_exists(ftr, "energy")){
 		if (ftr[$"energy"] <= 0){
@@ -141,13 +142,13 @@ applyEffects = function(ftr, spEffs, tar){
 	for (var i = 0; i < array_length(spEffs); ++i){
 		if (variable_struct_exists(effData[$"buffs"], spEffs[i])){
 			var buff = variable_clone(struct_get(effData[$"buffs"], spEffs[i]));
-			if (DEBUG_ENABLED) show_debug_message("[BController] Retrieved Buff: " + string(struct_get(effData[$"buffs"], spEffs[i])) + " : " + spEffs[i]);
+			if (DEBUG_ENABLED) serverLog("[BController] Retrieved Buff: " + string(struct_get(effData[$"buffs"], spEffs[i])) + " : " + spEffs[i]);
 			if(scrCheckEffects(tar[$"buffs"], buff)){
 				array_delete(tar[$"buffs"], array_get_index(tar[$"buffs"], buff), 1);
 			}
 			buff.duration *= fps;
 			array_push(tar[$"buffs"], buff);
-			if (DEBUG_ENABLED) show_debug_message("[BController] Applied Buff: " + spEffs[i]);
+			if (DEBUG_ENABLED) serverLog("[BController] Applied Buff: " + spEffs[i]);
 		} else if (variable_struct_exists(effData[$"debuffs"], spEffs[i])){
 			var debuff = variable_clone(struct_get(effData[$"debuffs"], spEffs[i]));
 			if(scrCheckEffects(tar[$"debuffs"], debuff)){
@@ -158,10 +159,16 @@ applyEffects = function(ftr, spEffs, tar){
 			array_push(tar[$"debuffs"], debuff);
 		}
 	}
+	var data = {
+		tar : tar
+	}
+	scrSendAllSock(method(data, function(socket){
+		scrNBUpdateChar(socket, tar);
+	}));
 }
 
 doItem = function(ftr, item, tar, team, final){
-	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(ftr[$"name"]) + " uses " + item[$"name"] + " on " + tar[$"name"]);
+	if (DEBUG_ENABLED) serverLog("[BController] " + string(ftr[$"name"]) + " uses " + item[$"name"] + " on " + tar[$"name"]);
 	if(item[$"abil"] == "heal"){
 		doHeal(ftr, tar, item);
 	} else if(item[$"abil"] == "restore"){
@@ -187,17 +194,17 @@ doMiss = function(ftr, final){
 
 endBattle = function(victory){
 	if (victory) {
-		show_message("You won!");
+		serverLog("You won!");
 		// Give gold and exp.	
 	} else {
-		show_message("You lost!");
+		serverLog("You lost!");
 		// Send back to last town	
 	}
 	room_goto(rmHCastleTest);
 }
 
 doDamage = function(ftr, target, action, str = 1){
-	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(ftr[$"stats"]) + " : " + action[$"scale"]);
+	if (DEBUG_ENABLED) serverLog("[BController] " + string(ftr[$"stats"]) + " : " + action[$"scale"]);
 	var dmgMult = ceil(struct_get(ftr[$"stats"], action[$"scale"])/5);
 	var resistMult = 1.0;
 	var tarResMult = struct_get(target[$"resistances"], action[$"scale"]);
@@ -213,7 +220,7 @@ doDamage = function(ftr, target, action, str = 1){
 						}
 					}
 				} else {
-					if (DEBUG_ENABLED) show_debug_message("[BController] Error: Malformed Buff Struct!");	
+					if (DEBUG_ENABLED) serverLog("[BController] Error: Malformed Buff Struct!");	
 				}
 			}
 		}
@@ -227,13 +234,13 @@ doDamage = function(ftr, target, action, str = 1){
 						}
 					}
 				} else {
-					if (DEBUG_ENABLED) show_debug_message("[BController] Error: Malformed Debuff Struct!");	
+					if (DEBUG_ENABLED) serverLog("[BController] Error: Malformed Debuff Struct!");	
 				}
 			}
 		}
 	}
 	resistMult = 1.0 - (tarResMult + bonusMult);
-	if (DEBUG_ENABLED) show_debug_message("[BController] " +string(action[$"damage"]) + " : " + string(dmgMult) + " : " + string(resistMult) + " : " + string(action));
+	if (DEBUG_ENABLED) serverLog("[BController] " +string(action[$"damage"]) + " : " + string(dmgMult) + " : " + string(resistMult) + " : " + string(action));
 	var dmg = 0;
 	if(struct_exists(action, "damage")){
 		dmg = ceil((action[$"damage"] * dmgMult) * (resistMult) * str);
@@ -241,53 +248,63 @@ doDamage = function(ftr, target, action, str = 1){
 		dmg = ceil((action[$"pow"] * dmgMult) * (resistMult) * str);
 	}
 	target.hp -= dmg;
-	if (DEBUG_ENABLED) show_debug_message("[BController]" + string(target[$"name"]) + " takes " + string(dmg) + "damage.");
-	var isPlayer = array_contains(battleInfo.team1, target);
-	if(DEBUG_ENABLED) show_debug_message("[BController] Enemy Team Remaining pre death: " + string(array_length(battleInfo.team2)));
-	if (target.hp <= 0){
-		if (!isPlayer){
-			doDeath(ftr, target, battleInfo.team2);
-		} else {
-			doDowned(ftr, target, battleInfo.team1);
-		}
+	
+	var data = {
+		tar : target
 	}
-	if(DEBUG_ENABLED) show_debug_message("[BController] Enemy Team Remaining post death: " + string(array_length(battleInfo.team2)));
+	
+	scrSendAllSock(method(data, function(socket){
+		scrNBUpdateChar(socket, tar);
+	}));
+	
+	if (DEBUG_ENABLED) serverLog("[BController]" + string(target[$"name"]) + " takes " + string(dmg) + "damage.");
+	var tarTeam = battleInfo.team1;
+	if (scrCheckTeam(battleInfo.team2, target)){
+		tarTeam = battleInfo.team2;	
+	}
+	if (target.hp <= 0){
+		doDowned(ftr, target, tarTeam);
+	}
+	if(DEBUG_ENABLED) serverLog("[BController] Enemy Team Remaining post death: " + string(array_length(battleInfo.team2)));
 }
 
 doDeath = function(ftr, target, team){
 	var tarInd = 0;
 	if (team == battleInfo.team1){
 		tarInd = scrTeamCharGetInd(battleInfo.team1, target);
-		if (DEBUG_ENABLED) show_debug_message("[BController] Target: " + string(target) + string(team[tarInd]));
+		if (DEBUG_ENABLED) serverLog("[BController] Target: " + string(target) + string(team[tarInd]));
 		audio_play_sound(sndDowned, 1, false);
 		array_delete(battleInfo.team1, tarInd, 1);
 		teams[0].charDied(target);
 		context.menu.chooseTarget(battleInfo.tarteam);
 	} else {
 		tarInd = scrTeamCharGetInd(battleInfo.team2, target);
-		if (DEBUG_ENABLED) show_debug_message("[BController] Target: " + string(target) + string(team[tarInd]));
-		if (DEBUG_ENABLED) show_debug_message("[BController] Enemy team before death: " + string(battleInfo.team2));
+		if (DEBUG_ENABLED) serverLog("[BController] Target: " + string(target) + string(team[tarInd]));
+		if (DEBUG_ENABLED) serverLog("[BController] Enemy team before death: " + string(battleInfo.team2));
 		array_delete(battleInfo.team2, tarInd, 1);
 		teams[1].charDied(target);
 		audio_play_sound(sndMonsterDeath, 1, false);
-		if (DEBUG_ENABLED) show_debug_message("[BController] Enemy team after death: " + string(battleInfo.team2));
+		if (DEBUG_ENABLED) serverLog("[BController] Enemy team after death: " + string(battleInfo.team2));
 	}
 	context.menu.charDied(target);
 	if (target == ftr || target = context.menu.fighter){
 		endTeamTurn(target);
 	}
-	if (DEBUG_ENABLED) show_debug_message("[BController]" + string(target[$"name"]) + " is dead.");
+	if (DEBUG_ENABLED) serverLog("[BController]" + string(target[$"name"]) + " is dead.");
 }
 
 doDowned = function(ftr, target, team){
 	array_delete(team, array_get_index(team, target), 1);
 	audio_play_sound(sndDowned, 1, false);
-	if (target == ftr || target = context.menu.fighter){
+	var tarManager = teams[0];
+	if (team == battleInfo.team2){
+		tarManager = teams[1];	
+	}
+	if (target == ftr){
 		endTeamTurn(target);
 	}
-	teams[0].charDowned(target);
-	context.menu.chooseTarget(battleInfo.tarteam);
-	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(target[$"name"]) + " is down.");
+	tarManager.charDowned(target);
+	if (DEBUG_ENABLED) serverLog("[BController] " + string(target[$"name"]) + " is down.");
 }
 
 doHeal = function(ftr, target, act){
@@ -298,20 +315,32 @@ doHeal = function(ftr, target, act){
 		heal = act[$"pow"];
 	}
 	target.hp = min(target.stats.maxhp, target.hp + heal);
-	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(target[$"name"]) + " heals " + string(heal) + "hp.");
+	var data = {
+		tar : target	
+	}
+	scrSendAllSock(method(data, function(socket){
+		scrNBUpdateChar(socket, tar);
+	}));
+	if (DEBUG_ENABLED) serverLog("[BController] " + string(target[$"name"]) + " heals " + string(heal) + "hp.");
 }
 
 doRestore = function(ftr, target, act){
 	var res = act[$"pow"];
 	target.mana = min(target.stats.maxmana, target.mana + res);
-	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(target[$"name"]) + " regained " + string(res) + "mana.");
+	var data = {
+		tar : target	
+	}
+	scrSendAllSock(method(data, function(socket){
+		scrNBUpdateChar(socket, tar);
+	}));
+	if (DEBUG_ENABLED) serverLog("[BController] " + string(target[$"name"]) + " regained " + string(res) + "mana.");
 }
 
 doBuff = function(ftr, bff, ind){
 	var earlyTurnEnd = false;
 	if (struct_exists(bData, bff)){
 		var buff = struct_get(bData, bff);
-		if (DEBUG_ENABLED) show_debug_message("[BController]" + string(buff));
+		if (DEBUG_ENABLED) serverLog("[BController]" + string(buff));
 		if (struct_exists(buff, "abil")){
 			if (buff[$"abil"] == "meditate"){
 				doRestore(ftr, ftr, buff);
@@ -322,14 +351,21 @@ doBuff = function(ftr, bff, ind){
 			array_delete(ftr[$"buffs"], ind, 1);	
 		}
 		if(earlyTurnEnd){
-			if (DEBUG_ENABLED) show_debug_message("[BController] Aborting turn");
+			if (DEBUG_ENABLED) serverLog("[BController] Aborting turn");
 			//menu.turnEnd();
 			endTeamTurn(ftr);
 		}
+		var data = {
+			ftr : ftr	
+		}
+		scrSendAllSock(method(data, function(socket){
+			scrNBUpdateChar(socket, ftr);
+		}));
 	} else {
-		if (DEBUG_ENABLED) show_message("[BController] Error loading Debuffs!");	
+		if (DEBUG_ENABLED) serverLog("[BController] Error loading Debuffs!");	
 	}
 }
+
 doDebuff = function(ftr, db, ind){
 	var earlyTurnEnd = false;
 	if (struct_exists(dbData, db)){
@@ -345,12 +381,73 @@ doDebuff = function(ftr, db, ind){
 		if(earlyTurnEnd){
 			endTeamTurn(ftr);
 		}
+		var data = {
+			ftr : ftr	
+		}
+		scrSendAllSock(method(data, function(socket){
+			scrNBUpdateChar(socket, ftr);
+		}));
 	} else {
-		if (DEBUG_ENABLED) show_message("[BController] Error loading Debuffs!");	
+		if (DEBUG_ENABLED) serverLog("[BController] Error loading Debuffs!");	
 	}
 }
 
-if (array_length(global.battles) > 0){
-	initBattle();
+doNetAction = function(actInfo){
+	
+	//actionInfo = {
+	//	act : action,
+	//	actor : actor,
+	//	tar : target,
+	//	team : team,
+	//	isSpell : isSpell,
+	//	isItem : isItem,
+	//	actorChar : actors[charGetActorInd(actor)],
+	//	targetChar : actors[charGetActorInd(target)]
+	//};
+	var player = actInfo.player;
+	
+	serverLog(string(player));
+	serverLog(string(actInfo));
+	
+	var actorTeam = battleInfo.team1;
+	if (scrCheckTeam(battleInfo.team2, actInfo.actor)){
+		actorTeam = battleInfo.team2;	
+	}
+	
+	var charInd = scrTeamCharGetInd(actorTeam, actInfo.actor);
+	var fighter = actorTeam[charInd];
+	
+	var targetTeam = battleInfo.team2;
+	if (scrCheckTeam(battleInfo.team1, actInfo.target)){
+		targetTeam = battleInfo.team1;	
+	}
+	charInd = scrTeamCharGetInd(targetTeam, actInfo.target);
+	var target = targetTeam[charInd];
+	
+	if(!actInfo.isItem){
+		if (actInfo.isSpell){
+			var spell = struct_get(splData, actInfo.action);
+			if(struct_exists(fighter, "mana")){
+				fighter[$"mana"] -= spell[$"cost"];
+			}
+			if(struct_exists(fighter, "energy")){
+				fighter[$"energy"] -= spell[$"cost"];
+			}
+		}
+		//context.qteHandler.loadQTE(actor, target, action, team, isSpell, actionInfo);
+		var data = {
+			ftr : fighter	
+		}
+		
+		scrSendAllSock(method(data, function(socket){
+			scrNBUpdateChar(socket, ftr);
+		}));
+		scrStartQTE(player.sockId);
+	} else {
+		//doItem(actor, action, target, team, true);
+	}
 }
+
+
+initBattle();
 

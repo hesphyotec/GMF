@@ -28,41 +28,13 @@ if (active && (alarm[0] <=0)){
 				doFunction(options[selection]);
 				break;
 			case BMENUST.ATTACK:
-				action = options[selection];
-				if (DEBUG_ENABLED) show_debug_message("[Menu] Enemies: " + string(battleInfo.team2));
-				chooseTarget(battleInfo.team2);
+				selectAttack();
 				break;
 			case BMENUST.SPELL:
-				action = options[selection];
-				var spell = struct_get(splData, action);
-				if (DEBUG_ENABLED) show_debug_message("[Menu]" + string(spell));
-				if (spell[$"cost"] <= fighter[$"mana"] || spell[$"cost"] <= fighter[$"energy"] || !(struct_exists(fighter, "mana")) || struct_exists(fighter, "energy")){
-					if (variable_struct_exists(spell,"type")){
-						if (spell[$"type"] == "dmgSpell" || spell[$"type"] == "debuffSpell"){
-							if (DEBUG_ENABLED) show_debug_message("[Menu] Enemies: " + string(battleInfo.team2) + string(battleInfo.team2));
-							chooseTarget(battleInfo.team2);	
-						}	
-						if (spell[$"type"] == "restoreSpell" || spell[$"type"] == "buffSpell"){
-							chooseTarget(battleInfo.team1);	
-						}
-						if (spell[$"type"] == "selfSpell"){
-							chooseTarget([fighter]);	
-						}
-					}
-				} else {
-					audio_play_sound(sndNoResource, 1, false);
-				}
+				selectSpell();
 				break;
 			case BMENUST.ITEMS:
-				item = options[selection];
-				if (DEBUG_ENABLED) show_debug_message("[Menu]" + string(item));
-				if (variable_struct_exists(item,"abil")){
-					if (item[$"abil"] == "heal" || item[$"abil"] == "restore"){
-						chooseTarget(battleInfo.team1);	
-					} else {
-						chooseTarget(battleInfo.team2);	
-					}	
-				}
+				selectItem();
 				break;
 			case BMENUST.FLEE:
 				if (selection == 1){
@@ -73,14 +45,12 @@ if (active && (alarm[0] <=0)){
 				}
 				break;
 			case BMENUST.TARGET:
-				target = options[selection];
-				if (DEBUG_ENABLED) show_debug_message("[Menu]" + string(target[$"cid"]));
-				doFunction(BOPS.TARGET);
+				selectTarget();
 				break;
 		}
 		audio_play_sound(sndChoose,1,false);
 	}
-	if (sprintPress){
+	if (sprintPress || mouse_check_button_pressed(mb_right)){
 		doFunction(BOPS.BACK);
 		audio_play_sound(sndBack,1,false);
 	}

@@ -8,7 +8,7 @@ context = undefined;
 battleInfo = undefined;
 downed = false;
 hovered = false;
-
+tMan = undefined;
 
 yOff = 0;
 hpTextOffX = 32;
@@ -17,14 +17,13 @@ effOffX = sprite_get_width(sprite_index)/2;
 effSpace = 12;
 dbOffY = 8;
 bOffY = 16;
+splashY = display_get_gui_height() - (92 * MENU_GUI_SCALE);
 
 atkData = global.data.moves[$"attacks"];
 splData = global.data.moves[$"spells"];
 itemData = global.data.items;
 buffData = global.data.effects[$"buffs"];
 debuffData = global.data.effects[$"debuffs"];
-
-splashY = display_get_gui_height() - (92 * MENU_GUI_SCALE);
 
 timers = {
 	wait	: -1,
@@ -142,10 +141,14 @@ timerStep = function(){
 waitFinish = function(){
 	timers.wait = -1;
 	state = CHARSTATES.IDLE;
-	if (isPlayerTeam){
-		context.controller.teams[0].charReady(character);
-	} else {
-		context.controller.teams[1].charReady(character);
+	if(global.isServer){
+		tMan.charReady(character);
+	} else if(!global.isPlayerBattle){
+		if (isPlayerTeam){
+			context.controller.teams[0].charReady(character);
+		} else {
+			context.controller.teams[1].charReady(character);
+		}
 	}
 }
 
@@ -170,11 +173,21 @@ tickEffects = function(){
 		var buff = buffs[i];
 		if (buff.duration > 0){
 			if ((buff.duration) mod (fps) == 0){
-				doBuff(buff);
+				//if(global.isServer){
+					doBuff(buff);
+				//}
 			}
 			--buff.duration;
 		} else {
-			array_delete(buffs, i, 1);	
+			array_delete(buffs, i, 1);
+			if (global.isServer){
+				var data = {
+					char : character,	
+				}
+				scrSendAllSock(method(data, function(socket){
+					scrNBUpdateChar(socket, char);
+				}));	
+			}
 		}
 	}
 	
@@ -182,11 +195,21 @@ tickEffects = function(){
 		var debuff = debuffs[i];
 		if (debuff.duration > 0){
 			if ((debuff.duration) mod (fps) == 0){
-				doDebuff(debuff);
+				//if (global.isServer){
+					doDebuff(debuff);
+				//}
 			}
 			--debuff.duration;
 		} else {
 			array_delete(debuffs, i, 1);	
+			if (global.isServer){
+				var data = {
+					char : character,	
+				}
+				scrSendAllSock(method(data, function(socket){
+					scrNBUpdateChar(socket, char);
+				}));	
+			}
 		}
 	}
 }
@@ -208,7 +231,9 @@ doDebuff = function(debuff){
 	var earlyTurnEnd = false;
 	if (struct_exists(debuff, "abil")){
 		if (debuff[$"abil"] == "damage"){
-			context.controller.doDamage(character, character, debuff);
+			if (global.isServer){
+				context.controller.doDamage(character, character, debuff);
+			}
 		}
 		if (debuff[$"abil"] == "taunt"){
 			if(debuff[$"source"].hp <= 0){

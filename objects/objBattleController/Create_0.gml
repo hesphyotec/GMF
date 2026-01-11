@@ -11,7 +11,7 @@ battleInfo = {
 	waiting			: []
 };
 
-teams = [instance_create_layer(0,0,"Menu", objBattleTeamManager),instance_create_layer(0,0,"Menu", objBattleTeamManager)];
+teams = [instance_create_layer(0,0,"Menu", objBattleTeamManager), instance_create_layer(0,0,"Menu", objBattleTeamManager)];
 
 context = {
 	controller	: id,
@@ -121,22 +121,22 @@ loadEncounter = function(encounter){
 }
 
 doAttack = function(ftr, atk, tar, team, str, final){
-		if (DEBUG_ENABLED) show_debug_message("[BController] " + string(ftr[$"name"]) + " is attacking.");
-		if (global.isPlayerBattle){
-			//scrNBAttack(ftr.id, atk, tar.id, self?, str, final);	
+	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(ftr[$"name"]) + " is attacking.");
+	if (global.isPlayerBattle){
+		//scrNBAttack(ftr.id, atk, tar.id, self?, str, final);	
+	} else {
+		if (struct_exists(atkData, atk)){
+			var attack = struct_get(atkData, atk);
+			if (DEBUG_ENABLED) show_debug_message("[BController] Retrieved Attack: " + string(atk) + " : " + string(attack));
+			doDamage(ftr, tar, attack, str);
 		} else {
-			if (struct_exists(atkData, atk)){
-				var attack = struct_get(atkData, atk);
-				if (DEBUG_ENABLED) show_debug_message("[BController] Retrieved Attack: " + string(atk) + " : " + string(attack));
-				doDamage(ftr, tar, attack, str);
-			} else {
-				if (DEBUG_ENABLED) show_message("[BController] Error loading attack!");	
-			}
-			if(final){
-				endTeamTurn(ftr);
-			}
+			if (DEBUG_ENABLED) show_message("[BController] Error loading attack!");	
+		}
+		if(final){
+			endTeamTurn(ftr);
 		}
 	}
+}
 	
 doSpell = function(ftr, spl, tar, team, str, final){
 	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(ftr[$"name"]) + " is using a spell.");
@@ -217,6 +217,7 @@ doItem = function(ftr, item, tar, team, final){
 }
 
 doMiss = function(ftr, final){
+	scrNBQTEMiss(global.server, ftr, final);
 	if (final){
 		endTeamTurn(ftr);
 	}
@@ -310,7 +311,7 @@ doDeath = function(ftr, target, team){
 		if (DEBUG_ENABLED) show_debug_message("[BController] Enemy team after death: " + string(battleInfo.team2));
 	}
 	context.menu.charDied(target);
-	if (target == ftr || target = context.menu.fighter){
+	if (target == ftr || target == context.menu.fighter){
 		endTeamTurn(target);
 	}
 	if (DEBUG_ENABLED) show_debug_message("[BController]" + string(target[$"name"]) + " is dead.");
@@ -325,6 +326,22 @@ doDowned = function(ftr, target, team){
 	teams[0].charDowned(target);
 	context.menu.chooseTarget(battleInfo.tarteam);
 	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(target[$"name"]) + " is down.");
+}
+
+doNetDowned = function(ftr){
+	var team = battleInfo.team1;
+	var tarManager = teams[0];
+	if (scrCheckTeam(battleInfo.team2, ftr)){
+		team = battleInfo.team2;
+		tarManager = teams[1];
+	}
+	array_delete(team, array_get_index(team, ftr), 1);
+	audio_play_sound(sndDowned, 1, false);
+	if (ftr == context.menu.fighter){
+		endTeamTurn(ftr);
+	}
+	tarManager.charDowned(ftr);
+	context.menu.chooseTarget(battleInfo.tarteam);
 }
 
 doHeal = function(ftr, target, act){
@@ -391,3 +408,29 @@ if (array_length(global.battles) > 0){
 	initBattle();
 }
 
+netUpdateChar = function(char){
+	var ftr = undefined;
+	if (scrCheckTeam(battleInfo.team1, char)){
+		ftr = battleInfo.team1[scrTeamCharGetInd(battleInfo.team1, char)];
+	} else if (scrCheckTeam(battleInfo.team2, char)){
+		ftr = battleInfo.team2[scrTeamCharGetInd(battleInfo.team2, char)];
+	} else {
+		clientLog("Invalid Character Data!");
+		return;	
+	}
+	ftr.hp = char.hp;
+	if (struct_exists(ftr, "mana")){
+		ftr.mana = char.mana;	
+	}
+	if (struct_exists(ftr, "energy")){
+		ftr.energy = char.energy;	
+	}
+	if (struct_exists(ftr, "blood")){
+		ftr.blood = char.blood;	
+	}
+	if (struct_exists(ftr, "rage")){
+		ftr.rage = char.rage;	
+	}
+	ftr.buffs = char.buffs;
+	ftr.debuffs = char.debuffs;
+}

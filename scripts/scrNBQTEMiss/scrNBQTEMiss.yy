@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrNBQTEMiss",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrNBQTEMiss",
+  "parent":{
+    "name":"Data",
+    "path":"folders/Scripts/Networking/Data.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

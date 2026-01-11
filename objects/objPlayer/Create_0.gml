@@ -51,9 +51,6 @@ loadCompanion = function(comp){
 
 team = [];
 
-if(global.server < 0){
-	team = [battlePlayer];
-}
 
 partyAdd = function(comp){
 	var companion = struct_get(global.data.companions, comp);
@@ -96,4 +93,13 @@ getMTar = function(_up, _down, _left, _right){
 	}
 	mapPos = moveTarget;
 	return [moveTarget, dir];
+}
+
+getSnapshot = function(){
+	return {
+		race : race,
+		sockId : sockId,
+		team : team,
+		mapPos : mapPos
+	}
 }

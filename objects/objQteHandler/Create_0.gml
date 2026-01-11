@@ -4,15 +4,11 @@ battleInfo = undefined;
 atkData = global.data.moves[$"attacks"];
 splData = global.data.moves[$"spells"];
 
-fighter = undefined;
-target = undefined;
-tarTeam = undefined;
 action = undefined;
-actName = undefined;
 qteAct = undefined;
 mode = undefined;
 active = false;
-isASpell = false;
+
 
 strength = 0;
 rate = 0;
@@ -53,19 +49,15 @@ chargeCircle = {
 
 multiCircle = [];
 
-loadQTE = function(ftr, tar, act, team, isSpell, info){
+loadQTE = function(info){
 	if (DEBUG_ENABLED) show_debug_message("[qteHandler] Loading QTE");
-	fighter = ftr;
-	target = tar;
-	tarTeam = team;
-	isASpell = isSpell;
-	actName = act;
+	if (DEBUG_ENABLED) show_debug_message(string(info));
 	actionInfo = info;
 	
-	if (isSpell){
-		action = struct_get(splData, act);	
+	if (actionInfo.isSpell){
+		action = struct_get(splData, actionInfo.act);	
 	} else {
-		action = struct_get(atkData, act);	
+		action = struct_get(atkData, actionInfo.act);	
 	}
 	
 	if (struct_exists(action, "action")){
@@ -177,6 +169,8 @@ startQTE = function(){
 	} else if (qteAct == "spellCharge"){
 		mode = QTEMODE.SPELLCHARGE;
 		popUp.sprite = sprQTECharge;
+		popUp.X = display_get_gui_width() * .5;
+		popUp.Y = display_get_gui_height() * .75;
 		range = sprite_get_width(sprQTECharge)/2;
 		start = 0;
 		chargeCircle.radius = start;
@@ -195,7 +189,7 @@ doMiss = function(){
 	switch(mode){
 		case QTEMODE.TIMEDHIT:
 			audio_play_sound(sndNoResource, 1, false);
-			context.controller.doMiss(fighter, true);
+			context.controller.doMiss(actionInfo.actor, true);
 			stopQTE();
 			break;
 			//tell controller that we missed
@@ -210,14 +204,14 @@ doMiss = function(){
 					hitBar.dir = 1;
 				}
 			} else {
-				context.controller.doMiss(fighter, true);
+				context.controller.doMiss(actionInfo.actor, true);
 				stopQTE();
 				//tell controller that we missed
 			}
 			break;
 		case QTEMODE.AIM:
 			audio_play_sound(sndNoResource, 1, false);
-			context.controller.doMiss(fighter, true);
+			context.controller.doMiss(actionInfo.actor, true);
 			stopQTE();
 			break;
 			//tell controller that we missed
@@ -227,14 +221,14 @@ doMiss = function(){
 			if (--hits > 0){
 				//--hits;
 			} else {
-				context.controller.doMiss(fighter, true);
+				context.controller.doMiss(actionInfo.actor, true);
 				stopQTE();
 				//tell controller that we missed
 			}
 			break;
 		case QTEMODE.SPELLCHARGE:
 			audio_play_sound(sndNoResource, 1, false);
-			context.controller.doMiss(fighter, true);
+			context.controller.doMiss(actionInfo.actor, true);
 			stopQTE();
 			break;
 			//tell controller that we missed
@@ -302,26 +296,30 @@ doAction = function(){
 }
 
 doMove = function(final){
-	if (isASpell){
+	if (actionInfo.isSpell){
 		context.menu.doAnimation(actionInfo);
-		context.controller.doSpell(fighter , actName, target, tarTeam, strength, final);
+		clientLog("Action strength: " + string(strength));
+		if(global.server >= 0){
+			scrNBDoSpell(global.server, actionInfo, strength, final);
+		} else {
+			context.controller.doSpell(actionInfo.actor, actionInfo.act, actionInfo.tar, actionInfo.team, strength, final);
+		}
 	} else {
 		context.menu.doAnimation(actionInfo);
-		context.controller.doAttack(fighter , actName, target, tarTeam, strength, final);
+		if(global.server >= 0){
+			scrNBDoAttack(global.server, actionInfo, strength, final);
+		} else {
+			context.controller.doAttack(actionInfo.actor, actionInfo.act, actionInfo.tar, actionInfo.team, strength, final);
+		}
 	}
 }
 
 stopQTE = function(){
 	if (DEBUG_ENABLED) show_debug_message("[qteHandler] Ending QTE");
 	battleInfo.menuState = BMENUST.ACTION;
-	fighter = undefined;
-	target = undefined;
-	tarTeam = undefined;
-	action = undefined;
 	qteAct = undefined;
 	mode = undefined;
 	active = false;
-	isASpell = false;
 	strength = 0;
 	rate = 0;
 	rateMod = 1;
@@ -334,8 +332,8 @@ stopQTE = function(){
 }
 
 getRateMod = function(){
-	var buffs = fighter[$"buffs"];
-	var debuffs = fighter[$"debuffs"];
+	var buffs = actionInfo.actor[$"buffs"];
+	var debuffs = actionInfo.actor[$"debuffs"];
 	
 	for(var i = array_length(buffs) - 1; i >= 0; --i){
 		var buff = buffs[i];
