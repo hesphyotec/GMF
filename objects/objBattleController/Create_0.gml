@@ -300,7 +300,9 @@ doDeath = function(ftr, target, team){
 		audio_play_sound(sndDowned, 1, false);
 		array_delete(battleInfo.team1, tarInd, 1);
 		teams[0].charDied(target);
-		context.menu.chooseTarget(battleInfo.tarteam);
+		if(battleInfo.menuState == BMENUST.TARGET && tarteam == team){
+			context.menu.chooseTarget(battleInfo.tarteam);
+		}
 	} else {
 		tarInd = scrTeamCharGetInd(battleInfo.team2, target);
 		if (DEBUG_ENABLED) show_debug_message("[BController] Target: " + string(target) + string(team[tarInd]));
@@ -320,28 +322,42 @@ doDeath = function(ftr, target, team){
 doDowned = function(ftr, target, team){
 	array_delete(team, array_get_index(team, target), 1);
 	audio_play_sound(sndDowned, 1, false);
+	teams[0].charDowned(target);
 	if (target == ftr || target = context.menu.fighter){
 		endTeamTurn(target);
 	}
-	teams[0].charDowned(target);
-	context.menu.chooseTarget(battleInfo.tarteam);
+	if(battleInfo.menuState == BMENUST.TARGET && tarteam == team){
+		context.menu.chooseTarget(battleInfo.tarteam);
+	}
 	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(target[$"name"]) + " is down.");
 }
 
 doNetDowned = function(ftr){
+	if(teams[0].fighter != undefined){
+		if (ftr.cid == teams[0].fighter.cid){
+			clientLog("Aborting turn for: " + ftr.name);
+			endTeamTurn(ftr);
+		}
+	}
 	var team = battleInfo.team1;
 	var tarManager = teams[0];
 	if (scrCheckTeam(battleInfo.team2, ftr)){
 		team = battleInfo.team2;
 		tarManager = teams[1];
 	}
-	array_delete(team, array_get_index(team, ftr), 1);
+	var realFtr = team[scrTeamCharGetInd(team, ftr)];
+	array_delete(team, scrTeamCharGetInd(team, ftr), 1);
 	audio_play_sound(sndDowned, 1, false);
-	if (ftr == context.menu.fighter){
-		endTeamTurn(ftr);
+	tarManager.charDowned(realFtr);
+	if(battleInfo.menuState == BMENUST.TARGET && tarteam == team){
+		context.menu.chooseTarget(battleInfo.tarteam);
 	}
-	tarManager.charDowned(ftr);
-	context.menu.chooseTarget(battleInfo.tarteam);
+	for(var i = 0; i < array_length(battleInfo.team1); ++i){
+		clientLog("Alive: " + battleInfo.team1[i].name);
+	}
+	for(var i = 0; i < array_length(battleInfo.team2); ++i){
+		clientLog("Alive: " + battleInfo.team2[i].name);
+	}
 }
 
 doHeal = function(ftr, target, act){

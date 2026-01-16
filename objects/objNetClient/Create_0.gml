@@ -1,5 +1,8 @@
 socket = network_create_socket(network_socket_tcp);
 global.server = network_connect(socket, "127.0.0.1", 22566);
+if (global.server < 0) {
+	global.server = network_connect(socket, "25.48.104.187", 22566);
+}
 global.isServer = false;
 
 
@@ -77,7 +80,14 @@ handleData = function(){
 			var char = json_parse(buffer_read(buff, buffer_string));
 			objBattleController.doNetDowned(char);
 			break;
-			
+		case NET.STARTTURN:
+			var char = json_parse(buffer_read(buff, buffer_string));
+			objBattleController.teams[0].netStartTurn(char);
+			break;
+		case NET.ENDBATTLE:
+			var win = buffer_read(buff, buffer_bool);
+			objBattleController.endBattle(win);
+			break;
 	}
 }
 

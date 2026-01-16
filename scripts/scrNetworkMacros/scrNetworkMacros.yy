@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scrNetworkMacros",
   "parent":{
-    "name":"Helper",
-    "path":"folders/Scripts/Networking/Helper.yy",
+    "name":"Defines",
+    "path":"folders/Scripts/Defines.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

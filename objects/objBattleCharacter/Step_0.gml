@@ -6,13 +6,14 @@ if (!global.isServer){
 	}
 	if (character[$"hp"] <= 0 && downed == false){
 		doDowned();
-	}
-
-	if (context.menu != undefined && context.menu.active && battleInfo.menuState == BMENUST.TARGET){
-		hovered = (context.menu.options[context.menu.selection] == character);
 	} else {
-		hovered = false;
+		if (context.menu != undefined && context.menu.active && battleInfo.menuState == BMENUST.TARGET){
+			hovered = (context.menu.options[context.menu.selection] == character);
+		} else {
+			hovered = false;
+		}
 	}
+	
 }
 
 if (character[$"hp"] > 0){

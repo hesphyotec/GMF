@@ -233,6 +233,9 @@ turnEnd = function(){
 	if (DEBUG_ENABLED) clientLog("[Menu] Turn End");
 	options = [];
 	menuBox.loadButtons(options);
+	menuBox.clearCards();
+	menuBox.clearButtons();
+	menuBox.clearMasks();
 	if (instance_exists(actors[actIndex])){
 		actors[actIndex].isSelected = false;
 	}
@@ -359,4 +362,5 @@ selectTarget = function(){
 	target = options[selection];
 	if (DEBUG_ENABLED) show_debug_message("[Menu]" + string(target[$"cid"]));
 	doFunction(BOPS.TARGET);
+	menuBox.clearMasks();
 }

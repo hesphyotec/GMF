@@ -21,6 +21,8 @@ function scrNetworkMacros(){
 		DOANIM,
 		INITEXISTING,
 		CHARDOWNED,
-		QTEMISS
+		QTEMISS,
+		STARTTURN,
+		ENDBATTLE
 	}
 }

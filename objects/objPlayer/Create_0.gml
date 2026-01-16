@@ -5,10 +5,12 @@ currMap = {};
 
 generatePlayer = function(){
 	character = instance_create_layer(room_width/2, room_height-32,"Instances", objOWPlayer);
+	character.baseSpriteName = (race == RACE.HUMAN ? "sprPlayerTemp" : "sprImpPlayerTemp");
 }
 
 generateNetPlayer = function(){
 	character = instance_create_layer(room_width/2, room_height-32,"Instances", objNetPlayer);
+	character.baseSpriteName = (race == RACE.HUMAN ? "sprPlayerTemp" : "sprImpPlayerTemp");
 }
 
 battlePlayer = {

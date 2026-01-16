@@ -56,7 +56,9 @@ loadTeam = function(tm){
 endTurn = function(){
 	if(DEBUG_ENABLED) show_debug_message("[TeamMan] " + string(playerTeam) + "Ending Turn.");
 	if(DEBUG_ENABLED) show_debug_message("[TeamMan] Enemy Team Remaining: " + string(array_length(battleInfo.team2)));
-	array_push(waiting, fighter);
+	if (fighter.hp > 0){
+		array_push(waiting, fighter);
+	}
 	if(DEBUG_ENABLED) show_debug_message("[TeamMan] Enemy Team Remaining: " + string(array_length(battleInfo.team2)));
 	if (playerTeam){
 		objBattleMenu.turnEnd();
@@ -67,7 +69,9 @@ endTurn = function(){
 			battleInfo.menuState = BMENUST.WAIT;
 		}
 	} else {
-		startTurn();
+		if (global.server < 0){
+			startTurn();
+		}
 	}
 }
 
@@ -170,7 +174,9 @@ charReady = function(ftr){
 		array_push(activeTeamQueue, ready);
 		if (allwait){
 			allwait = false;
-			startTurn();
+			if(global.server < 0){
+				startTurn();
+			}
 		}
 	}
 }
@@ -198,17 +204,31 @@ charDowned = function(ftr){
 	if (scrCheckTeam(activeTeamQueue, ftr)){
 		ind = scrTeamCharGetInd(activeTeamQueue, ftr);
 		array_delete(activeTeamQueue, ind, 1);	
-	} else if (scrCheckTeam(waiting, ftr)){
+	}
+	if (scrCheckTeam(waiting, ftr)){
 		ind = scrTeamCharGetInd(waiting, ftr);
 		array_delete(waiting, ind, 1);	
 	}
-	if (array_length(activeTeamQueue) == 0 && array_length(waiting) == 0){
-		if(playerTeam){
-			context.controller.endBattle(false);	
-		} else {
-			context.controller.endBattle(true);
+	if (global.server < 0){
+		if (array_length(activeTeamQueue) == 0 && array_length(waiting) == 0){
+			if(playerTeam){
+				context.controller.endBattle(false);	
+			} else {
+				context.controller.endBattle(true);
+			}
 		}
 	}
 }
 
-
+netStartTurn = function(ftr){
+	if (playerTeam) clientLog(string(team));
+	if (scrCheckTeam(team, ftr)){
+		fighter = ftr;
+		if (playerTeam){
+			context.menu.turnStart(fighter, fighter.attacks, fighter.spells);
+			battleInfo.menuState = BMENUST.ACTION;
+		} else if (!netTeam){
+			enemyTurn(fighter);
+		}
+	}
+}

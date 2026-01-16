@@ -111,6 +111,7 @@ loadGUIButtons = function(){
 						objBattleMenu.selectTarget();
 						break;
 				}
+				audio_play_sound(sndChoose,1,false, global.masVolume * global.effVolume);
 			}
 		}
 		if (battleInfo.menuState == BMENUST.TARGET){
@@ -130,6 +131,7 @@ loadGUICards = function(){
 	for(var i = 0; i < array_length(options); ++i){
 		var card = createButton(actionBox.X[i], actionBox.activeY, sprite_get_width(sprActionBox), sprite_get_height(sprActionBox), sprActionBox, GUI.BATTLECARD, {actionBox: actionBox, buttons : [], text : options[i]});
 		card.tweenY = actionBox.inactiveY;
+		card.tweenSpeed = .5;
 		switch(i){
 			case 0:
 				for (var j = 0; j < array_length(attacks); j++){
@@ -141,6 +143,7 @@ loadGUICards = function(){
 					with (card){
 						onClick = function(){
 							objBattleMenu.doFunction(BOPS.ATTACK);
+							audio_play_sound(sndChoose,1,false, global.masVolume * global.effVolume);
 						}
 					}
 				}
@@ -155,6 +158,7 @@ loadGUICards = function(){
 					with (card){
 						onClick = function(){
 							objBattleMenu.doFunction(BOPS.SPELL);
+							audio_play_sound(sndChoose,1,false, global.masVolume * global.effVolume);
 						}
 					}
 				}
@@ -169,6 +173,7 @@ loadGUICards = function(){
 					with (card){
 						onClick = function(){
 							objBattleMenu.doFunction(BOPS.ITEM);
+							audio_play_sound(sndChoose,1,false, global.masVolume * global.effVolume);
 						}
 					}
 				}
@@ -177,6 +182,7 @@ loadGUICards = function(){
 				with (card){
 					onClick = function(){
 						objBattleMenu.doFunction(BOPS.FLEE);
+						audio_play_sound(sndChoose,1,false, global.masVolume * global.effVolume);
 					}
 				}
 				break;
@@ -221,7 +227,8 @@ loadCharMasks = function(team){
 				}
 				onClick = function(){
 					objBattleMenu.selection = data.index;	
-					objBattleMenu.selectTarget();	
+					objBattleMenu.selectTarget();
+					audio_play_sound(sndChoose,1,false, global.masVolume * global.effVolume);
 				}
 			}	
 		}

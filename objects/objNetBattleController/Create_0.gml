@@ -192,15 +192,12 @@ doMiss = function(ftr, final){
 	}
 }
 
-endBattle = function(victory){
-	if (victory) {
-		serverLog("You won!");
-		// Give gold and exp.	
-	} else {
-		serverLog("You lost!");
-		// Send back to last town	
+endBattle = function(){
+	serverLog("Battle Over!");
+	with(objNetBattleTeamManager){
+		battleOver = true;	
 	}
-	room_goto(rmHCastleTest);
+	instance_destroy(id);
 }
 
 doDamage = function(ftr, target, action, str = 1){
@@ -287,24 +284,30 @@ doDeath = function(ftr, target, team){
 		if (DEBUG_ENABLED) serverLog("[BController] Enemy team after death: " + string(battleInfo.team2));
 	}
 	context.menu.charDied(target);
-	if (target == ftr || target = context.menu.fighter){
+	if (target == ftr || target == context.menu.fighter){
 		endTeamTurn(target);
 	}
 	if (DEBUG_ENABLED) serverLog("[BController]" + string(target[$"name"]) + " is dead.");
 }
 
 doDowned = function(ftr, target, team){
+	if (target == ftr  || target.cid == teams[0].fighter.cid || target.cid == teams[1].fighter.cid){
+		endTeamTurn(target);
+	}
 	array_delete(team, array_get_index(team, target), 1);
 	audio_play_sound(sndDowned, 1, false);
 	var tarManager = teams[0];
 	if (team == battleInfo.team2){
 		tarManager = teams[1];	
 	}
-	if (target == ftr){
-		endTeamTurn(target);
-	}
 	tarManager.charDowned(target);
 	if (DEBUG_ENABLED) serverLog("[BController] " + string(target[$"name"]) + " is down.");
+	for(var i = 0; i < array_length(battleInfo.team1); ++i){
+		serverLog("Alive: " + battleInfo.team1[i].name);
+	}
+	for(var i = 0; i < array_length(battleInfo.team2); ++i){
+		serverLog("Alive: " + battleInfo.team2[i].name);
+	}
 }
 
 doHeal = function(ftr, target, act){

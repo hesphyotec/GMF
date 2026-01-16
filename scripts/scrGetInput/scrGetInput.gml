@@ -7,6 +7,7 @@ function scrGetInput(){
 		sprint = false;
 		interact = false;
 		lClick = false;
+		esc = false;
 	}
 	var prevLeft = left;
 	var prevRight = right;
@@ -15,6 +16,7 @@ function scrGetInput(){
 	var prevSprint = sprint;
 	var prevInteract = interact;
 	var prevLClick = lClick;
+	var prevEsc = esc;
 	
 	left = keyboard_check(vk_left) || keyboard_check(ord("A"));
 	up = keyboard_check(vk_up) || keyboard_check(ord("W"));
@@ -25,6 +27,7 @@ function scrGetInput(){
 	interact = keyboard_check(vk_enter) || keyboard_check(ord("Z"));
 	lClick = mouse_check_button(mb_left);
 	//rClick = mouse_check_button(mb_right);
+	esc = keyboard_check(vk_escape);
 	
 	leftPress		= (left && !prevLeft);
 	rightPress		= (right && !prevRight);
@@ -33,6 +36,7 @@ function scrGetInput(){
 	sprintPress		= (sprint && !prevSprint);
 	interactPress	= (interact && !prevInteract);
 	lClickPress		= (lClick && !prevLClick);
+	escPress		= (esc && !prevEsc);
 
 	
 	leftRelease			= (!left && prevLeft);
@@ -42,4 +46,5 @@ function scrGetInput(){
 	sprintRelease		= (!sprint && prevSprint);
 	interactRelease		= (!interact && prevInteract);
 	lClickRelease		= (!lClick && prevLClick);
+	escRelease			= (!esc && prevEsc);
 }

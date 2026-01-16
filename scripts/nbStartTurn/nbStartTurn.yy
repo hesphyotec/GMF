@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"nbStartTurn",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"nbStartTurn",
+  "parent":{
+    "name":"Data",
+    "path":"folders/Scripts/Networking/Data.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

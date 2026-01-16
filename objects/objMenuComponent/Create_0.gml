@@ -4,8 +4,11 @@ height = 0;
 xPos = 0;
 yPos = 0;
 
+targetX = 0;
 targetY = 0;
 tweenY = 0;
+tweenX = 0;
+tweenSpeed = 0;
 
 hovered = false;
 isKeySelected = false;
@@ -16,6 +19,10 @@ font = fntBattle;
 
 active = true;
 master = undefined;
+
+a = 1;
+
+slideVal = 1.0;
 
 isHovered = function(){
 	if (canReceiveInput()){
@@ -47,6 +54,8 @@ canReceiveInput = function(){
 
 onClick = function(){}
 
+onHold = function(){}
+
 onHover = function(){}
 
 drawCompBasic = function(){
@@ -63,6 +72,7 @@ drawCompBasic = function(){
 }
 
 onDraw = function(){
+	draw_set_alpha(a);
 	switch(type){
 		case GUI.TEXTBUTTON:
 			drawTextButton();
@@ -81,7 +91,14 @@ onDraw = function(){
 			break;
 		case GUI.CHARMASK:
 			break;
+		case GUI.BOXCONTAINER:
+			drawBoxContainer();
+			break;
+		case GUI.SLIDER:
+			drawSlider();
+			break;
 	}
+	draw_set_alpha(1);
 }
 
 drawTextButton = function(){
@@ -145,6 +162,31 @@ drawCardContainer = function(){
 	
 	draw_text(xPos + 2, yPos + 2, data.text);
 	
+	draw_set_font(fntBattle);
+	draw_set_halign(fa_left);
+	draw_set_valign(fa_bottom);
+	draw_set_colour(c_white);
+}
+
+drawBoxContainer = function(){
+	active = false;
+	draw_set_colour(data.col)
+	draw_set_alpha(data.a);
+	draw_rectangle(data.X, data.Y, tweenX, data.h, false);
+	draw_set_colour(c_white);
+	draw_set_alpha(1);
+}
+
+drawSlider = function(){
+	active = true;
+	draw_set_colour(c_gray);
+	draw_rectangle(xPos, yPos + (height * .75), xPos + width, yPos + height, false);
+	draw_set_colour(c_white);
+	draw_rectangle(xPos, yPos + (height * .75), xPos + (width * slideVal), yPos + height, false);
+	draw_set_halign(fa_center);
+	draw_set_valign(fa_center);
+	draw_set_font(fntBattle);
+	draw_text(xPos + (width/2), yPos + (height/4), data.text);
 	draw_set_font(fntBattle);
 	draw_set_halign(fa_left);
 	draw_set_valign(fa_bottom);

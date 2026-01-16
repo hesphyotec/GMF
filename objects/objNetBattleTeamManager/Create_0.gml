@@ -17,6 +17,8 @@ team = [];
 waiting = [];
 actors = [];
 
+battleOver = false;
+
 startTurn = function(){
 	if (array_length(activeTeamQueue) > 0){
 		fighter = activeTeamQueue[0];
@@ -27,6 +29,7 @@ startTurn = function(){
 		for(var i = 0; i < array_length(activeTeamQueue); ++i){
 			if (DEBUG_ENABLED) serverLog("[TeamMan] Current order [" + string(i) + "]: " + string(activeTeamQueue[i][$"name"]));
 		}
+		nbStartTurn(player.sockId, fighter);
 	}
 }
 
@@ -38,12 +41,18 @@ loadTeam = function(tm){
 
 endTurn = function(){
 	//if(DEBUG_ENABLED) serverLog("[TeamMan] Enemy Team Remaining: " + string(array_length(battleInfo.team2)));
-	array_push(waiting, fighter);
+	if(fighter.hp > 0){
+		array_push(waiting, fighter);
+	}
 	//if(DEBUG_ENABLED) serverLog("[TeamMan] Enemy Team Remaining: " + string(array_length(battleInfo.team2)));
 	
 	var actor = getActor(fighter);
 	actor.startTimer(1);
 	scrNBEndTurn(player.sockId, fighter);
+	if(battleOver){
+		with(objBattleCharacter){instance_destroy(id);}
+		instance_destroy(id);
+	}
 	if (array_length(activeTeamQueue) <= 0){
 		allwait = true;
 	} else {
@@ -99,7 +108,8 @@ charDowned = function(ftr){
 		scrNBCharDowned(socket, ftr);
 	}));
 	if (array_length(activeTeamQueue) == 0 && array_length(waiting) == 0){
-		//scrNBEndBattle( not this player );
+		scrSendAllButSource(player.sockId, method({win : true}, function(socket){endNetBattle(socket, win)}), method({win : false}, function(socket){endNetBattle(socket, win)}));
+		objNetBattleController.endBattle();
 	}
 }
 

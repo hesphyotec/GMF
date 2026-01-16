@@ -7,13 +7,14 @@ inMenu = false;
 mapSpace = [floor(x / TILE_SIZE), floor(y / TILE_SIZE)];
 moveQueue = [variable_clone(mapSpace), variable_clone(mapSpace)];
 moveTarget = variable_clone(mapSpace);
+baseSpriteName = "sprPlayerTemp";
 
 playerMove = function(){
 	if ((up || left || right || down ) && !moving){
 		moving = true;
 		if (up){
 			dir = Dirs.UP;
-			sprite_index = sprPlayerTempUp;
+			sprite_index = asset_get_index(baseSpriteName + "Up");
 			if (place_empty(x, y - TILE_SIZE, objWall)){
 				moveTarget[1]--;
 				moveComps();
@@ -22,7 +23,7 @@ playerMove = function(){
 			}
 		} else if (left){
 			dir = Dirs.LEFT;
-			sprite_index = sprPlayerTempLeft;
+			sprite_index = asset_get_index(baseSpriteName + "Left");
 			if (place_empty(x - TILE_SIZE, y, objWall)){
 				moveTarget[0]--;
 				moveComps();
@@ -31,7 +32,7 @@ playerMove = function(){
 			}
 		} else if (right){
 			dir = Dirs.RIGHT;
-			sprite_index = sprPlayerTempRight;
+			sprite_index = asset_get_index(baseSpriteName + "Right");
 			if (place_empty(x + TILE_SIZE, y, objWall)){
 				moveTarget[0]++;
 				moveComps();
@@ -40,7 +41,7 @@ playerMove = function(){
 			}
 		} else if (down){
 			dir = Dirs.DOWN;
-			sprite_index = sprPlayerTempDown;
+			sprite_index = asset_get_index(baseSpriteName + "Down");
 			if (place_empty(x, y + TILE_SIZE, objWall)){
 				moveTarget[1]++;
 				moveComps();

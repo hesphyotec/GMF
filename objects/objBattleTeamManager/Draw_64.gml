@@ -1,5 +1,8 @@
 if (DEBUG_ENABLED){
 	if(playerTeam){
+		if(fighter != undefined){
+			draw_text(0, 16, fighter.name);
+		}
 		for (var i = 0; i < array_length(activeTeamQueue); ++i){
 			draw_text(0, 48 + 16*i, activeTeamQueue[i][$"name"]);	
 		}

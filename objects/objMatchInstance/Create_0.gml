@@ -29,11 +29,6 @@ handleData = function(){
 				if(array_length(global.players) > 0){
 					race = RACE.IMP;	
 				}
-				
-				var opRace = RACE.HUMAN;
-				if (race ==	RACE.HUMAN){
-					opRace = RACE.IMP;	
-				}
 				if(array_length(global.players) > 0){
 					addExistingOpponent(sock, global.players[0]);
 				}

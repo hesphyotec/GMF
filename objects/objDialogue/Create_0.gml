@@ -26,10 +26,10 @@ loadDiag = function(diagChar, diag, src){
 writeDiag = function(){
 	if (textProgress < string_length(lines[currentLine])){
 		textProgress += 1;
-		audio_play_sound(sndSelect, 1, false);
+		audio_play_sound(sndSelect, 1, false, global.masVolume * global.effVolume);
 	} else if (array_length(choices) <= 0){
 		if (interactPress){
-			audio_play_sound(sndChoose, 1, false);
+			audio_play_sound(sndChoose, 1, false, global.masVolume * global.effVolume);
 			textProgress = 0;
 			if ((currentLine + 1) >= array_length(lines)){
 				endDiag();
@@ -44,9 +44,9 @@ writeDiag = function(){
 				if(result[$"op"] == "recruit"){
 					if (array_length(global.players[0].team) < 4){
 						with(global.players[0]){
-							audio_play_sound(sndLightning, 1, false);
+							audio_play_sound(sndLightning, 1, false, global.masVolume * global.effVolume);
 							partyAdd(other.result[$"comp"]);
-							audio_play_sound(sndGet,1, false);
+							audio_play_sound(sndGet,1, false, global.masVolume * global.effVolume);
 						}
 						instance_destroy(source);
 					}

@@ -1,4 +1,4 @@
-if (!global.isServer){
+//if (!global.isServer){
 	if (character[$"hp"] > 0){
 		var hp = character[$"hp"];
 	
@@ -70,7 +70,7 @@ if (!global.isServer){
 			draw_sprite(buffIco, 0, x - effOffX + (effSpace * i), y - sprite_get_height(sprite_index) - bOffY);
 		}
 	}
-}
+//}
 
 
 
