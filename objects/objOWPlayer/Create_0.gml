@@ -8,6 +8,7 @@ mapSpace = [floor(x / TILE_SIZE), floor(y / TILE_SIZE)];
 moveQueue = [variable_clone(mapSpace), variable_clone(mapSpace)];
 moveTarget = variable_clone(mapSpace);
 baseSpriteName = "sprPlayerTemp";
+movePath = ds_list_create();
 
 playerMove = function(){
 	if ((up || left || right || down ) && !moving){
@@ -50,6 +51,24 @@ playerMove = function(){
 			}
 		}
 	}
+	
+	if(lClick){
+		ds_list_copy(movePath, getPath(mapSpace, [floor(mouse_x / TILE_SIZE), ceil(mouse_y / TILE_SIZE)]));	
+	}
+	
+	if(!ds_list_empty(movePath) && moving == false){
+		var node = ds_list_find_value(movePath, 0);
+		moveTarget = [node.gx, node.gy];
+		ds_list_delete(movePath, 0);
+		if (moveTarget[0] != mapSpace[0]){
+			dir = moveTarget[0] < mapSpace[0] ? Dirs.LEFT : Dirs.RIGHT
+		}
+		if (moveTarget[1] != mapSpace[1]){
+			dir = (moveTarget[1] < mapSpace[1]) ? Dirs.UP : Dirs.DOWN
+		}
+		moving = true;
+	}
+	
 	if (moving){
 		image_speed = 1;
 		if(dir == Dirs.LEFT || dir == Dirs.RIGHT){

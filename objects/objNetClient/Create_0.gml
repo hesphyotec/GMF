@@ -1,7 +1,7 @@
 socket = network_create_socket(network_socket_tcp);
 global.server = network_connect(socket, "127.0.0.1", 22566);
 if (global.server < 0) {
-	global.server = network_connect(socket, "25.48.104.187", 22566);
+	//global.server = network_connect(socket, "25.48.104.187", 22566);
 }
 global.isServer = false;
 

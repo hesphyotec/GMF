@@ -12,7 +12,7 @@
 			"cspd" : 5
 		},
 		"attacks" : ["slash", "jab"],
-		"spells" : ["heal"],
+		"spells" : ["heal", "chop"],
 		"buffs": [],
 		"debuffs": [],
 		"sprite" : "sprBattlePlayerT",
@@ -38,7 +38,7 @@
 			"cspd" : 3
 		},
 		"attacks" : ["slash", "jab"],
-		"spells" : ["taunt"],
+		"spells" : ["taunt", "hackdown"],
 		"buffs": [],
 		"debuffs": [],
 		"sprite" : "sprBattleVetT",
@@ -120,7 +120,7 @@
 			"cspd" : 7
 		},
 		"attacks" : ["knifeToss", "stab"],
-		"spells" : ["cloak"],
+		"spells" : ["cloak", "knifeSpam"],
 		"buffs": [],
 		"debuffs": [],
 		"sprite" : "sprBattleAssassinT",

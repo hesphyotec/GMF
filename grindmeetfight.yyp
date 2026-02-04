@@ -94,7 +94,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.14.2.213",
+    "IDEVersion":"2024.14.3.217",
   },
   "name":"grindmeetfight",
   "resources":[
@@ -146,6 +146,7 @@
     {"id":{"name":"clientLog","path":"scripts/clientLog/clientLog.yy",},},
     {"id":{"name":"createButton","path":"scripts/createButton/createButton.yy",},},
     {"id":{"name":"endNetBattle","path":"scripts/endNetBattle/endNetBattle.yy",},},
+    {"id":{"name":"getPath","path":"scripts/getPath/getPath.yy",},},
     {"id":{"name":"nbStartTurn","path":"scripts/nbStartTurn/nbStartTurn.yy",},},
     {"id":{"name":"scrCheckEffects","path":"scripts/scrCheckEffects/scrCheckEffects.yy",},},
     {"id":{"name":"scrCheckTeam","path":"scripts/scrCheckTeam/scrCheckTeam.yy",},},
