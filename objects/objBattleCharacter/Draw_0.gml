@@ -28,6 +28,20 @@
 			var manaCol = c_aqua;
 			scrDrawArc(x, y, manaRatio, 1, manaCol, manaRad, 1, .4, -15, 4);
 		}
+		
+		if(struct_exists(character, "blood")){
+			var bloodRatio = clamp(character[$"blood"] / character.stats[$"maxblood"], 0, 1);
+			var bloodRad = 16;
+			var bloodCol = c_purple;
+			scrDrawArc(x, y, bloodRatio, 1, bloodCol, bloodRad, 1, .4, -15, 4);
+		}
+		
+		if(struct_exists(character, "rage")){
+			var rageRatio = clamp(character[$"rage"] / character.stats[$"maxrage"], 0, 1);
+			var rageRad = 16;
+			var rageCol = c_orange;
+			scrDrawArc(x, y, rageRatio, 1, rageCol, rageRad, 1, .4, -15, 4);
+		}
 	
 		if(struct_exists(character, "energy") && struct_exists(character.stats, "maxenergy")){
 			var energyRatio = clamp(character[$"energy"] / character.stats[$"maxenergy"], 0, 1);

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"calcHeal",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"calcHeal",
+  "parent":{
+    "name":"Actions",
+    "path":"folders/Scripts/Battle/Actions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

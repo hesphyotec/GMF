@@ -8,13 +8,13 @@ function getPath(startPos, endPos){
 	if (isValidPos(endPos[0], endPos[1])){
 		endNode = new gridNode(endPos[0], endPos[1]);
 	} else {
-		show_message("Invalid position" + string(endPos));
+		//show_message("Invalid position" + string(endPos));
 		return nodePath;	
 	}
 	
 	if (!endNode.isFree()){
-		show_message("Position occupied" + string(endPos));
-		return startPos;	
+		//show_message("Position occupied" + string(endPos));
+		return nodePath;	
 	}
 	
 	if(startPos[0] == endPos[0] && startPos[1] == endPos[1]){
@@ -173,11 +173,9 @@ function gridNode(xx, yy) constructor {
 		g = 10000;
 		h = 10000;
 		isFree = function(){
-			return true//collision_point(px, py, objWall, false, true);
+			return !collision_point(px + TILE_SIZE / 2, py - TILE_SIZE / 2, objWall, false, true);
 		}
-		pair = [xx, yy];
 		prev = undefined;
-		next = undefined;
 }
 
 function getManDist(nodeA, nodeB){

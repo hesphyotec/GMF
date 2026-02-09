@@ -4,50 +4,49 @@ dir = Dirs.DOWN;
 mapSpace = [floor(x / TILE_SIZE), floor(y / TILE_SIZE)];
 moveTarget = variable_clone(mapSpace);
 moveQueue = [variable_clone(mapSpace),variable_clone(mapSpace)];
-incomingMoves = [];
+movePath = ds_list_create();
 companions = [];
 inMenu = false;
 
 receiveMove = function(mTar){
 	if (DEBUG_ENABLED) show_debug_message("Move Received");
-	if (!moving){
+	movePath = getPath(mapSpace, mTar);
+}
+	
+playerMove = function(){
+	if (!ds_list_empty(movePath) && !moving){
+		var node = ds_list_find_value(movePath, 0);
+		ds_list_delete(movePath, 0);
+		moveTarget = [node.gx, node.gy];
+	
+		if (moveTarget[0] < mapSpace[0]){
+			dir = Dirs.LEFT;
+		} else if (moveTarget[0] > mapSpace[0]){
+			dir = Dirs.RIGHT;
+		} else if (moveTarget[1] < mapSpace[1]){
+			dir = Dirs.UP;
+		} else if (moveTarget[1] > mapSpace[1]){
+			dir = Dirs.DOWN;
+		}
+	
+		switch(dir){
+			case Dirs.UP:
+				sprite_index = sprPlayerTempUp;
+				break;
+			case Dirs.DOWN:
+				sprite_index = sprPlayerTempDown;
+				break;
+			case Dirs.LEFT:
+				sprite_index = sprPlayerTempLeft;
+				break;
+			case Dirs.RIGHT:
+				sprite_index = sprPlayerTempRight;
+				break;
+		}
+		moveComps();
 		moving = true;
 	}
 	
-	array_push(incomingMoves, mTar);
-	if (mTar[0] < mapSpace[0]){
-		dir = Dirs.LEFT;
-	} else if (mTar[0] > mapSpace[0]){
-		dir = Dirs.RIGHT;
-	} else if (mTar[1] < mapSpace[1]){
-		dir = Dirs.UP;
-	} else if (mTar[1] > mapSpace[1]){
-		dir = Dirs.DOWN;
-	}
-	
-	switch(dir){
-		case Dirs.UP:
-			sprite_index = sprPlayerTempUp;
-			break;
-		case Dirs.DOWN:
-			sprite_index = sprPlayerTempDown;
-			break;
-		case Dirs.LEFT:
-			sprite_index = sprPlayerTempLeft;
-			break;
-		case Dirs.RIGHT:
-			sprite_index = sprPlayerTempRight;
-			break;
-	}
-	moveComps();
-}
-playerMove = function(){
-	if (mapSpace[0] == moveTarget[0] && mapSpace[1] == moveTarget[1]){
-		if (array_length(incomingMoves) > 0){
-			moveTarget = variable_clone(incomingMoves[0]);
-			array_delete(incomingMoves, 0, 1);
-		}
-	}
 	if (moving){
 		image_speed = 1;
 		if(dir == Dirs.LEFT || dir == Dirs.RIGHT){

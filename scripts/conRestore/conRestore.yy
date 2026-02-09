@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"conRestore",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"conRestore",
+  "parent":{
+    "name":"Actions",
+    "path":"folders/Scripts/Battle/Actions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -170,27 +170,7 @@ doSpell = function(ftr, spl, tar, team, str, final){
 }
 
 applyEffects = function(ftr, spEffs, tar){
-	var effData = global.data.effects;
-	for (var i = 0; i < array_length(spEffs); ++i){
-		if (variable_struct_exists(effData[$"buffs"], spEffs[i])){
-			var buff = variable_clone(struct_get(effData[$"buffs"], spEffs[i]));
-			if (DEBUG_ENABLED) show_debug_message("[BController] Retrieved Buff: " + string(struct_get(effData[$"buffs"], spEffs[i])) + " : " + spEffs[i]);
-			if(scrCheckEffects(tar[$"buffs"], buff)){
-				array_delete(tar[$"buffs"], array_get_index(tar[$"buffs"], buff), 1);
-			}
-			buff.duration *= fps;
-			array_push(tar[$"buffs"], buff);
-			if (DEBUG_ENABLED) show_debug_message("[BController] Applied Buff: " + spEffs[i]);
-		} else if (variable_struct_exists(effData[$"debuffs"], spEffs[i])){
-			var debuff = variable_clone(struct_get(effData[$"debuffs"], spEffs[i]));
-			if(scrCheckEffects(tar[$"debuffs"], debuff)){
-				array_delete(tar[$"debuffs"], array_get_index(tar[$"debuffs"], debuff), 1);
-			}
-			debuff.duration *= fps;
-			debuff.source = ftr;
-			array_push(tar[$"debuffs"], debuff);
-		}
-	}
+	conAppEffects(ftr, spEffs, tar);
 }
 
 doItem = function(ftr, item, tar, team, final){
@@ -235,49 +215,7 @@ endBattle = function(victory){
 }
 
 doDamage = function(ftr, target, action, str = 1){
-	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(ftr[$"stats"]) + " : " + action[$"scale"]);
-	var dmgMult = ceil(struct_get(ftr[$"stats"], action[$"scale"])/5);
-	var resistMult = 1.0;
-	var tarResMult = struct_get(target[$"resistances"], action[$"scale"]);
-	var bonusMult = 0.0;
-	if (struct_exists(target, "buffs") && struct_exists(target, "debuffs")){
-		if (array_length(target[$"buffs"]) > 0){
-			for (var i = 0; i < array_length(target[$"buffs"]); ++i){
-				var buffData = target[$"buffs"][i];
-				if (struct_exists(buffData, "abil") && struct_exists(buffData, "pow") && struct_exists(buffData, "type")){
-					if (buffData[$"abil"] == "resist"){
-						if (buffData[$"type"] == action[$"scale"]){
-							bonusMult += buffData[$"pow"];
-						}
-					}
-				} else {
-					if (DEBUG_ENABLED) show_debug_message("[BController] Error: Malformed Buff Struct!");	
-				}
-			}
-		}
-		if (array_length(target[$"debuffs"]) > 0){
-			for (var i = 0; i < array_length(target[$"debuffs"]); ++i){
-				var debuffData = target[$"debuffs"][i];
-				if (struct_exists(debuffData, "abil") && struct_exists(debuffData, "pow") && struct_exists(debuffData, "type")){
-					if (debuffData[$"abil"] == "weakness"){
-						if (debuffData[$"type"] == action[$"scale"]){
-							bonusMult -= debuffData[$"pow"];
-						}
-					}
-				} else {
-					if (DEBUG_ENABLED) show_debug_message("[BController] Error: Malformed Debuff Struct!");	
-				}
-			}
-		}
-	}
-	resistMult = 1.0 - (tarResMult + bonusMult);
-	if (DEBUG_ENABLED) show_debug_message("[BController] " +string(action[$"damage"]) + " : " + string(dmgMult) + " : " + string(resistMult) + " : " + string(action));
-	var dmg = 0;
-	if(struct_exists(action, "damage")){
-		dmg = ceil((action[$"damage"] * dmgMult) * (resistMult) * str);
-	} else if (struct_exists(action, "pow")){
-		dmg = ceil((action[$"pow"] * dmgMult) * (resistMult) * str);
-	}
+	var dmg = calcDamage(ftr, target, action, str);
 	target.hp -= dmg;
 	if (DEBUG_ENABLED) show_debug_message("[BController]" + string(target[$"name"]) + " takes " + string(dmg) + "damage.");
 	var isPlayer = array_contains(battleInfo.team1, target);
@@ -361,20 +299,23 @@ doNetDowned = function(ftr){
 }
 
 doHeal = function(ftr, target, act){
-	var heal = 0;
-	if (struct_exists(act, "heal")){	//If is a spell
-		heal = act[$"heal"] * (struct_get(ftr[$"stats"], act[$"scale"]) div 2);
-	} else {		// If is an item
-		heal = act[$"pow"];
-	}
-	target.hp = min(target.stats.maxhp, target.hp + heal);
+	var newHp = calcHeal(ftr, target, act);
+	target.hp = newHp
 	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(target[$"name"]) + " heals " + string(heal) + "hp.");
 }
 
 doRestore = function(ftr, target, act){
 	var res = act[$"pow"];
-	target.mana = min(target.stats.maxmana, target.mana + res);
-	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(target[$"name"]) + " regained " + string(res) + "mana.");
+	if (struct_exists(target, "mana")){
+		target.mana = min(target.stats.maxmana, target.mana + res);
+	} else if (struct_exists(target, "blood")){
+		target.blood = min(target.stats.maxblood, target.blood + res);
+	} else if (struct_exists(target, "rage")){
+		target.rage = min(target.stats.maxrage, target.rage + res);
+	} else if (struct_exists(target, "energy")){
+		target.energy = min(target.stats.maxenergy, target.energy + res);
+	}
+	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(target[$"name"]) + " regained " + string(res) + " resource.");
 }
 
 doBuff = function(ftr, bff, ind){

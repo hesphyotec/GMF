@@ -275,6 +275,86 @@
 			"action" : "multiAim",
 			"speed" : 1,
 			"hits" : 5
+		},
+		"bloodHeal" : {
+			"name" : "Mend",
+			"heal" : 40,
+			"scale" : "int",
+			"cost" : 15,
+			"effects" : [],
+			"sound" : "Heal",
+			"sprite" : "sprSlash",
+			"type" : "restoreSpell",
+			"desc" : "Stitch them back together.",
+			"action" : "instant"
+		},
+		"smallDrain" : {
+			"name" : "Drain I",
+			"damage" : 15,
+			"scale" : "int",
+			"cost" : -15,
+			"sound" : "Lightning",
+			"sprite" : "sprLightning",
+			"type" : "dmgSpell",
+			"desc" : "Steal a little bit of their blood.",
+			"action" : "instant",
+		},
+		"seethe" : {
+			"name" : "seethe",
+			"scale" : "dex",
+			"cost" : 20,
+			"effects" : ["strUp1"],
+			"sound" : "Heal",
+			"sprite" : "sprLightning",
+			"type" : "selfSpell",
+			"desc" : "Rage as power.",
+			"action" : "instant"
+		},
+		"minorHex" : {
+			"name" : "Minor Hex",
+			"scale" : "int",
+			"cost" : 15,
+			"effects" : ["intWeakness1"],
+			"sound" : "Lightning",
+			"sprite" : "sprLightning",
+			"type" : "debuffSpell",
+			"desc" : "Slightly lowers magic resistance.",
+			"action" : "instant"
+		},
+		"block" : {
+			"name" : "Block",
+			"scale" : "dex",
+			"effects" : ["block"],
+			"sound" : "Heal",
+			"sprite" : "sprLightning",
+			"type" : "selfSpell",
+			"desc" : "Blocks the next attack.",
+			"action" : "instant"
+		},
+		"minorLeech" : {
+			"name" : "Minor Leech",
+			"scale" : "int",
+			"cost" : 10,
+			"effects" : ["leech1"],
+			"sound" : "Heal",
+			"sprite" : "sprLightning",
+			"type" : "buffSpell",
+			"desc" : "Blood on hit.",
+			"action" : "instant"
+		},
+		"bloodLash" : {
+			"name" : "Blood Lash",
+			"damage" : 15,
+			"scale" : "int",
+			"cost" : 1,
+			"effects" : [],
+			"sound" : "Lightning",
+			"sprite" : "sprLightning",
+			"type" : "dmgSpell",
+			"desc" : "A whip of blood.",
+			"action" : "spellCharge",
+			"speed" : 1
 		}
+
 	}
 }

@@ -138,27 +138,7 @@ doSpell = function(ftr, spl, tar, team, str, final){
 }
 
 applyEffects = function(ftr, spEffs, tar){
-	var effData = global.data.effects;
-	for (var i = 0; i < array_length(spEffs); ++i){
-		if (variable_struct_exists(effData[$"buffs"], spEffs[i])){
-			var buff = variable_clone(struct_get(effData[$"buffs"], spEffs[i]));
-			if (DEBUG_ENABLED) serverLog("[BController] Retrieved Buff: " + string(struct_get(effData[$"buffs"], spEffs[i])) + " : " + spEffs[i]);
-			if(scrCheckEffects(tar[$"buffs"], buff)){
-				array_delete(tar[$"buffs"], array_get_index(tar[$"buffs"], buff), 1);
-			}
-			buff.duration *= fps;
-			array_push(tar[$"buffs"], buff);
-			if (DEBUG_ENABLED) serverLog("[BController] Applied Buff: " + spEffs[i]);
-		} else if (variable_struct_exists(effData[$"debuffs"], spEffs[i])){
-			var debuff = variable_clone(struct_get(effData[$"debuffs"], spEffs[i]));
-			if(scrCheckEffects(tar[$"debuffs"], debuff)){
-				array_delete(tar[$"debuffs"], array_get_index(tar[$"debuffs"], debuff), 1);
-			}
-			debuff.duration *= fps;
-			debuff.source = ftr;
-			array_push(tar[$"debuffs"], debuff);
-		}
-	}
+	conAppEffects(ftr, spEffs, tar);
 	var data = {
 		tar : tar
 	}
@@ -200,58 +180,20 @@ endBattle = function(){
 	instance_destroy(id);
 }
 
-doDamage = function(ftr, target, action, str = 1){
-	if (DEBUG_ENABLED) serverLog("[BController] " + string(ftr[$"stats"]) + " : " + action[$"scale"]);
-	var dmgMult = ceil(struct_get(ftr[$"stats"], action[$"scale"])/5);
-	var resistMult = 1.0;
-	var tarResMult = struct_get(target[$"resistances"], action[$"scale"]);
-	var bonusMult = 0.0;
-	if (struct_exists(target, "buffs") && struct_exists(target, "debuffs")){
-		if (array_length(target[$"buffs"]) > 0){
-			for (var i = 0; i < array_length(target[$"buffs"]); ++i){
-				var buffData = target[$"buffs"][i];
-				if (struct_exists(buffData, "abil") && struct_exists(buffData, "pow") && struct_exists(buffData, "type")){
-					if (buffData[$"abil"] == "resist"){
-						if (buffData[$"type"] == action[$"scale"]){
-							bonusMult += buffData[$"pow"];
-						}
-					}
-				} else {
-					if (DEBUG_ENABLED) serverLog("[BController] Error: Malformed Buff Struct!");	
-				}
-			}
-		}
-		if (array_length(target[$"debuffs"]) > 0){
-			for (var i = 0; i < array_length(target[$"debuffs"]); ++i){
-				var debuffData = target[$"debuffs"][i];
-				if (struct_exists(debuffData, "abil") && struct_exists(debuffData, "pow") && struct_exists(debuffData, "type")){
-					if (debuffData[$"abil"] == "weakness"){
-						if (debuffData[$"type"] == action[$"scale"]){
-							bonusMult -= debuffData[$"pow"];
-						}
-					}
-				} else {
-					if (DEBUG_ENABLED) serverLog("[BController] Error: Malformed Debuff Struct!");	
-				}
-			}
-		}
-	}
-	resistMult = 1.0 - (tarResMult + bonusMult);
-	if (DEBUG_ENABLED) serverLog("[BController] " +string(action[$"damage"]) + " : " + string(dmgMult) + " : " + string(resistMult) + " : " + string(action));
-	var dmg = 0;
-	if(struct_exists(action, "damage")){
-		dmg = ceil((action[$"damage"] * dmgMult) * (resistMult) * str);
-	} else if (struct_exists(action, "pow")){
-		dmg = ceil((action[$"pow"] * dmgMult) * (resistMult) * str);
-	}
+doDamage = function(ftr, target, action, str){
+	var dmg = calcDamage(ftr, target, action, str);
 	target.hp -= dmg;
 	
 	var data = {
-		tar : target
+		tar : target,
+		fighter : ftr
 	}
 	
 	scrSendAllSock(method(data, function(socket){
 		scrNBUpdateChar(socket, tar);
+	}));
+	scrSendAllSock(method(data, function(socket){
+		scrNBUpdateChar(socket, fighter);
 	}));
 	
 	if (DEBUG_ENABLED) serverLog("[BController]" + string(target[$"name"]) + " takes " + string(dmg) + "damage.");
@@ -311,13 +253,8 @@ doDowned = function(ftr, target, team){
 }
 
 doHeal = function(ftr, target, act){
-	var heal = 0;
-	if (struct_exists(act, "heal")){	//If is a spell
-		heal = act[$"heal"] * (struct_get(ftr[$"stats"], act[$"scale"]) div 2);
-	} else {		// If is an item
-		heal = act[$"pow"];
-	}
-	target.hp = min(target.stats.maxhp, target.hp + heal);
+	var newHp = calcHeal(ftr, target, act);
+	target.hp = newHp;
 	var data = {
 		tar : target	
 	}
@@ -375,7 +312,7 @@ doDebuff = function(ftr, db, ind){
 		var debuff = struct_get(dbData, db);
 		if (struct_exists(debuff, "abil")){
 			if (debuff[$"abil"] == "damage"){
-				doDamage(ftr, ftr, debuff);
+				doDamage(ftr, ftr, debuff, 1);
 			}
 		}
 		if(--debuff[$"duration"] <= 0){

@@ -5,11 +5,7 @@ if (sprint){
 	spd = 2;	
 }
 
-if (global.server >= 0){
-	if ((up || left || right || down ) && !moving){
-		scrSendKey(global.server, up, down, left, right);
-	}
-}
+
 
 if (!inMenu){
 	playerMove();

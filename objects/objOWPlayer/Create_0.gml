@@ -50,6 +50,11 @@ playerMove = function(){
 				moving = false;	
 			}
 		}
+		if (moving){
+			if (global.server >= 0){
+				scrSendKey(global.server, up, down, left, right);
+			}
+		}
 	}
 	
 	if(lClick){
@@ -66,6 +71,24 @@ playerMove = function(){
 		if (moveTarget[1] != mapSpace[1]){
 			dir = (moveTarget[1] < mapSpace[1]) ? Dirs.UP : Dirs.DOWN
 		}
+		var spriteDir = "Down";
+		
+		switch(dir){
+			case Dirs.UP:
+				spriteDir = "Up";
+				break;
+			case Dirs.DOWN:
+				spriteDir = "Down";
+				break;
+			case Dirs.LEFT:
+				spriteDir = "Left";
+				break;
+			case Dirs.RIGHT:
+				spriteDir = "Right";
+				break;
+		}
+		sprite_index = asset_get_index(baseSpriteName + spriteDir);
+		moveComps();
 		moving = true;
 	}
 	
@@ -93,45 +116,46 @@ playerMove = function(){
 }
 
 receiveMove = function(mTar){
-	if (DEBUG_ENABLED) show_debug_message("Move Received");
-	var badMove = true;
-	for(var i = 0; i < array_length(moveQueue); ++i){
-		if(mTar[0] == moveQueue[i][0] && mTar[1] == moveQueue[i][1]){
-			badMove = false;
-		}
-	}
-	if (mTar[0] == moveTarget[0] && mTar[1] == moveTarget[1]) badMove = false;
-	if (badMove){
-		if (DEBUG_ENABLED) show_debug_message("Correcting move!");
-		if (!moving){
-			moving = true;
-		}
-		moveTarget = variable_clone(mTar);
-		if (mTar[0] < mapSpace[0]){
-			dir = Dirs.LEFT;
-		} else if (mTar[0] > mapSpace[0]){
-			dir = Dirs.RIGHT;
-		} else if (mTar[1] < mapSpace[1]){
-			dir = Dirs.UP;
-		} else if (mTar[1] > mapSpace[1]){
-			dir = Dirs.DOWN;
-		}
-		switch(dir){
-			case Dirs.UP:
-				sprite_index = sprPlayerTempUp;
-				break;
-			case Dirs.DOWN:
-				sprite_index = sprPlayerTempDown;
-				break;
-			case Dirs.LEFT:
-				sprite_index = sprPlayerTempLeft;
-				break;
-			case Dirs.RIGHT:
-				sprite_index = sprPlayerTempRight;
-				break;
-		}
-		moveComps();
-	}
+	//if (DEBUG_ENABLED) show_debug_message("Move Received");
+	//var badMove = true;
+	//for(var i = 0; i < array_length(moveQueue); ++i){
+	//	if(mTar[0] == moveQueue[i][0] && mTar[1] == moveQueue[i][1]){
+	//		badMove = false;
+	//	}
+	//}
+	//if (mTar[0] == moveTarget[0] && mTar[1] == moveTarget[1]) badMove = false;
+	//if (badMove){
+	//	if (DEBUG_ENABLED) show_debug_message("Correcting move!");
+	//	if (!moving){
+	//		moving = true;
+	//	}
+	//	moveTarget = variable_clone(mTar);
+	//	if (mTar[0] < mapSpace[0]){
+	//		dir = Dirs.LEFT;
+	//	} else if (mTar[0] > mapSpace[0]){
+	//		dir = Dirs.RIGHT;
+	//	} else if (mTar[1] < mapSpace[1]){
+	//		dir = Dirs.UP;
+	//	} else if (mTar[1] > mapSpace[1]){
+	//		dir = Dirs.DOWN;
+	//	}
+	//	switch(dir){
+	//		case Dirs.UP:
+	//			sprite_index = sprPlayerTempUp;
+	//			break;
+	//		case Dirs.DOWN:
+	//			sprite_index = sprPlayerTempDown;
+	//			break;
+	//		case Dirs.LEFT:
+	//			sprite_index = sprPlayerTempLeft;
+	//			break;
+	//		case Dirs.RIGHT:
+	//			sprite_index = sprPlayerTempRight;
+	//			break;
+	//	}
+	//	moveComps();
+	//}
+	movePath = getPath(mapSpace, mTar);
 }
 
 approach = function(_start, _tar, _step){
@@ -143,7 +167,7 @@ approach = function(_start, _tar, _step){
 moveComps = function(){
 	updateMoves();
 	for(var _i = 0; _i < array_length(companions); ++_i){
-		companions[_i].initMove(moveQueue[_i], spd);
+		companions[_i].movePath = getPath(companions[_i].mapSpace, moveQueue[_i]);
 	}
 }
 

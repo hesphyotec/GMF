@@ -26,6 +26,27 @@
 			"abil" : "meditate",
 			"pow" : 25,
 			"duration" : 2			
+		},
+		"block" : {
+			"name" : "Blocking",
+			"abil" : "block",
+			"duration" : 10,
+			"icon" : "sprBStrRes1"	
+		},
+		"leech1" : {
+			"name" : "Leech I",
+			"abil" : "leech",
+			"pow" : 0.2,
+			"duration" : 30,
+			"icon" : "sprBStrRes1"
+		},
+		"strUp1" : {
+			"name" : "Strength Increase I",
+			"abil" : "enhance",
+			"type" : "str",
+			"pow" : 1.5,
+			"duration" : 60,
+			"icon" : "sprBStrRes1"
 		}
 	},
 	"debuffs" : {
@@ -35,7 +56,7 @@
 			"pow" : 5,
 			"type" : "int",
 			"scale" : "int",
-			"duration" : 3,
+			"duration" : 15,
 			"icon" : "sprDbBurn1"
 		},
 		"taunted" : {
@@ -57,7 +78,15 @@
 			"abil" : "weakness",
 			"type" : "str",
 			"pow" : 0.5,
-			"duration" : 3,
+			"duration" : 15,
+			"icon" : "sprDbStrWeak1"
+		},
+		"intWeakness1" : {
+			"name" : "Magical Weakness I",
+			"abil" : "weakness",
+			"type" : "int",
+			"pow" : 0.5,
+			"duration" : 15,
 			"icon" : "sprDbStrWeak1"
 		},
 		"recharge" : {

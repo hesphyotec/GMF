@@ -189,6 +189,12 @@ doAction = function(action, actor, target, team, isSpell, isItem){
 			if(struct_exists(fighter, "mana")){
 				fighter[$"mana"] -= spell[$"cost"];
 			}
+			if(struct_exists(fighter, "blood")){
+				fighter[$"blood"] -= spell[$"cost"];
+			}
+			if(struct_exists(fighter, "rage")){
+				fighter[$"rage"] -= spell[$"rage"];
+			}
 			if(struct_exists(fighter, "energy")){
 				fighter[$"energy"] -= spell[$"cost"];
 			}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"calcDamage",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"calcDamage",
+  "parent":{
+    "name":"Actions",
+    "path":"folders/Scripts/Battle/Actions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
