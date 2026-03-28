@@ -1,0 +1,2 @@
+tSceneInfo = [];
+target = objOWPlayer;

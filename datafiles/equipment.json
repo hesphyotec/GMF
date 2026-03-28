@@ -1,0 +1,13 @@
+{
+    "chestpiece1" : {
+        "name" : "Leather Chestpiece",
+        "pResist" : 0.1,
+        "hpBonus" : 25,
+        "sprite"   : "sprChestpiece1"
+    },
+    "knife1" : {
+        "name" : "Long Knife",
+        "strBonus" : 0.5,
+        "sprite"   : "sprChestpiece1"
+    }
+}

@@ -9,14 +9,23 @@ moveQueue = [variable_clone(mapSpace), variable_clone(mapSpace)];
 moveTarget = variable_clone(mapSpace);
 baseSpriteName = "sprPlayerTemp";
 movePath = ds_list_create();
+idleAnim = false;
 
 playerMove = function(){
 	if ((up || left || right || down ) && !moving){
 		moving = true;
 		if (up){
 			dir = Dirs.UP;
-			sprite_index = asset_get_index(baseSpriteName + "Up");
+			if (asset_get_index(baseSpriteName + "Up")){
+				sprite_index = asset_get_index(baseSpriteName + "Up");
+			}
 			if (place_empty(x, y - TILE_SIZE, objWall)){
+				if (place_meeting(x, y - TILE_SIZE, objWallWrapper)){
+					moveTarget[1] = room_height/TILE_SIZE;
+					var offset = y - objCamera.y;
+					y = room_height;
+					objCamera.y = y - offset;
+				}
 				moveTarget[1]--;
 				moveComps();
 			} else {
@@ -24,8 +33,16 @@ playerMove = function(){
 			}
 		} else if (left){
 			dir = Dirs.LEFT;
-			sprite_index = asset_get_index(baseSpriteName + "Left");
+			if (asset_get_index(baseSpriteName + "Left")){
+				sprite_index = asset_get_index(baseSpriteName + "Left");
+			}
 			if (place_empty(x - TILE_SIZE, y, objWall)){
+				if (place_meeting(x - TILE_SIZE, y, objWallWrapper)){
+					moveTarget[0] = room_width/TILE_SIZE;
+					var offset = x - objCamera.x;
+					x = room_width;
+					objCamera.x = x - offset;
+				}
 				moveTarget[0]--;
 				moveComps();
 			} else {
@@ -33,8 +50,16 @@ playerMove = function(){
 			}
 		} else if (right){
 			dir = Dirs.RIGHT;
-			sprite_index = asset_get_index(baseSpriteName + "Right");
+			if (asset_get_index(baseSpriteName + "Right")){
+				sprite_index = asset_get_index(baseSpriteName + "Right");
+			}
 			if (place_empty(x + TILE_SIZE, y, objWall)){
+				if (place_meeting(x + TILE_SIZE, y, objWallWrapper)){
+					moveTarget[0] = 0;
+					var offset = x - objCamera.x;
+					x = 0;
+					objCamera.x = x - offset;
+				}
 				moveTarget[0]++;
 				moveComps();
 			} else {
@@ -42,8 +67,16 @@ playerMove = function(){
 			}
 		} else if (down){
 			dir = Dirs.DOWN;
-			sprite_index = asset_get_index(baseSpriteName + "Down");
+			if (asset_get_index(baseSpriteName + "Down")){
+				sprite_index = asset_get_index(baseSpriteName + "Down");
+			}
 			if (place_empty(x, y + TILE_SIZE, objWall)){
+				if (place_meeting(x, y + TILE_SIZE, objWallWrapper)){
+					moveTarget[1] = 0;
+					var offset = y - objCamera.y;
+					y = 0;
+					objCamera.y = y - offset;
+				}
 				moveTarget[1]++;
 				moveComps();
 			} else {
@@ -87,7 +120,9 @@ playerMove = function(){
 				spriteDir = "Right";
 				break;
 		}
-		sprite_index = asset_get_index(baseSpriteName + spriteDir);
+		if (asset_get_index(baseSpriteName + spriteDir)){
+			sprite_index = asset_get_index(baseSpriteName + spriteDir);
+		}
 		moveComps();
 		moving = true;
 	}
@@ -110,8 +145,12 @@ playerMove = function(){
 		}
 		mapSpace = [floor(x / TILE_SIZE), floor(y / TILE_SIZE)];
 	} else {
-		image_index = 0;
-		image_speed = 0;
+		if (!idleAnim){
+			image_index = 0;
+			image_speed = 0;
+		} else {
+			image_speed = 1;
+		}
 	}
 }
 
@@ -199,6 +238,10 @@ playerInteract = function(){
 		}
 		if (place_meeting(toCheckx, toChecky, objNetPlayer)){
 			scrInitNetBattle(global.server);
+		}
+		if (place_meeting(toCheckx, toChecky, objPickup)){
+			var item = instance_place(toCheckx, toChecky, objPickup);
+			item.onInteract(id);
 		}
 	}
 }

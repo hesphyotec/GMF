@@ -216,5 +216,88 @@
 			]
 		}
 
+	},
+	"narration" : {
+		"prologue1" : {
+			"dialogue" : [
+				"She's crying."
+			],
+			"choices" : [
+				"Touch her shoulder",
+				"Do nothing"
+			],
+			"result" : [
+				{
+					"op" : "nextDiag",
+					"speaker" : "narration",
+					"line" : "prologue1a",
+					"src" : "objLunaTut"
+				},
+				{
+					"op" : "nextDiag",
+					"speaker" : "narration",
+					"line" : "prologue1b",
+					"src" : "objLunaTut"
+				}
+			]
+		},
+		"prologue1a" : {
+			"dialogue" : [
+					"You reach forwards and place your hand on her shoulder.",
+					"Her skin is like ice."
+				],
+			"csTrig" : "prologue1"
+		},
+		"prologue1b" : {
+			"dialogue" : [
+					"You stare blankly at the girl.",
+					"The sun sinks into the creases of her matted black hair."
+				]
+		},
+		"prologue2" : {
+			"dialogue" : [
+				"She is staring at you."
+			],
+			"choices" : [
+				"Approach Her",
+				"Say Something",
+				"Do nothing"
+			],
+			"result" : [
+				{
+					"op" : "trigCs",
+					"csId" : "prologue2"
+				},
+				{
+					"op" : "nextDiag",
+					"speaker" : "narration",
+					"line" : "prologue2b",
+					"src" : "objLunaTut"
+				},
+				{
+					"op" : "nextDiag",
+					"speaker" : "narration",
+					"line" : "prologue2c",
+					"src" : "objLunaTut"
+				}
+			]
+		},
+		"prologue2b" : {
+			"dialogue" : [
+					"You think of something to say, but your head is empty."
+				],
+			"nextDiag" : {
+				"speaker" : "narration",
+				"line" : "prologue2",
+				"src" : "objLunaTut"
+			}
+		},
+		"prologue2c" : {
+			"dialogue" : [
+					"You stare back."
+				],
+			"csTrig" : "prologue2alt"
+		}
+
 	}
 }

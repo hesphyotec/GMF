@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"createOWScreenFadeOut",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"createOWScreenFadeOut",
+  "parent":{
+    "name":"Graphical",
+    "path":"folders/Scripts/Graphical.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

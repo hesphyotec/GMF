@@ -28,8 +28,8 @@
   "nineSlice":null,
   "origin":6,
   "parent":{
-    "name":"Characters",
-    "path":"folders/Sprites/Temp/Characters.yy",
+    "name":"Imp Player",
+    "path":"folders/Sprites/Temp/Characters/Imp Player.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

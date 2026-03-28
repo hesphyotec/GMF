@@ -1,0 +1,1 @@
+scriptExecuteNArgs(currScene[0], currSceneArray);

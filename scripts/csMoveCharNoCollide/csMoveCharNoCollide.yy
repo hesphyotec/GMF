@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"csMoveCharNoCollide",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"csMoveCharNoCollide",
+  "parent":{
+    "name":"Cutscenes",
+    "path":"folders/Scripts/Cutscenes.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

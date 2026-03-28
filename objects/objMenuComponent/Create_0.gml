@@ -1,4 +1,4 @@
-width = 0;
+sndwidth = 0;
 height = 0;
 
 xPos = 0;
@@ -21,6 +21,7 @@ active = true;
 master = undefined;
 
 a = 1;
+color = c_white;
 
 slideVal = 1.0;
 
@@ -96,6 +97,12 @@ onDraw = function(){
 			break;
 		case GUI.SLIDER:
 			drawSlider();
+			break;
+		case GUI.INVCONTAINER:
+			drawInvContainer();
+			break;
+		case GUI.INVDRAGBOX:
+			drawInvDragBox();
 			break;
 	}
 	draw_set_alpha(1);
@@ -191,4 +198,27 @@ drawSlider = function(){
 	draw_set_halign(fa_left);
 	draw_set_valign(fa_bottom);
 	draw_set_colour(c_white);
+}
+
+drawInvContainer = function(){
+	active = false;
+	draw_sprite(sprite_index, image_index, xPos, yPos);
+	var charSprite = asset_get_index(data.r_char.sprite);
+	draw_sprite(charSprite, 0, xPos + width - (sprite_get_width(charSprite)), yPos + (sprite_get_width(charSprite)));
+}
+
+drawInvDragBox = function(){
+	if (hovered){
+		color = c_yellow;	
+	} else {
+		color = c_white;	
+	}
+	draw_set_alpha(1);
+	draw_set_color(color);
+	draw_rectangle(xPos, yPos, xPos + width, yPos + height, true);
+	draw_set_colour(c_white);
+	draw_set_alpha(1);
+	if (data.item != undefined){
+		draw_sprite(sprite_index, image_index, xPos + (sprite_width/2), yPos + (sprite_height));
+	}
 }

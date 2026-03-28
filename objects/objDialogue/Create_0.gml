@@ -32,7 +32,19 @@ writeDiag = function(){
 			audio_play_sound(sndChoose, 1, false, global.masVolume * global.effVolume);
 			textProgress = 0;
 			if ((currentLine + 1) >= array_length(lines)){
-				endDiag();
+				if (struct_exists(currentDiag, "csTrig")){
+					var cs = getCutscene(currentDiag.csTrig);
+					createCutscene(cs);
+					endDiag();
+				} else if (struct_exists(currentDiag, "nextDiag")){
+					var speaker = struct_get(dialogueData, currentDiag.nextDiag.speaker);
+					var line = currentDiag.nextDiag.line;
+					var src = asset_get_index(currentDiag.nextDiag.src);
+					endDiag();
+					loadDiag(speaker, line, src);
+				} else {
+					endDiag();	
+				}
 			} else {
 				++currentLine;	
 			}
@@ -53,6 +65,16 @@ writeDiag = function(){
 					endDiag();
 				} else if (result[$"op"] == "endDiag"){
 					endDiag();
+				} else if (result.op == "trigCs"){
+					var cs = getCutscene(result.csId);
+					endDiag();
+					createCutscene(cs);
+				} else if (result.op == "nextDiag"){
+					var speaker = struct_get(dialogueData, result.speaker);
+					var line = result.line;
+					var src = asset_get_index(result.src);
+					endDiag();
+					loadDiag(speaker, line, src);
 				}
 			}
 		}
@@ -64,7 +86,11 @@ displayDiag = function(){
 	draw_sprite(sprDiag,0,display_get_gui_width()/2 - 120,display_get_gui_height());
 	var shownText = string_copy(lines[currentLine], 1, textProgress);
 	draw_set_font(fntBattle);
+	draw_set_halign(fa_left);
+	draw_set_valign(fa_top);
 	draw_text_ext(display_get_gui_width()/2 - 108, display_get_gui_height()-64, shownText, 16, 220);
+	draw_set_halign(fa_left);
+	draw_set_halign(fa_top);
 	draw_set_color(c_white);
 	
 	if (textProgress == string_length(lines[currentLine])){
@@ -79,6 +105,10 @@ displayDiag = function(){
 }
 
 endDiag = function(){
+	//if (variable_instance_exists(source, "interactCd")){
+		source.interactCd = true;
+		source.alarm[0] = 15;
+	//}
 	lines = [];
 	choices = [];
 	active = false;
@@ -88,5 +118,5 @@ endDiag = function(){
 	results = [];
 	selection = 0;
 	result = undefined;
-	objOWPlayer.alarm[0] = 15; // Leaves menu
+	objOWPlayer.inMenu = false; // Leaves menu
 }

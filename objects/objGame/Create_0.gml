@@ -21,12 +21,18 @@ global.data = {
 	moves		: scrLoadJSON("moves.json"),
 	companions	: scrLoadJSON("companions.json"),
 	effects		: scrLoadJSON("effects.json"),
-	items		: scrLoadJSON("items.json")
+	items		: scrLoadJSON("items.json"),
+	anims		: scrLoadJSON("anims.json"),
+	equipment	: scrLoadJSON("equipment.json"),
+	cutscenes	: scrLoadJSON("cutscenes.json")
 };
 
 global.map = undefined;
 global.players = [];
 global.playerData = [];
+
+storyPlayer = undefined;
+storyPlayerInfo = undefined;
 
 generatePlayer = function(sock, race){
 	var player = instance_create_layer(0, 0, "Instances", objPlayer);
@@ -74,4 +80,17 @@ generatePlayer = function(sock, race){
 	}
 	
 	return player;
+}
+
+storyGenPlayer = function(){
+	var player = instance_create_layer(0, 0, "Instances", objPlayer);
+	player.persistent = true;
+	array_insert(global.players, 0, player);
+	var playerInfo = {
+		stats		: player.battlePlayer,
+		inventory	: [global.data.items[$"hppotion"], global.data.items[$"manapotion"]]
+	}
+	array_insert(global.playerData, 0, playerInfo);
+	storyPlayer = player;
+	storyPlayerInfo = playerInfo;
 }

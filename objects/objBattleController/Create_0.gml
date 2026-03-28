@@ -211,6 +211,7 @@ endBattle = function(victory){
 		show_message("You lost!");
 		// Send back to last town	
 	}
+	audio_stop_all();
 	room_goto(rmHCastleTest);
 }
 
@@ -301,7 +302,7 @@ doNetDowned = function(ftr){
 doHeal = function(ftr, target, act){
 	var newHp = calcHeal(ftr, target, act);
 	target.hp = newHp
-	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(target[$"name"]) + " heals " + string(heal) + "hp.");
+	//if (DEBUG_ENABLED) show_debug_message("[BController] " + string(target[$"name"]) + " heals " + string(heal) + "hp.");
 }
 
 doRestore = function(ftr, target, act){

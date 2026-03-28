@@ -45,6 +45,7 @@ function calcDamage(ftr, target, action, str = 1){
 	resistMult = 1.0 - (tarResMult + bonusMult);
 	if (DEBUG_ENABLED) show_debug_message("[BController] " +string(action[$"damage"]) + " : " + string(dmgMult) + " : " + string(resistMult) + " : " + string(action));
 	var dmg = 0;
+	
 	if(struct_exists(action, "damage")){
 		dmg = ceil((action[$"damage"] * dmgMult) * (resistMult) * str);
 	} else if (struct_exists(action, "pow")){

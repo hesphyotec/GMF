@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"getPathNoCollide",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"getPathNoCollide",
+  "parent":{
+    "name":"Overworld",
+    "path":"folders/Scripts/Overworld.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

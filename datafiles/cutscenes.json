@@ -1,0 +1,36 @@
+{
+    "prologue0" : [
+        ["csTogglePlayer", true],
+        ["csScreenFade", "#ffffff", false, 0.005, false],
+        ["csWait", 5],
+        ["csTogglePlayer", false],
+        ["csCreateEffect", ["objOWPlayer", "x"], ["objOWPlayer", "y"], "World_Objects", "sprLightning", true]
+    ],
+    "prologue1" : [
+        ["csTogglePlayer", true],
+        ["csChangeCamera", "objLunaTut"],
+        ["csPlaySound", "sndNoResource", 1, false],
+        ["csMoveChar", "objLunaTut", 0, -1, true, 6],
+        ["csWait", 3],
+        ["csDialogue", "narration", "prologue2", "objLunaTut"]
+    ],
+    "prologue2" : [
+        ["csMoveCharNoCollide", "objLunaTut", 0, -2, true, 3],
+        ["csWait", 1],
+        ["csMoveCharNoCollide", "objLunaTut", 0, 3, true, 16],
+        ["csWait", 2],
+        ["csMoveCharNoCollide", "objLunaTut", 17, 39, false, 10],
+        ["csChangeCamera", "objOWPlayer"],
+        ["csInstanceDestroy", "objLunaTut"],
+        ["csChangeVar", "objRoomChangeTrigger", "active", true],
+        ["csTogglePlayer", false]
+    ],
+    "prologue2alt" : [
+        ["csMoveCharNoCollide", "objLunaTut", 17, 39, false, 6],
+        ["csChangeCamera", "objOWPlayer"],
+        ["csInstanceDestroy", "objLunaTut"],
+        ["csChangeVar", "objRoomChangeTrigger", "active", true],
+        ["csTogglePlayer", false]
+    ]
+        
+}

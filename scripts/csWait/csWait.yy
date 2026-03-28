@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"csWait",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"csWait",
+  "parent":{
+    "name":"Cutscenes",
+    "path":"folders/Scripts/Cutscenes.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

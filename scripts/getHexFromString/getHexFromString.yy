@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"getHexFromString",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"getHexFromString",
+  "parent":{
+    "name":"Helper",
+    "path":"folders/Scripts/Helper.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

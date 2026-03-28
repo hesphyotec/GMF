@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"csTogglePlayer",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"csTogglePlayer",
+  "parent":{
+    "name":"Cutscenes",
+    "path":"folders/Scripts/Cutscenes.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -13,6 +13,10 @@ generateNetPlayer = function(){
 	character.baseSpriteName = (race == RACE.HUMAN ? "sprPlayerTemp" : "sprImpPlayerTemp");
 }
 
+findPlayer = function(){
+	character = instance_find(objOWPlayer, 1);
+}
+
 battlePlayer = {
 	cid		: 0,
 	level	: 1,
@@ -44,6 +48,8 @@ battlePlayer = {
 loadCompanion = function(comp){
 	if (struct_exists(global.data.companions, comp)){
 		var companion = variable_clone(struct_get(global.data.companions, comp));
+		companion.equipment = [];
+		companion.stats.equipMax = 4;
 		return companion;
 	} else {
 		show_debug_message("FAILED TO LOAD COMPANION");
@@ -56,6 +62,8 @@ team = [];
 
 partyAdd = function(comp){
 	var companion = struct_get(global.data.companions, comp);
+	companion.equipment = [];
+	companion.stats.equipMax = 4;
 	array_push(team, variable_clone(companion));
 	if (!global.isServer){
 		with(character){
@@ -103,5 +111,53 @@ getSnapshot = function(){
 		sockId : sockId,
 		team : team,
 		mapPos : mapPos
+	}
+}
+
+equipItem = function(item, ind){
+	var ftr = team[ind];
+	if (array_length(ftr.equipment) < ftr.stats.equipMax){
+		var equipped = struct_get(global.data.equipment, item);
+		array_push(ftr.equipment, equipped);
+		if (struct_exists(equipped, "pResist")){
+			ftr.resistances.str += equipped.pResist;	
+		}
+		if (struct_exists(equipped, "hpBonus")){
+			ftr.hp += equipped.hpBonus;
+			ftr.stats.maxhp += equipped.hpBonus;	
+		}
+		if (struct_exists(equipped, "pResist")){
+			ftr.resistances.str += equipped.pResist;	
+		}
+		if (struct_exists(equipped, "strBonus")){
+			ftr.stats.str += equipped.strBonus;	
+		}
+		if (objInventoryMenu.open){
+			objInventoryMenu.refreshMenu();	
+		}
+		return true;
+	}
+	return false;
+}
+
+unequipItem = function(charInd, itemInd){
+	var ftr = team[charInd];
+	var equipped = ftr.equipment[itemInd];
+	if (struct_exists(equipped, "pResist")){
+		ftr.resistances.str -= equipped.pResist;	
+	}
+	if (struct_exists(equipped, "hpBonus")){
+		ftr.hp -= equipped.hpBonus;
+		ftr.stats.maxhp -= equipped.hpBonus;	
+	}
+	if (struct_exists(equipped, "pResist")){
+		ftr.resistances.str -= equipped.pResist;	
+	}
+	if (struct_exists(equipped, "strBonus")){
+		ftr.stats.str -= equipped.strBonus;	
+	}
+	array_delete(ftr.equipment, itemInd, 1);
+	if (objInventoryMenu.open){
+		objInventoryMenu.refreshMenu();	
 	}
 }

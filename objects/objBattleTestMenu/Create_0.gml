@@ -50,7 +50,7 @@ doOperation = function(op){
 			room_goto(rmServer);
 			break;
 		case TESTOPS.OVERWORLD:
-			room_goto(rmHCastleTest);
+			room_goto(rmPrologue1);
 			break;
 		case TESTOPS.QUIT:
 			game_end(0);

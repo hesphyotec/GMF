@@ -1,0 +1,2 @@
+roomTarget = rmHCastleTest;
+active = true;

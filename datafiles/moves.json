@@ -5,7 +5,7 @@
 			"damage" : 10,
 			"scale" : "str",
 			"sound" : "Hit1",
-			"sprite" : "sprSlash",
+			"sprite" : "swing",
 			"type" : "attack",
 			"action" : "timedHit",
 			"speed" : 2
@@ -15,7 +15,7 @@
 			"damage" : 5,
 			"scale" : "str",
 			"sound" : "Hit1",
-			"sprite" : "sprSlash",
+			"sprite" : "swing",
 			"type" : "attack",
 			"action" : "instant"
 		},
@@ -24,7 +24,7 @@
 			"damage" : 5,
 			"scale" : "str",
 			"sound" : "Hit1",
-			"sprite" : "sprSlash",
+			"sprite" : "swing",
 			"type" : "attack",
 			"action" : "instant"
 		},
@@ -33,7 +33,7 @@
 			"damage" : 25,
 			"scale" : "dex",
 			"sound" : "Bowshot",
-			"sprite" : "sprSlash",
+			"sprite" : "slash",
 			"type" : "attack",
 			"desc" : "What a trusty bow.",
 			"action" : "aimCharge",
@@ -44,7 +44,7 @@
 			"damage" : 5,
 			"scale" : "str",
 			"sound" : "Hit1",
-			"sprite" : "sprSlash",
+			"sprite" : "swing",
 			"type" : "attack",
 			"action" : "instant"
 		},
@@ -53,7 +53,7 @@
 			"damage" : 5,
 			"scale" : "str",
 			"sound" : "Hit1",
-			"sprite" : "sprSlash",
+			"sprite" : "swing",
 			"type" : "attack",
 			"action" : "instant"
 		},
@@ -62,7 +62,7 @@
 			"damage" : 5,
 			"scale" : "str",
 			"sound" : "Hit1",
-			"sprite" : "sprSlash",
+			"sprite" : "swing",
 			"type" : "attack",
 			"action" : "instant"
 		},
@@ -71,7 +71,7 @@
 			"damage" : 20,
 			"scale" : "dex",
 			"sound" : "Bowshot",
-			"sprite" : "sprSlash",
+			"sprite" : "slash",
 			"type" : "attack",
 			"desc" : "Throws a dagger.",
 			"action" : "aimCharge",
@@ -82,7 +82,7 @@
 			"damage" : 10,
 			"scale" : "dex",
 			"sound" : "Hit1",
-			"sprite" : "sprSlash",
+			"sprite" : "slash",
 			"type" : "attack",
 			"action" : "instant"
 		},
@@ -91,7 +91,7 @@
 			"damage" : 10,
 			"scale" : "dex",
 			"sound" : "Hit1",
-			"sprite" : "sprSlash",
+			"sprite" : "slash",
 			"type" : "attack",
 			"action" : "instant"
 		},
@@ -100,7 +100,7 @@
 			"damage" : 5,
 			"scale" : "str",
 			"sound" : "Hit1",
-			"sprite" : "sprSlash",
+			"sprite" : "slash",
 			"type" : "attack",
 			"action" : "instant"
 		},
@@ -109,7 +109,7 @@
 			"damage" : 25,
 			"scale" : "int",
 			"sound" : "Fireball",
-			"sprite" : "sprFireball",
+			"sprite" : "fireball",
 			"type" : "attack",
 			"desc" : "It's a gun, a dinky one though.",
 			"action" : "aimCharge",
@@ -124,7 +124,7 @@
 			"cost" : 25,
 			"effects" : ["burn1"],
 			"sound" : "Fireball",
-			"sprite" : "sprFireball",
+			"sprite" : "fireball",
 			"type" : "dmgSpell",
 			"desc" : "Sets enemies ablaze.",
 			"action" : "spellCharge",
@@ -137,7 +137,7 @@
 			"cost" : 1,
 			"effects" : ["stun1"],
 			"sound" : "Lightning",
-			"sprite" : "sprLightning",
+			"sprite" : "lightning",
 			"type" : "dmgSpell",
 			"desc" : "Small bolt of lighting. Stuns enemies for a short amount of time.",
 			"action" : "spellCharge",
@@ -150,7 +150,7 @@
 			"cost" : 30,
 			"effects" : [],
 			"sound" : "Heal",
-			"sprite" : "sprSlash",
+			"sprite" : "slash",
 			"type" : "restoreSpell",
 			"desc" : "It takes a gentle touch.",
 			"action" : "instant"
@@ -162,7 +162,7 @@
 			"cost" : 50,
 			"effects" : [],
 			"sound" : "Lightning",
-			"sprite" : "sprLightning",
+			"sprite" : "lightning",
 			"type" : "dmgSpell",
 			"desc" : "Invokes a holy wrath.",
 			"action" : "spellCharge",
@@ -175,7 +175,7 @@
 			"cost" : 0,
 			"effects" : [],
 			"sound" : "Obliterate",
-			"sprite" : "sprSlash",
+			"sprite" : "lightning",
 			"type" : "dmgSpell",
 			"desc" : "Die.",
 			"action" : "instant"
@@ -186,7 +186,7 @@
 			"cost" : 25,
 			"effects" : ["strResist1"],
 			"sound" : "Heal",
-			"sprite" : "sprLightning",
+			"sprite" : "lightning",
 			"type" : "buffSpell",
 			"desc" : "Increases resistance to physical attacks.",
 			"action" : "instant"
@@ -197,7 +197,7 @@
 			"cost" : 0,
 			"effects" : ["meditate1"],
 			"sound" : "Heal",
-			"sprite" : "sprLightning",
+			"sprite" : "lightning",
 			"type" : "selfSpell",
 			"desc" : "User falls into deep trance to regain mana for 2 turns.",
 			"action" : "instant"
@@ -208,7 +208,7 @@
 			"cost" : 0,
 			"effects" : ["focused"],
 			"sound" : "Heal",
-			"sprite" : "sprLightning",
+			"sprite" : "lightning",
 			"type" : "selfSpell",
 			"desc" : "Increases damage done next turn, slows next attack.",
 			"action" : "instant"
@@ -219,7 +219,7 @@
 			"cost" : 25,
 			"effects" : ["stealth1"],
 			"sound" : "Heal",
-			"sprite" : "sprLightning",
+			"sprite" : "lightning",
 			"type" : "selfSpell",
 			"desc" : "User becomes untargetable until their next turn",
 			"action" : "instant"
@@ -231,7 +231,7 @@
 			"effects" : [],
 			"scale" : "str",
 			"sound" : "Hit1",
-			"sprite" : "sprSlash",
+			"sprite" : "swing",
 			"type" : "dmgSpell",
 			"desc" : "Devastating three hit combo.",
 			"action" : "multiHit",
@@ -245,7 +245,7 @@
 			"scale" : "str",
 			"effects" : ["strWeakness1"],
 			"sound" : "Hit1",
-			"sprite" : "sprSlash",
+			"sprite" : "swing",
 			"type" : "dmgSpell",
 			"desc" : "Cuts the enemy's armor.",
 			"action" : "timedHit",
@@ -257,7 +257,7 @@
 			"scale" : "int",
 			"effects" : ["taunted"],
 			"sound" : "Hit1",
-			"sprite" : "sprSlash",
+			"sprite" : "slash",
 			"type" : "debuffSpell",
 			"desc" : "Forces a target to focus the user.",
 			"action" : "instant"
@@ -269,7 +269,7 @@
 			"effects" : [],
 			"scale" : "int",
 			"sound" : "Hit1",
-			"sprite" : "sprSlash",
+			"sprite" : "slash",
 			"type" : "dmgSpell",
 			"desc" : "Unleashes a rain of blades.",
 			"action" : "multiAim",
@@ -283,7 +283,7 @@
 			"cost" : 15,
 			"effects" : [],
 			"sound" : "Heal",
-			"sprite" : "sprSlash",
+			"sprite" : "slash",
 			"type" : "restoreSpell",
 			"desc" : "Stitch them back together.",
 			"action" : "instant"
@@ -294,10 +294,10 @@
 			"scale" : "int",
 			"cost" : -15,
 			"sound" : "Lightning",
-			"sprite" : "sprLightning",
+			"sprite" : "lightning",
 			"type" : "dmgSpell",
 			"desc" : "Steal a little bit of their blood.",
-			"action" : "instant",
+			"action" : "instant"
 		},
 		"seethe" : {
 			"name" : "seethe",
@@ -305,7 +305,7 @@
 			"cost" : 20,
 			"effects" : ["strUp1"],
 			"sound" : "Heal",
-			"sprite" : "sprLightning",
+			"sprite" : "lightning",
 			"type" : "selfSpell",
 			"desc" : "Rage as power.",
 			"action" : "instant"
@@ -316,7 +316,7 @@
 			"cost" : 15,
 			"effects" : ["intWeakness1"],
 			"sound" : "Lightning",
-			"sprite" : "sprLightning",
+			"sprite" : "lightning",
 			"type" : "debuffSpell",
 			"desc" : "Slightly lowers magic resistance.",
 			"action" : "instant"
@@ -326,7 +326,7 @@
 			"scale" : "dex",
 			"effects" : ["block"],
 			"sound" : "Heal",
-			"sprite" : "sprLightning",
+			"sprite" : "lightning",
 			"type" : "selfSpell",
 			"desc" : "Blocks the next attack.",
 			"action" : "instant"
@@ -337,7 +337,7 @@
 			"cost" : 10,
 			"effects" : ["leech1"],
 			"sound" : "Heal",
-			"sprite" : "sprLightning",
+			"sprite" : "lightning",
 			"type" : "buffSpell",
 			"desc" : "Blood on hit.",
 			"action" : "instant"
@@ -349,12 +349,11 @@
 			"cost" : 1,
 			"effects" : [],
 			"sound" : "Lightning",
-			"sprite" : "sprLightning",
+			"sprite" : "lightning",
 			"type" : "dmgSpell",
 			"desc" : "A whip of blood.",
 			"action" : "spellCharge",
 			"speed" : 1
 		}
-
 	}
 }

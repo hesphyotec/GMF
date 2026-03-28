@@ -1,6 +1,8 @@
 camwidth = 480;
 camheight = 270;
 
+canLoop = true;
+
 //camwidth = (ceil((window_get_width() / camwidth))/(window_get_width() / camwidth) * camwidth) 
 //camheight = (ceil((window_get_height() / camheight))/(window_get_height() / camheight) * camheight)
 
@@ -16,6 +18,10 @@ view_set_wport(0, camwidth * scale);
 view_set_hport(0, camheight * scale);
 
 follow = undefined;
+lockedPos = false;
+
+lookAtX = 0;
+lookAtY = 0;
 
 if instance_exists(objOWPlayer){
 	follow = objOWPlayer;

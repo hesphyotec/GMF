@@ -133,4 +133,4 @@
 //	}
 //}
 
-draw_text(100,16, string(focus));
+if (DEBUG_ENABLED)draw_text(100,16, string(focus));

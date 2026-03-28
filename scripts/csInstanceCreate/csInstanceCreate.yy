@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"csInstanceCreate",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"csInstanceCreate",
+  "parent":{
+    "name":"Cutscenes",
+    "path":"folders/Scripts/Cutscenes.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

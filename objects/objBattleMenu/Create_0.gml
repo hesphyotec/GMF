@@ -213,26 +213,22 @@ doAnimation = function(info){
 	if(charGetActorInd(info.tar) != -1){
 		var actor2 = actors[charGetActorInd(info.tar)];
 		actor2 = actors[charGetActorInd(info.tar)];
-		doEffect(info.act, actor2, 1);
+		doEffect(info.act, actor1, actor2, 1);
 		actor2.doAnim(info.act, info, false);
 	}	
 }
 
-doEffect = function(act, tar, spd){
+doEffect = function(act, src, tar, spd){
 	var action = undefined;
 	if (variable_struct_exists(atkData, act)){
-		action = struct_get(atkData, act);	
+		action = struct_get(atkData, act);
 	} else if (variable_struct_exists(splData, act)){
 		action = struct_get(splData, act);	
 	} else {
 		action = act;	
 	}
 	var eff = instance_create_layer(0, 0, "Effects", objBattleEffect);
-	var anim = {
-		who		: eff,
-		done	: false
-	}
-	eff.initEff(action, asset_get_index(action[$"sprite"]), tar, self, spd, true);
+	eff.initEff(action, struct_get(global.data.anims, action[$"sprite"]), tar, self, spd, true, src);
 }
 
 turnEnd = function(){
@@ -370,3 +366,5 @@ selectTarget = function(){
 	doFunction(BOPS.TARGET);
 	menuBox.clearMasks();
 }
+audio_stop_all();
+audio_play_sound(sndLvl1, 2, true, global.musVolume);

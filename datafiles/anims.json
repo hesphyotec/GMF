@@ -1,0 +1,18 @@
+{
+    "swing" : {
+        "sprite" : "sprSwing",
+        "charToChar" : true
+    },
+    "lightning" : {
+        "sprite" : "sprLightning",
+        "charToChar" : false
+    },
+    "fireball" : {
+        "sprite" : "sprFireball",
+        "charToChar" : false
+    },
+    "slash" : {
+        "sprite" : "sprSlash",
+        "charToChar" : false
+    }
+}
