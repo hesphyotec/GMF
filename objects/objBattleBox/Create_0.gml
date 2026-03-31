@@ -42,6 +42,8 @@ buttons = [];
 charmasks = [];
 focus = undefined;
 
+background = sprTCasBatBG;
+
 loadButtons = function(ops){
 	options = [];
 	for(var i = 0; i < array_length(ops); i++){

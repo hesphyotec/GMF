@@ -327,5 +327,33 @@
 			"int" : 0.25
 		},
 		"desc" : "Young spellcaster. Everyone seems happy that she's around."
+	},
+	"sol" : {
+		"cid" : 18,
+		"key" : "sol",
+		"name" : "Player",
+		"level" : 1,
+		"hp": 100,
+		"mana" : 10,
+		"stats" : {
+			"maxhp" : 100,
+			"maxmana" : 100,
+			"str" : 5,
+			"dex" : 5,
+			"int" : 5,
+			"cspd" : 5
+		},
+		"attacks" : ["punch"],
+		"spells" : ["heal"],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "sprBattlePlayerT",
+		"splash" : "sprHumanPlayerSplash",
+		"resistances" : {
+			"str" : 0.25,
+			"dex" : 0.25,
+			"int" : 0.25
+		},
+		"desc" : "It's you."
 	}
 }

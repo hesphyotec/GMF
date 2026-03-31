@@ -1,0 +1,38 @@
+{
+    "test" : {
+        "foes" : [
+            "enemyTest",
+            "bigRock"
+        ],
+        "outcome" : {
+            "op" : "normal",
+            "exp" : 1,
+            "gold" : 1
+        },
+        "background" : "sprTCasBatBG"
+        
+    },
+    "bandit1" : {
+        "foes" : [
+            "banditGoon",
+            "banditGoon",
+            "banditGoon"
+        ],
+        "outcome" : {
+            "op" : "normal",
+            "exp" : 1,
+            "gold" : 1
+        },
+        "background" : "sprTCasBatBG"
+    },
+    "prologue" : {
+        "foes" : [
+            "luna"
+        ],
+        "outcome" : {
+            "op" : "gotoRoom",
+            "dest" : "rmHCastleAltar"
+        },
+        "background" : "sprPrologueBatBG"
+    }
+}

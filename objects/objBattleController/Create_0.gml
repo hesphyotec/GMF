@@ -26,6 +26,8 @@ diedMidTurn = false;
 x = room_width / 2;
 y = room_height / 2;
 
+outcome = {};
+
 random_set_seed(current_time);
 
 
@@ -52,7 +54,7 @@ initBattle = function(){
 	    if (DEBUG_ENABLED) show_debug_message("No battles queued!");
 	    return;
 	}
-
+	
 	var playerTeam = global.battles[0][0];
 	var enemy = global.battles[0][1];
 	array_delete(global.battles, 0, 1);
@@ -104,15 +106,10 @@ loadEnemy = function(enemy){
 
 loadEncounter = function(encounter){
 	if (DEBUG_ENABLED) show_debug_message("[BController] Loading encounter id: " + string(encounter));
-	var foes = [];
-	switch(encounter){
-		case ENCOUNTERS.TEST:
-			foes = ["enemyTest", "bigRock"];
-			break;
-		case ENCOUNTERS.BANDIT1:
-			foes = ["banditGoon", "banditGoon", "banditGoon", "banditThug"];
-			break;
-	}
+	var enData = struct_get(global.data.encounters, encounter);
+	var foes = variable_clone(enData.foes);
+	outcome = enData.outcome;
+	objBattleBox.background = asset_get_index(enData.background);
 	for (var i = 0; i < array_length(foes); ++i){
 		var foe = loadEnemy(foes[i]);
 		foe.cid = i + 128;
@@ -205,19 +202,26 @@ doMiss = function(ftr, final){
 
 endBattle = function(victory){
 	if (victory) {
-		show_message("You won!");
-		// Give gold and exp.	
+		if (outcome.op == "normal"){
+			//give exp and gold
+			room_goto(global.lastRoom);
+		} else if (outcome.op == "gotoRoom"){
+			room_goto(asset_get_index(outcome.dest));	
+		}
 	} else {
 		show_message("You lost!");
-		// Send back to last town	
+		room_goto(global.lastRoom);
 	}
 	audio_stop_all();
-	room_goto(rmHCastleTest);
+	//room_goto(rmHCastleTest);
 }
 
 doDamage = function(ftr, target, action, str = 1){
 	var dmg = calcDamage(ftr, target, action, str);
 	target.hp -= dmg;
+	createDamageNumber(context.menu.getActor(target), target, dmg);
+	context.menu.getActor(target).shdActive = true;
+	context.menu.getActor(target).dmgFlash = true;
 	if (DEBUG_ENABLED) show_debug_message("[BController]" + string(target[$"name"]) + " takes " + string(dmg) + "damage.");
 	var isPlayer = array_contains(battleInfo.team1, target);
 	if(DEBUG_ENABLED) show_debug_message("[BController] Enemy Team Remaining pre death: " + string(array_length(battleInfo.team2)));

@@ -9,5 +9,10 @@
         "name" : "Long Knife",
         "strBonus" : 0.5,
         "sprite"   : "sprChestpiece1"
+    },
+    "tutSword" : {
+        "name" : "Your Sword",
+        "attack" : "slash",
+        "sprite"   : "sprTutSword"
     }
 }

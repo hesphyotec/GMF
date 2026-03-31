@@ -33,8 +33,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprLuna",
-    "path":"sprites/sprLuna/sprLuna.yy",
+    "name":"sprLunaCry",
+    "path":"sprites/sprLunaCry/sprLunaCry.yy",
   },
   "spriteMaskId":null,
   "visible":true,

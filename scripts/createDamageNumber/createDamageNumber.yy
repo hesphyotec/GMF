@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"createDamageNumber",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"createDamageNumber",
+  "parent":{
+    "name":"Actions",
+    "path":"folders/Scripts/Battle/Actions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

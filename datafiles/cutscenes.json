@@ -10,27 +10,52 @@
         ["csTogglePlayer", true],
         ["csChangeCamera", "objLunaTut"],
         ["csPlaySound", "sndNoResource", 1, false],
+        ["csPlayAnimation", "objLunaTut", "sprLunaScream", false],
         ["csMoveChar", "objLunaTut", 0, -1, true, 6],
+        ["csPlayAnimation", "objLunaTut", "sprLunaScared", true],
         ["csWait", 3],
         ["csDialogue", "narration", "prologue2", "objLunaTut"]
     ],
     "prologue2" : [
-        ["csMoveCharNoCollide", "objLunaTut", 0, -2, true, 3],
-        ["csWait", 1],
+        ["csMoveCharNoCollide", "objLunaTut", 0, -1, true, 3],
+        ["csWait", 0.5],
+        ["csMoveCharNoCollide", "objTutPlayer", 17, 5, false, 3],
+        ["csScreenSplash", "sprSplashPrologue1"],
         ["csMoveCharNoCollide", "objLunaTut", 0, 3, true, 16],
+        ["csMoveCharNoCollide", "objTutPlayer", 17, 6, false, 3],
+        ["csWait", 1],
+        ["csStopSplash"],
         ["csWait", 2],
-        ["csMoveCharNoCollide", "objLunaTut", 17, 39, false, 10],
         ["csChangeCamera", "objOWPlayer"],
+        ["csMoveCharNoCollide", "objLunaTut", 17, 39, false, 6],
         ["csInstanceDestroy", "objLunaTut"],
         ["csChangeVar", "objRoomChangeTrigger", "active", true],
         ["csTogglePlayer", false]
     ],
     "prologue2alt" : [
-        ["csMoveCharNoCollide", "objLunaTut", 17, 39, false, 6],
         ["csChangeCamera", "objOWPlayer"],
+        ["csMoveCharNoCollide", "objLunaTut", 17, 39, false, 6],
         ["csInstanceDestroy", "objLunaTut"],
         ["csChangeVar", "objRoomChangeTrigger", "active", true],
         ["csTogglePlayer", false]
+    ],
+    "prologue3" : [
+        ["csPlayAnimation", "objLunaTut", "sprLunaScared", true],
+        ["csTogglePlayer", true],
+        ["csChangeCamera", "objLunaTut"],
+        ["csMoveCharNoCollide", "objLunaTut", 0, 10, true, 6],
+        ["csChangeCamera", "objOWPlayer"],
+        ["csMoveCharNoCollide", "objLunaTut", 17, 20, false, 6],
+        ["csChangeCamera", "objOWPlayer"],
+        ["csTogglePlayer", false]
+    ],
+    "prologue4" : [
+        ["csTogglePlayer", true],
+        ["csChangeCamera", "objLunaTut"],
+        ["csScreenSplash", "sprSplashPrologue2"],
+        ["csWait", 1],
+        ["csStopSplash"],
+        ["csWait", 4],
+        ["csStartBattle", "prologue"]
     ]
-        
 }

@@ -118,5 +118,29 @@
 			"int" : -0.15
 		},
 		"desc" : "Came to protect his friend."
+	},
+	"luna" : {
+		"name" : "Girl",
+		"hp" : 100,
+		"blood" : 25,
+		"stats" : {
+			"maxhp" : 100,
+			"maxblood" : 100,
+			"str" : 5,
+			"dex" : 5,
+			"int" : 5,
+			"cspd" : 5
+		},
+		"attacks" : ["slash"],
+		"spells" : [],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "sprLunaBattle",
+		"resistances" : {
+			"str" : 0.00,
+			"dex" : 0.00,
+			"int" : 0.00
+		},
+		"desc" : "Fight her."
 	}
 }

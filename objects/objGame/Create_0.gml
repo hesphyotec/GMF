@@ -24,13 +24,14 @@ global.data = {
 	items		: scrLoadJSON("items.json"),
 	anims		: scrLoadJSON("anims.json"),
 	equipment	: scrLoadJSON("equipment.json"),
-	cutscenes	: scrLoadJSON("cutscenes.json")
+	cutscenes	: scrLoadJSON("cutscenes.json"),
+	encounters	: scrLoadJSON("encounters.json")
 };
 
 global.map = undefined;
 global.players = [];
 global.playerData = [];
-
+global.lastRoom = room;
 storyPlayer = undefined;
 storyPlayerInfo = undefined;
 

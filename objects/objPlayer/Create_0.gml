@@ -132,6 +132,9 @@ equipItem = function(item, ind){
 		if (struct_exists(equipped, "strBonus")){
 			ftr.stats.str += equipped.strBonus;	
 		}
+		if (struct_exists(equipped, "attack")){
+			array_insert(ftr.attacks, 0, equipped.attack);
+		}
 		if (objInventoryMenu.open){
 			objInventoryMenu.refreshMenu();	
 		}

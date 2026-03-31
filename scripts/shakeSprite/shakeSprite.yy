@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"shakeSprite",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"shakeSprite",
+  "parent":{
+    "name":"Graphical",
+    "path":"folders/Scripts/Graphical.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

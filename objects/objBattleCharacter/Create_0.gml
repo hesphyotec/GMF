@@ -33,6 +33,7 @@ timers = {
 
 maxStun = 0;
 chanEff = undefined;
+shdActive = false;
 
 loadSprite = function(char){
 	character = char;

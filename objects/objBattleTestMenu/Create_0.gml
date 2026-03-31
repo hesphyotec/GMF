@@ -44,12 +44,14 @@ doOperation = function(op){
 			}
 			break;
 		case TESTOPS.START:
-			scrStartBattle(rmTestSelect, objPlayer.team, ENCOUNTERS.BANDIT1);
+			scrStartBattle(rmTestSelect, objPlayer.team, "bandit1");
 			break;
 		case TESTOPS.SERVER:
 			room_goto(rmServer);
 			break;
 		case TESTOPS.OVERWORLD:
+			objGame.storyGenPlayer();
+			objPlayer.persistent = true;
 			room_goto(rmPrologue1);
 			break;
 		case TESTOPS.QUIT:

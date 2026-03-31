@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":6,
   "parent":{
-    "name":"grindmeetfight",
-    "path":"grindmeetfight.yyp",
+    "name":"Prologue",
+    "path":"folders/Sprites/Temp/Characters/Imp Player/Prologue.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

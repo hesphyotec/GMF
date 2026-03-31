@@ -90,9 +90,9 @@ playerMove = function(){
 		}
 	}
 	
-	if(lClick){
-		ds_list_copy(movePath, getPath(mapSpace, [floor(mouse_x / TILE_SIZE), ceil(mouse_y / TILE_SIZE)]));	
-	}
+	//if(lClick){
+	//	ds_list_copy(movePath, getPath(mapSpace, [floor(mouse_x / TILE_SIZE), ceil(mouse_y / TILE_SIZE)]));	
+	//}
 	
 	if(!ds_list_empty(movePath) && moving == false){
 		var node = ds_list_find_value(movePath, 0);
