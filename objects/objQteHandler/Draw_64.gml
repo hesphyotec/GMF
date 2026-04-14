@@ -51,6 +51,9 @@ if (active){
 		case QTEMODE.SPELLCHARGE:
 			draw_circle(popUp.X, popUp.Y, chargeCircle.radius, false);
 			break;
+		case QTEMODE.SPELLMULTICHARGE:
+			draw_circle(popUp.X, popUp.Y, chargeCircle.radius, false);
+			break;
 		
 	}
 }

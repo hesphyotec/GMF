@@ -8,6 +8,13 @@ if (hovered){
 	if (lClick){
 		onHold();	
 	}
+	
+}
+
+if (lClickRelease){
+	with (objMenuComponent){
+		active = true;
+	}
 }
 // TODO: make these variable based upon tweenspeed
 tweenX = lerp(tweenX, targetX, tweenSpeed);

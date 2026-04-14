@@ -14,6 +14,7 @@ function scrDefineMoves(){
 		MULTIHIT,
 		AIM,
 		MULTIAIM,
-		SPELLCHARGE
+		SPELLCHARGE,
+		SPELLMULTICHARGE
 	}
 }

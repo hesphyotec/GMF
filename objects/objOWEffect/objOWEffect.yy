@@ -12,8 +12,8 @@
   "name":"objOWEffect",
   "overriddenProperties":[],
   "parent":{
-    "name":"Overworld",
-    "path":"folders/Objects/Overworld.yy",
+    "name":"Systems",
+    "path":"folders/Objects/Systems.yy",
   },
   "parentObjectId":null,
   "persistent":false,

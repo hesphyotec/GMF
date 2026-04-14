@@ -7,7 +7,7 @@ inMenu = false;
 mapSpace = [floor(x / TILE_SIZE), floor(y / TILE_SIZE)];
 moveQueue = [variable_clone(mapSpace), variable_clone(mapSpace)];
 moveTarget = variable_clone(mapSpace);
-baseSpriteName = "sprPlayerTemp";
+baseSpriteName = "sprPlayer";
 movePath = ds_list_create();
 idleAnim = false;
 
@@ -252,7 +252,6 @@ updateMoves = function(){
 		array_delete(moveQueue,3,1);	
 	}
 }
-
 //serverMove = function(_x, _y){
 //	if (global.server >= 0){
 //		scrSendTarPos(global.server, _x, _y);	

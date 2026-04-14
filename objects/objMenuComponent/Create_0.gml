@@ -185,7 +185,6 @@ drawBoxContainer = function(){
 }
 
 drawSlider = function(){
-	active = true;
 	draw_set_colour(c_gray);
 	draw_rectangle(xPos, yPos + (height * .75), xPos + width, yPos + height, false);
 	draw_set_colour(c_white);
@@ -195,9 +194,11 @@ drawSlider = function(){
 	draw_set_font(fntBattle);
 	draw_text(xPos + (width/2), yPos + (height/4), data.text);
 	draw_set_font(fntBattle);
-	draw_set_halign(fa_left);
+	draw_set_halign(fa_center);
 	draw_set_valign(fa_bottom);
-	draw_set_colour(c_white);
+	draw_set_colour(c_black);
+	draw_text(xPos + (width / 2), yPos + height + 3, string(round(slideVal * 100)) + " %");
+	drawReset();
 }
 
 drawInvContainer = function(){

@@ -10,8 +10,8 @@
   "name":"objNetPlayer",
   "overriddenProperties":[],
   "parent":{
-    "name":"Overworld",
-    "path":"folders/Objects/Overworld.yy",
+    "name":"Players",
+    "path":"folders/Objects/Overworld/Players.yy",
   },
   "parentObjectId":null,
   "persistent":false,

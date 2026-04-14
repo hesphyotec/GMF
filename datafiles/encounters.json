@@ -2,7 +2,7 @@
     "test" : {
         "foes" : [
             "enemyTest",
-            "bigRock"
+            "luna"
         ],
         "outcome" : {
             "op" : "normal",
@@ -31,7 +31,7 @@
         ],
         "outcome" : {
             "op" : "gotoRoom",
-            "dest" : "rmHCastleAltar"
+            "dest" : "rmDikaiHD1"
         },
         "background" : "sprPrologueBatBG"
     }

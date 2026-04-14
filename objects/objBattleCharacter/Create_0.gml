@@ -34,6 +34,7 @@ timers = {
 maxStun = 0;
 chanEff = undefined;
 shdActive = false;
+dmgFlash = false;
 
 loadSprite = function(char){
 	character = char;
@@ -260,3 +261,5 @@ doDebuff = function(debuff){
 		context.controller.endTeamTurn(character);
 	}
 }
+
+sEffectInitialize();

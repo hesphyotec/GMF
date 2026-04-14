@@ -193,8 +193,10 @@ doItem = function(ftr, item, tar, team, final){
 	}
 }
 
-doMiss = function(ftr, final){
+doMiss = function(ftr, target, final){
 	scrNBQTEMiss(global.server, ftr, final);
+	var actor = context.menu.getActor(target);
+	createMissText(actor, target);
 	if (final){
 		endTeamTurn(ftr);
 	}
@@ -219,9 +221,11 @@ endBattle = function(victory){
 doDamage = function(ftr, target, action, str = 1){
 	var dmg = calcDamage(ftr, target, action, str);
 	target.hp -= dmg;
-	createDamageNumber(context.menu.getActor(target), target, dmg);
-	context.menu.getActor(target).shdActive = true;
-	context.menu.getActor(target).dmgFlash = true;
+	
+	var actor = context.menu.getActor(target);
+	createDamageNumber(actor, target, dmg);
+	addShaderEffect(new effFlash(1, c_red, .2), actor);
+	addShaderEffect(new effShake(10, 0, .2), actor);
 	if (DEBUG_ENABLED) show_debug_message("[BController]" + string(target[$"name"]) + " takes " + string(dmg) + "damage.");
 	var isPlayer = array_contains(battleInfo.team1, target);
 	if(DEBUG_ENABLED) show_debug_message("[BController] Enemy Team Remaining pre death: " + string(array_length(battleInfo.team2)));
@@ -305,20 +309,33 @@ doNetDowned = function(ftr){
 
 doHeal = function(ftr, target, act){
 	var newHp = calcHeal(ftr, target, act);
+	var change = newHp - target.hp;
 	target.hp = newHp
+	var actor = context.menu.getActor(target);
+	createRestoreNumber(actor, target, change, c_lime);
+	addShaderEffect(new effFlash(1, c_lime, .1), actor);
 	//if (DEBUG_ENABLED) show_debug_message("[BController] " + string(target[$"name"]) + " heals " + string(heal) + "hp.");
 }
 
 doRestore = function(ftr, target, act){
 	var res = act[$"pow"];
+	var actor = context.menu.getActor(target);
 	if (struct_exists(target, "mana")){
 		target.mana = min(target.stats.maxmana, target.mana + res);
+		createRestoreNumber(actor, target, res, c_aqua);
+		addShaderEffect(new effFlash(1, c_aqua, .1), actor);
 	} else if (struct_exists(target, "blood")){
 		target.blood = min(target.stats.maxblood, target.blood + res);
+		createRestoreNumber(actor, target, res, c_purple);
+		addShaderEffect(new effFlash(1, c_purple, .1), actor);
 	} else if (struct_exists(target, "rage")){
 		target.rage = min(target.stats.maxrage, target.rage + res);
+		createRestoreNumber(actor, target, res, c_orange);
+		addShaderEffect(new effFlash(1, c_orange, .1), actor);
 	} else if (struct_exists(target, "energy")){
 		target.energy = min(target.stats.maxenergy, target.energy + res);
+		createRestoreNumber(actor, target, res, c_yellow);
+		addShaderEffect(new effFlash(1, c_yellow, .1), actor);
 	}
 	if (DEBUG_ENABLED) show_debug_message("[BController] " + string(target[$"name"]) + " regained " + string(res) + " resource.");
 }

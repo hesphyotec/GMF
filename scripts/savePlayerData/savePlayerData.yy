@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"savePlayerData",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"savePlayerData",
+  "parent":{
+    "name":"Loading",
+    "path":"folders/Scripts/Loading.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

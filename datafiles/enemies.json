@@ -15,7 +15,7 @@
 		"spells" : ["fireball"],
 		"buffs": [],
 		"debuffs": [],
-		"sprite" : "sprBattleRock",
+		"sprite" : "sprCuriousBot",
 		"resistances" : {
 			"str" : 0.25,
 			"dex" : 0.00,

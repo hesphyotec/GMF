@@ -20,3 +20,5 @@ if (character[$"hp"] > 0){
 	timerStep();
 	tickEffects();
 }
+
+sEffectStep();

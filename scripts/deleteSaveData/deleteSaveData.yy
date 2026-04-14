@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"deleteSaveData",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"deleteSaveData",
+  "parent":{
+    "name":"Loading",
+    "path":"folders/Scripts/Loading.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

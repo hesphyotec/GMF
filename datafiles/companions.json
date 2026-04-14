@@ -150,7 +150,7 @@
 			"cspd" : 2
 		},
 		"attacks" : ["pistolShot", "pistolWhip"],
-		"spells" : ["zap"],
+		"spells" : ["zap", "machineGun"],
 		"buffs": [],
 		"debuffs": [],
 		"sprite" : "sprBattleTinkererT",

@@ -4,13 +4,14 @@
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
   "name":"objEnemy",
   "overriddenProperties":[],
   "parent":{
-    "name":"Overworld",
-    "path":"folders/Objects/Overworld.yy",
+    "name":"Enemies",
+    "path":"folders/Objects/Overworld/NPCS/Enemies.yy",
   },
   "parentObjectId":{
     "name":"objNPC",
@@ -34,8 +35,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprTestEnemy",
-    "path":"sprites/sprTestEnemy/sprTestEnemy.yy",
+    "name":"sprThiefDown",
+    "path":"sprites/sprThiefDown/sprThiefDown.yy",
   },
   "spriteMaskId":null,
   "visible":true,

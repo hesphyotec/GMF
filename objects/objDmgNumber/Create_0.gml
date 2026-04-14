@@ -1,5 +1,6 @@
 number = 0;
 color = make_colour_rgb(255,255,255);
+aSize = 0;
 size = 1;
 bounceStr = 20;
 rot = 0;
@@ -12,3 +13,5 @@ ySpd = -3;
 grav = .2;
 bDamp = .3;
 startY = y;
+
+float = false;

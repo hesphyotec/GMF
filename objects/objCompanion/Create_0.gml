@@ -8,6 +8,7 @@ movePath = ds_list_create();
 
 
 
+
 initMove = function(_tar, _spd){
 	moveTarget = _tar;
 	if(x != (moveTarget[0] * TILE_SIZE)){
@@ -64,10 +65,4 @@ compMove = function(){
 		image_index = 0;
 		image_speed = 0;	
 	}
-}
-
-approach = function(_start, _tar, _step){
-	if (_tar < _start) return max(_start - _step, _tar);
-	if (_tar > _start) return min(_start + _step, _tar);
-	return _tar;
 }

@@ -32,7 +32,7 @@ hitTarget = {
 	height	: sprite_get_height(sprQTETimedHit)
 }
 
-hite = 1;
+hits = 1;
 
 hitBar = {
 	active	: false,
@@ -48,6 +48,9 @@ chargeCircle = {
 }
 
 multiCircle = [];
+cooldown = 1;
+cd = 0;
+chargeTime = 3 * fps;
 
 loadQTE = function(info){
 	if (DEBUG_ENABLED) show_debug_message("[qteHandler] Loading QTE");
@@ -178,6 +181,24 @@ startQTE = function(){
 			rate = action[$"speed"] * rateMod;
 		}
 		chargeCircle.active = true;
+	} else if (qteAct == "spellMultiCharge"){
+		mode = QTEMODE.SPELLMULTICHARGE;
+		popUp.sprite = sprQTECharge;
+		popUp.X = display_get_gui_width() * .5;
+		popUp.Y = display_get_gui_height() * .75;
+		range = sprite_get_width(sprQTECharge)/2;
+		start = 0;
+		chargeCircle.radius = start;
+		if (struct_exists(action, "speed")){
+			rate = action[$"speed"] * rateMod;
+		}
+		if (struct_exists(action, "hits")){
+			hits = action[$"hits"];
+		}
+		chargeCircle.active = true;
+		chargeTime = (fps / rate);
+		cooldown = chargeTime / hits;
+		cd = cooldown;
 		
 	}
 	battleInfo.menuState = BMENUST.QTE;
@@ -189,7 +210,7 @@ doMiss = function(){
 	switch(mode){
 		case QTEMODE.TIMEDHIT:
 			audio_play_sound(sndNoResource, 1, false);
-			context.controller.doMiss(actionInfo.actor, true);
+			context.controller.doMiss(actionInfo.actor, actionInfo.tar, true);
 			stopQTE();
 			break;
 			//tell controller that we missed
@@ -204,14 +225,14 @@ doMiss = function(){
 					hitBar.dir = 1;
 				}
 			} else {
-				context.controller.doMiss(actionInfo.actor, true);
+				context.controller.doMiss(actionInfo.actor,actionInfo.tar, true);
 				stopQTE();
 				//tell controller that we missed
 			}
 			break;
 		case QTEMODE.AIM:
 			audio_play_sound(sndNoResource, 1, false);
-			context.controller.doMiss(actionInfo.actor, true);
+			context.controller.doMiss(actionInfo.actor, actionInfo.tar, true);
 			stopQTE();
 			break;
 			//tell controller that we missed
@@ -221,14 +242,14 @@ doMiss = function(){
 			if (--hits > 0){
 				//--hits;
 			} else {
-				context.controller.doMiss(actionInfo.actor, true);
+				context.controller.doMiss(actionInfo.actor, actionInfo.tar, true);
 				stopQTE();
 				//tell controller that we missed
 			}
 			break;
 		case QTEMODE.SPELLCHARGE:
 			audio_play_sound(sndNoResource, 1, false);
-			context.controller.doMiss(actionInfo.actor, true);
+			context.controller.doMiss(actionInfo.actor, actionInfo.tar, true);
 			stopQTE();
 			break;
 			//tell controller that we missed
@@ -247,7 +268,7 @@ doAction = function(){
 			strength = (1.5 * clamp(1 - (abs(hitTarget.pos - hitBar.pos) / abs(hitTarget.pos - start)), 0, 1));
 			if (--hits > 0){
 				doMove(false);
-				if (target[$"hp"] <= 0){
+				if (actionInfo.tar[$"hp"] <= 0){
 					stopQTE();
 					context.playerTeam.endTurn();
 				}
@@ -278,7 +299,7 @@ doAction = function(){
 			array_delete(multiCircle, 0, 1);
 			if (--hits > 0){
 				doMove(false);
-				if (target[$"hp"] <= 0){
+				if (actionInfo.tar[$"hp"] <= 0){
 					stopQTE();
 					context.playerTeam.endTurn();
 				}
@@ -291,6 +312,29 @@ doAction = function(){
 			strength = (1.5 * clamp(1 - (abs(chargeCircle.radius - range) / abs(range - start)), 0, 1));
 			doMove(true);
 			stopQTE();
+			break;
+		case QTEMODE.SPELLMULTICHARGE:
+			//show_message("I AM A MULTI CHARGE!!!");
+			if (charging){
+				strength = (1 + .1 * clamp(1 - (abs(chargeCircle.radius - range) / abs(range - start)), 0, 1));
+				if (--hits > 0){
+					clientLog(string(hits));
+					clientLog(string(cooldown));
+					doMove(false);
+					cd = cooldown;
+					if (actionInfo.tar[$"hp"] <= 0){
+						stopQTE();
+						context.playerTeam.endTurn();
+					}
+					
+				} else {
+					doMove(true);
+					stopQTE();	
+				}
+			} else {
+				doMove(true);
+				stopQTE();
+			}
 			break;
 	}
 }

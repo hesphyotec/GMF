@@ -10,7 +10,7 @@ function flashColor(color, spd){
 	shdFlashAmt = lerp(shdFlashAmt, 0, spd);
 	shader_set_uniform_f(amt, shdFlashAmt);
 	draw_set_colour(color);
-	draw_sprite(sprite_index, image_index, x, y);
+	shakeSprite(spd, spd);
 	drawReset();
 	shader_reset();
 	if (shdFlashAmt <= 0.05){

@@ -9,8 +9,8 @@
   "name":"objCompanion",
   "overriddenProperties":[],
   "parent":{
-    "name":"Overworld",
-    "path":"folders/Objects/Overworld.yy",
+    "name":"Companions",
+    "path":"folders/Objects/Overworld/NPCS/Companions.yy",
   },
   "parentObjectId":null,
   "persistent":false,

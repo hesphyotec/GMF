@@ -61,11 +61,7 @@
 		var stunCol = c_purple;
 		scrDrawArc(x, y, stunRatio, 1, stunCol, stunRad, 1, .4, -15, 2);
 		
-		if (!shdActive){
-			draw_sprite(sprite_index, image_index, x , y + yOff);
-		} else if (dmgFlash) {
-			flashColor(c_red, .3);
-		}
+		sEffectDraw();
 		//draw_set_color(c_red);
 		//draw_rectangle(x, y - 8, x + (16 * hp/character[$"stats"][$"maxhp"]), y - 12, false);
 		//draw_set_color(c_white);

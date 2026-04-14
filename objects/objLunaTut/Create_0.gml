@@ -3,3 +3,5 @@ event_inherited();
 diagChar = global.data.dialogue.narration;
 line = "prologue1";
 image_speed = 1;
+state = NPCSTATE.STAND;
+canAnimate = true;

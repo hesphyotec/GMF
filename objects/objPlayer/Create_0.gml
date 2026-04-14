@@ -72,6 +72,7 @@ partyAdd = function(comp){
 		}
 		scrNetAddComp(global.server, comp);
 	}
+	savePlayerData();
 }
 
 oppPartyAdd = function(comp){

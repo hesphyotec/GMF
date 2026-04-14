@@ -32,6 +32,11 @@ global.map = undefined;
 global.players = [];
 global.playerData = [];
 global.lastRoom = room;
+global.loadPosBuffer = {
+	x	:	0,
+	y	:	0,
+	loading : false
+}
 storyPlayer = undefined;
 storyPlayerInfo = undefined;
 

@@ -8,8 +8,8 @@
   "name":"objWall",
   "overriddenProperties":[],
   "parent":{
-    "name":"Overworld",
-    "path":"folders/Objects/Overworld.yy",
+    "name":"Barriers",
+    "path":"folders/Objects/Overworld/Barriers.yy",
   },
   "parentObjectId":null,
   "persistent":false,

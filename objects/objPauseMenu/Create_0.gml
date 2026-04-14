@@ -86,7 +86,7 @@ loadButtons = function(){
 					onClick = function(){
 						audio_stop_all();
 						instance_destroy(all);
-						room_goto(rmTestSelect);
+						room_goto(rmMainMenu);
 					}
 				}
 				break;

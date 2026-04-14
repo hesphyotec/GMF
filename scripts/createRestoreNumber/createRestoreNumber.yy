@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"createRestoreNumber",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"createRestoreNumber",
+  "parent":{
+    "name":"Actions",
+    "path":"folders/Scripts/Battle/Actions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -70,5 +70,31 @@ if(active){
 				break;
 			}
 			break;
+		case QTEMODE.SPELLMULTICHARGE:
+			if(interactPress || lClickPress){
+				charging = true;
+				audio_play_sound(sndChargeSpell, 1, false);
+			}
+			if(charging){
+				--cd;
+				clientLog(string(cd));
+				chargeCircle.radius += rate;
+				if (chargeCircle.radius > range){
+					charging = false;
+					doAction();
+				}
+				if (cd < 0){
+					doAction();
+					cd = cooldown;
+				}
+			}
+			if ((interactRelease || lClickRelease) && charging){
+				if (DEBUG_ENABLED) show_debug_message("[qteHandler] Action pressed!");
+				charging = false;
+				audio_stop_sound(sndChargeSpell);
+				doAction();
+				break;
+			}
+			break;
 	}
 }

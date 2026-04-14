@@ -354,6 +354,20 @@
 			"desc" : "A whip of blood.",
 			"action" : "spellCharge",
 			"speed" : 1
+		},
+		"machineGun" : {
+			"name" : "Rapid Fire",
+			"damage" : 5,
+			"scale" : "int",
+			"cost" : 1,
+			"effects" : [],
+			"sound" : "Fireball",
+			"sprite" : "fireball",
+			"type" : "dmgSpell",
+			"desc" : "Volley of Bullets",
+			"action" : "spellMultiCharge",
+			"speed" : 0.1,
+			"hits" : 100
 		}
 	}
 }

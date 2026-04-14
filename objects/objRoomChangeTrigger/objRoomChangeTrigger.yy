@@ -10,8 +10,8 @@
   "name":"objRoomChangeTrigger",
   "overriddenProperties":[],
   "parent":{
-    "name":"Overworld",
-    "path":"folders/Objects/Overworld.yy",
+    "name":"Triggers",
+    "path":"folders/Objects/Overworld/Triggers.yy",
   },
   "parentObjectId":null,
   "persistent":false,

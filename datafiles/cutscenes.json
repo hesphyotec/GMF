@@ -3,8 +3,7 @@
         ["csTogglePlayer", true],
         ["csScreenFade", "#ffffff", false, 0.005, false],
         ["csWait", 5],
-        ["csTogglePlayer", false],
-        ["csCreateEffect", ["objOWPlayer", "x"], ["objOWPlayer", "y"], "World_Objects", "sprLightning", true]
+        ["csTogglePlayer", false]
     ],
     "prologue1" : [
         ["csTogglePlayer", true],

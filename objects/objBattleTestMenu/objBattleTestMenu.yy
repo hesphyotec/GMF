@@ -11,8 +11,8 @@
   "name":"objBattleTestMenu",
   "overriddenProperties":[],
   "parent":{
-    "name":"Systems",
-    "path":"folders/Objects/Systems.yy",
+    "name":"Menu",
+    "path":"folders/Objects/Menu.yy",
   },
   "parentObjectId":null,
   "persistent":false,

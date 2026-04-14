@@ -1,3 +1,4 @@
+event_inherited();
 type = NPC.FRIENDLY;
 
 onInteract = function(){

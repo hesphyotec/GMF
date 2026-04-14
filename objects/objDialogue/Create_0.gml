@@ -10,6 +10,32 @@ source = undefined;
 
 dialogueData = global.data.dialogue;
 
+textBox = {
+	x	:	8,
+	y	:	display_get_gui_height() - 80,
+	w	:	240,
+	h	:	64
+}
+
+textPos = {
+	x	:	12,
+	y	:	display_get_gui_height() - 76,
+	w	:	220
+}
+
+choiceBoxPos = {
+	x	:	248,
+	y	:	display_get_gui_height() - 80,
+	w	:	128,
+	h	:	64,
+}
+
+choiceTextPos = {
+	x	:	256,
+	y	:	display_get_gui_height() - 72,
+	w	:	112,
+}
+
 loadDiag = function(diagChar, diag, src){
 	source = src;
 	currentDiag = struct_get(diagChar, diag);
@@ -83,32 +109,39 @@ writeDiag = function(){
 
 displayDiag = function(){
 	draw_set_color(c_black);
-	draw_sprite(sprDiag,0,display_get_gui_width()/2 - 120,display_get_gui_height());
+	draw_sprite_stretched(sprDiagBox,0, textBox.x , textBox.y, textBox.w, textBox.h);
 	var shownText = string_copy(lines[currentLine], 1, textProgress);
 	draw_set_font(fntBattle);
 	draw_set_halign(fa_left);
 	draw_set_valign(fa_top);
-	draw_text_ext(display_get_gui_width()/2 - 108, display_get_gui_height()-64, shownText, 16, 220);
+	draw_text_ext(textPos.x, textPos.y, shownText, 16, textPos.w);
 	draw_set_halign(fa_left);
 	draw_set_halign(fa_top);
 	draw_set_color(c_white);
 	
 	if (textProgress == string_length(lines[currentLine])){
+		if (array_length(choices) > 0){
+			draw_sprite_stretched(sprDiagBox, 0, choiceBoxPos.x, choiceBoxPos.y, choiceBoxPos.w, choiceBoxPos.h);
+		} else {
+			draw_sprite(sprTutPlayerSpirit, image_index, textBox.x + textBox.w - 32, textBox.y + textBox.h - 32);	
+		}
 		for(var i = 0; i < array_length(choices); ++i){
 			var option = choices[i];
 			var color = (i == selection) ? c_yellow : c_black;
 			draw_set_colour(color);
-			draw_text(display_get_gui_width()/2 - 108 + (64*i), display_get_gui_height()-32, option);
+			draw_text_ext(choiceTextPos.x, choiceTextPos.y + (12 * i), option, 16, choiceTextPos.w);
 		}
 		draw_set_colour(c_white);
 	}
 }
 
 endDiag = function(){
-	//if (variable_instance_exists(source, "interactCd")){
-		source.interactCd = true;
-		source.alarm[0] = 15;
-	//}
+	if (instance_exists(source)){
+		if (variable_instance_exists(source, "interactCd")){
+			source.interactCd = true;
+			source.alarm[0] = 15;
+		}
+	}
 	lines = [];
 	choices = [];
 	active = false;

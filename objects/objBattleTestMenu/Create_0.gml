@@ -44,7 +44,7 @@ doOperation = function(op){
 			}
 			break;
 		case TESTOPS.START:
-			scrStartBattle(rmTestSelect, objPlayer.team, "bandit1");
+			scrStartBattle(rmTestSelect, objPlayer.team, "test");
 			break;
 		case TESTOPS.SERVER:
 			room_goto(rmServer);
