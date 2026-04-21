@@ -14,7 +14,17 @@
     },
     "bandit1" : {
         "foes" : [
-            "banditGoon",
+            "banditGoon"
+        ],
+        "outcome" : {
+            "op" : "normal",
+            "exp" : 20,
+            "gold" : 50
+        },
+        "background" : "sprTCasBatBG"
+    },
+    "bandit2" : {
+        "foes" : [
             "banditGoon",
             "banditGoon"
         ],
@@ -31,8 +41,18 @@
         ],
         "outcome" : {
             "op" : "gotoRoom",
-            "dest" : "rmDikaiHD1"
+            "dest" : "rmHCastleAltar"
         },
         "background" : "sprPrologueBatBG"
+    },
+    "veteran1" : {
+        "foes" : [
+            "veteran"
+        ],
+        "outcome" : {
+            "op" : "normal",
+            "exp" : 1,
+            "gold" : 1
+        }
     }
 }

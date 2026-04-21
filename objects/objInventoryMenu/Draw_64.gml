@@ -1,0 +1,1 @@
+draw_text(display_get_gui_width() - 32, display_get_gui_height() - 32, global.playerData[0].gold);

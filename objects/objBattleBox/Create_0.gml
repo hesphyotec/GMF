@@ -40,6 +40,7 @@ infoBoxX = 188 * MENU_GUI_SCALE;
 cards = [];
 buttons = [];
 charmasks = [];
+infoBox = undefined;
 focus = undefined;
 
 background = sprTCasBatBG;
@@ -243,4 +244,23 @@ clearMasks = function(){
 		instance_destroy(charmasks[i]);
 		array_delete(charmasks, i, 1);
 	}
+}
+
+loadInfoBox = function(msg){
+	clearButtons();
+	clearCards();
+	clearMasks();
+	var iBox = createButton(actionBox.X[0], actionBox.activeY, 196, 64, sprInfo, GUI.INFOBOX, {lines : msg});
+	with(iBox){
+		onClick = function(){
+			if (array_length(data.lines) > 3){
+				textProgress -= string_length(data.lines[0]);
+				array_delete(data.lines, 0, 1);
+			} else {
+				objBattleController.exitBattle();	
+			}
+			audio_play_sound(sndChoose, 1, false, global.effVolume);
+		}
+	}
+	infoBox = iBox;
 }

@@ -56,5 +56,21 @@
         ["csStopSplash"],
         ["csWait", 4],
         ["csStartBattle", "prologue"]
+    ],
+    "introAltar1" : [
+        ["csScreenFade", "#000000", true, 1.0 , false],
+        ["csTogglePlayer", true],
+        ["csDialogue", "highPriest", "altar1", "objHighPriest"]
+    ],
+    "introAltar2" : [
+        ["csInstanceDestroy", "objOWEffect"],
+        ["csScreenFade", "#000000", false, 0.01, false],
+        ["csWait", 3],
+        ["csDialogue", "narration", "altar1", "objHighPriest"]
+    ],
+    "introAltar3" : [
+        ["csMoveCharNoCollide", "objHighPriest", 10, 1, true, 2],
+        ["csInstanceDestroy", "objHighPriest"],
+        ["csTogglePlayer", false]
     ]
 }

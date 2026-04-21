@@ -1,0 +1,1 @@
+roomTarget = rmOutskirtsA2;

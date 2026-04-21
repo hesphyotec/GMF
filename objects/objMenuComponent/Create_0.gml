@@ -25,6 +25,9 @@ color = c_white;
 
 slideVal = 1.0;
 
+currLine = 0;
+textProgress = 0;
+
 isHovered = function(){
 	if (canReceiveInput()){
 		var mx = device_mouse_x_to_gui(0);
@@ -103,6 +106,9 @@ onDraw = function(){
 			break;
 		case GUI.INVDRAGBOX:
 			drawInvDragBox();
+			break;
+		case GUI.INFOBOX:
+			drawInfoBox();
 			break;
 	}
 	draw_set_alpha(1);
@@ -222,4 +228,20 @@ drawInvDragBox = function(){
 	if (data.item != undefined){
 		draw_sprite(sprite_index, image_index, xPos + (sprite_width/2), yPos + (sprite_height));
 	}
+}
+
+drawInfoBox = function(){
+	var textPad = 8;
+	var text = "";
+	for(var i = currLine; i < 3; ++i){
+		text = string_concat(text, data.lines[i], "\n");	
+	}
+	draw_sprite_stretched(sprite_index, image_index, xPos, yPos, width, height);
+	draw_set_valign(fa_top);
+	if (textProgress < string_length(text)){
+		textProgress++;
+		audio_play_sound(sndSelect, 1, false, global.effVolume);
+	}
+	var showText = string_copy(text, 0, textProgress);
+	draw_text_ext(xPos + textPad, yPos + textPad, showText, 16, width - textPad);
 }

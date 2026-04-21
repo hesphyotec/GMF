@@ -203,10 +203,13 @@ doMiss = function(ftr, target, final){
 }
 
 endBattle = function(victory){
+	teams[0].activeTeamQueue = [];
+	teams[1].activeTeamQueue = [];
+	teams[0].waiting = [];
+	teams[1].waiting = [];
 	if (victory) {
 		if (outcome.op == "normal"){
-			//give exp and gold
-			room_goto(global.lastRoom);
+			giveRewards();
 		} else if (outcome.op == "gotoRoom"){
 			room_goto(asset_get_index(outcome.dest));	
 		}
@@ -216,6 +219,11 @@ endBattle = function(victory){
 	}
 	audio_stop_all();
 	//room_goto(rmHCastleTest);
+}
+
+exitBattle = function(){
+	room_goto(global.lastRoom);
+	audio_stop_all();
 }
 
 doDamage = function(ftr, target, action, str = 1){
@@ -412,4 +420,27 @@ netUpdateChar = function(char){
 	}
 	ftr.buffs = char.buffs;
 	ftr.debuffs = char.debuffs;
+}
+
+giveRewards = function(){
+	var xp = outcome.exp;
+	var gold = round(outcome.gold * random_range(.9, 1.1));
+	global.playerData[0].gold += gold;
+	
+	var livingTeam = 0;
+	for(var i = 0; i < array_length(teams[0].team); ++i){
+		if (teams[0].team[i].hp > 0){
+			++livingTeam;
+		}
+	}
+	if (livingTeam == 0){
+		livingTeam++;	
+	}
+	var xpShare = xp / livingTeam;
+	context.menu.showRewards(gold, xpShare);
+	for(var i = 0; i < array_length(teams[0].team); ++i){
+		if (teams[0].team[i].hp > 0){
+			giveExp(global.players[0].team, teams[0].team[i], xpShare);
+		}
+	}
 }

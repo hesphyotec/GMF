@@ -50,6 +50,8 @@ loadCompanion = function(comp){
 		var companion = variable_clone(struct_get(global.data.companions, comp));
 		companion.equipment = [];
 		companion.stats.equipMax = 4;
+		companion.exp = 0;
+		companion.expCap = 100;
 		return companion;
 	} else {
 		show_debug_message("FAILED TO LOAD COMPANION");
@@ -59,11 +61,12 @@ loadCompanion = function(comp){
 
 team = [];
 
-
 partyAdd = function(comp){
 	var companion = struct_get(global.data.companions, comp);
 	companion.equipment = [];
 	companion.stats.equipMax = 4;
+	companion.exp = 0;
+	companion.expCap = 100;
 	array_push(team, variable_clone(companion));
 	if (!global.isServer){
 		with(character){

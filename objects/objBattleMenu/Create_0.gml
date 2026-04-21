@@ -227,8 +227,12 @@ doEffect = function(act, src, tar, spd){
 	} else {
 		action = act;	
 	}
-	var eff = instance_create_layer(0, 0, "Effects", objBattleEffect);
-	eff.initEff(action, struct_get(global.data.anims, action[$"sprite"]), tar, self, spd, true, src);
+	try {
+		var eff = instance_create_layer(0, 0, "Effects", objBattleEffect);
+		eff.initEff(action, struct_get(global.data.anims, action[$"sprite"]), tar, self, spd, true, src);
+	} catch (_ex) {
+		clientLog(_ex);
+	}
 }
 
 turnEnd = function(){
@@ -365,6 +369,18 @@ selectTarget = function(){
 	if (DEBUG_ENABLED) show_debug_message("[Menu]" + string(target[$"cid"]));
 	doFunction(BOPS.TARGET);
 	menuBox.clearMasks();
+}
+
+showRewards = function(gold, xpShare){
+	var lines = ["You Win!", "You got " + string(gold) + " gold."];
+
+	for(var i = 0; i < array_length(context.playerTeam.team); ++i){
+		var ftr = context.playerTeam.team[i];
+		if (ftr.hp > 0){
+			array_push(lines, (ftr.name + " got " + string(xpShare) + " exp."));	
+		}
+	}
+	menuBox.loadInfoBox(lines);
 }
 audio_stop_all();
 audio_play_sound(sndLvl1, 2, true, global.musVolume);

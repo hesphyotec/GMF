@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"giveExp",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"giveExp",
+  "parent":{
+    "name":"Battle",
+    "path":"folders/Scripts/Battle.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

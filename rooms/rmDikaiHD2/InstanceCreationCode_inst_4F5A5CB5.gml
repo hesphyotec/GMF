@@ -1,1 +1,1 @@
-roomTarget = rmDikaiBattleTest;
+roomTarget = rmOutskirtsA1;

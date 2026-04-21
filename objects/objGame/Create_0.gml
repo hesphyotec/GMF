@@ -94,7 +94,8 @@ storyGenPlayer = function(){
 	array_insert(global.players, 0, player);
 	var playerInfo = {
 		stats		: player.battlePlayer,
-		inventory	: [global.data.items[$"hppotion"], global.data.items[$"manapotion"]]
+		inventory	: [global.data.items[$"hppotion"], global.data.items[$"manapotion"]],
+		gold		: 0
 	}
 	array_insert(global.playerData, 0, playerInfo);
 	storyPlayer = player;

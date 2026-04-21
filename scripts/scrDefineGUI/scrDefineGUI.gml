@@ -11,6 +11,7 @@ function scrDefineGUI(){
 		BOXCONTAINER,
 		SLIDER,
 		INVCONTAINER,
-		INVDRAGBOX
+		INVDRAGBOX,
+		INFOBOX
 	}
 }

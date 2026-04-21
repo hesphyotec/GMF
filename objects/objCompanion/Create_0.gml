@@ -5,7 +5,7 @@ spd = 0;
 dir = Dirs.DOWN;
 mapSpace = [floor(x / TILE_SIZE), floor(y / TILE_SIZE)];
 movePath = ds_list_create();
-
+baseSprite = "sprNPC";
 
 
 

@@ -1,0 +1,1 @@
+objCamera.canLoop = false;

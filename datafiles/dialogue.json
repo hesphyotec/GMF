@@ -297,7 +297,93 @@
 					"You stare back."
 				],
 			"csTrig" : "prologue2alt"
-		}
+		},
+		"altar1" : {
+			"dialogue" : [
+				"THE HERO! THE HERO!"
+			],
+			"nextDiag" : {
+				"speaker" : "highPriest",
+				"line" : "altar2",
+				"src" : "objHighPriest"
+			}
 
+		},
+		"altar2" : {
+			"dialogue" : [
+				"The priest, his eyes wild and fervent, gazes into your visor."
+			],
+			"choices" : [
+				"\"Where am I?\"",
+				"\"I'm a hero?\"",
+				"\"Get away from me\""
+			],
+			"result" : [
+				{
+					"op" : "nextDiag",
+					"speaker" : "narration",
+					"line" : "altar3",
+					"src" : "objHighPriest"
+				},
+				{
+					"op" : "nextDiag",
+					"speaker" : "narration",
+					"line" : "altar3",
+					"src" : "objHighPriest"
+				},
+				{
+					"op" : "nextDiag",
+					"speaker" : "narration",
+					"line" : "altar3",
+					"src" : "objHighPriest"
+				}
+			]
+		},
+		"altar3" : {
+			"dialogue" : [
+				"You try to say something, but your mouth can't move.",
+				"The priest hesitates, and for a moment you think-"
+			],
+			"nextDiag" : {
+				"speaker" : "highPriest",
+				"line" : "altar3",
+				"src" : "objHighPriest"
+			}
+		}
+	},
+	"highPriest" : {
+		"altar1" : {
+			"dialogue" : [
+				"Child of DIKAI! The time has come for your arrival!",
+				"Arise!",
+				"Arise!",
+				"ARISE!"
+			],
+			"csTrig" : "introAltar2"
+		},
+		"altar2" : {
+			"dialogue" : [
+				"HERO! How blessed are we to have thou in our halls."
+			],
+			"nextDiag" : {
+				"speaker" : "narration",
+				"line" : "altar2",
+				"src" : "objHighPriest"
+			}
+		},
+		"altar3" : {
+			"dialogue" : [
+				"HERO... His highness awaits your audience. Come with me."
+			],
+			"choices" : [
+				"Get up."
+			],
+			"result" : [
+				{
+					"op" : "trigCs",
+					"csId" : "introAltar3"
+				}
+			]
+		}
 	}
 }
