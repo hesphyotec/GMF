@@ -16,7 +16,7 @@ enum ENEMYSTATE {
 	STAND
 }
 
-state = ENEMYSTATE.IDLE;
+state = ENEMYSTATE.STAND;
 passive = false;
 
 movePath = ds_list_create();

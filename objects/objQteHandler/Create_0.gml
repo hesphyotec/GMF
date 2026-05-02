@@ -346,7 +346,14 @@ doMove = function(final){
 		if(global.server >= 0){
 			scrNBDoSpell(global.server, actionInfo, strength, final);
 		} else {
-			context.controller.doSpell(actionInfo.actor, actionInfo.act, actionInfo.tar, actionInfo.team, strength, final);
+			if (action.type == "dmgSpellAll"){
+				for(var i = 0; i < array_length(actionInfo.team); ++i){
+					clientLog("Applying spell to all!");
+					context.controller.doSpell(actionInfo.actor, actionInfo.act, actionInfo.tar[i], actionInfo.team, strength, final);
+				}
+			} else {
+				context.controller.doSpell(actionInfo.actor, actionInfo.act, actionInfo.tar, actionInfo.team, strength, final);
+			}
 		}
 	} else {
 		context.menu.doAnimation(actionInfo);

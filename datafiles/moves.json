@@ -2,7 +2,7 @@
 	"attacks" : {
 		"slash" : {
 			"name" : "Slash",
-			"damage" : 10,
+			"damage" : 15,
 			"scale" : "str",
 			"sound" : "Hit1",
 			"sprite" : "swing",
@@ -14,6 +14,78 @@
 			"name" : "Punch",
 			"damage" : 5,
 			"scale" : "str",
+			"sound" : "Hit1",
+			"sprite" : "swing",
+			"type" : "attack",
+			"action" : "instant"
+		},
+		"kick" : {
+			"name" : "Kick",
+			"damage" : 5,
+			"scale" : "dex",
+			"sound" : "Hit1",
+			"sprite" : "swing",
+			"type" : "attack",
+			"action" : "instant"
+		},
+		"hPunch" : {
+			"name" : "Heavy Punch",
+			"damage" : 10,
+			"scale" : "str",
+			"sound" : "Hit1",
+			"sprite" : "swing",
+			"type" : "attack",
+			"action" : "instant"
+		},
+		"bPunch" : {
+			"name" : "Brass Punch",
+			"damage" : 15,
+			"scale" : "str",
+			"sound" : "Hit1",
+			"sprite" : "swing",
+			"type" : "attack",
+			"action" : "instant"
+		},
+		"bash" : {
+			"name" : "Bash",
+			"damage" : 25,
+			"scale" : "str",
+			"sound" : "Hit1",
+			"sprite" : "swing",
+			"type" : "attack",
+			"action" : "instant"
+		},
+		"clobber" : {
+			"name" : "Clobber",
+			"damage" : 35,
+			"scale" : "str",
+			"sound" : "Hit1",
+			"sprite" : "swing",
+			"type" : "attack",
+			"action" : "instant"
+		},
+		"backstab" : {
+			"name" : "Backstab",
+			"damage" : 45,
+			"scale" : "dex",
+			"sound" : "Hit1",
+			"sprite" : "swing",
+			"type" : "attack",
+			"action" : "instant"
+		},
+		"crunch" : {
+			"name" : "Crunch",
+			"damage" : 40,
+			"scale" : "str",
+			"sound" : "Hit1",
+			"sprite" : "swing",
+			"type" : "attack",
+			"action" : "instant"
+		},
+		"blasterShot" : {
+			"name" : "Blaster Shot",
+			"damage" : 35,
+			"scale" : "int",
 			"sound" : "Hit1",
 			"sprite" : "swing",
 			"type" : "attack",
@@ -41,15 +113,6 @@
 		},
 		"staff" : {
 			"name" : "Staff Strike",
-			"damage" : 5,
-			"scale" : "str",
-			"sound" : "Hit1",
-			"sprite" : "swing",
-			"type" : "attack",
-			"action" : "instant"
-		},
-		"smash" : {
-			"name" : "Rock Smash",
 			"damage" : 5,
 			"scale" : "str",
 			"sound" : "Hit1",
@@ -114,6 +177,17 @@
 			"desc" : "It's a gun, a dinky one though.",
 			"action" : "aimCharge",
 			"speed" : 1
+		},
+		"manaSlash" : {
+			"name" : "Mana Slash",
+			"damage" : 25,
+			"scale" : "int",
+			"sound" : "Lightning",
+			"sprite" : "slash",
+			"type" : "attack",
+			"desc" : "Channel your mana into a blade!.",
+			"action" : "timedHit",
+			"speed" : 3
 		}
 	},
 	"spells" : {
@@ -130,6 +204,45 @@
 			"action" : "spellCharge",
 			"speed" : 1
 		},
+		"fireshot" : {
+			"name" : "Fireball",
+			"damage" : 10,
+			"scale" : "int",
+			"cost" : 10,
+			"effects" : ["burn1"],
+			"sound" : "Fireball",
+			"sprite" : "fireball",
+			"type" : "dmgSpell",
+			"desc" : "Sets enemies ablaze.",
+			"action" : "spellCharge",
+			"speed" : 1
+		},
+		"firebomb" : {
+			"name" : "Firebomb",
+			"damage" : 15,
+			"scale" : "int",
+			"cost" : 50,
+			"effects" : ["burn1"],
+			"sound" : "Fireball",
+			"sprite" : "fireball",
+			"type" : "dmgSpellAll",
+			"desc" : "Sets enemies ablaze.",
+			"action" : "spellCharge",
+			"speed" : 1
+		},
+		"flameSlash" : {
+			"name" : "Flaming Slash",
+			"damage" : 25,
+			"scale" : "dex",
+			"cost" : 35,
+			"effects" : ["burn1"],
+			"sound" : "Hit1",
+			"sprite" : "slash",
+			"type" : "dmgSpell",
+			"desc" : "Sets enemies ablaze.",
+			"action" : "timedHit",
+			"speed" : 4
+		},
 		"zap" : {
 			"name" : "Zap",
 			"damage" : 15,
@@ -139,6 +252,32 @@
 			"sound" : "Lightning",
 			"sprite" : "lightning",
 			"type" : "dmgSpell",
+			"desc" : "Small bolt of lighting. Stuns enemies for a short amount of time.",
+			"action" : "spellCharge",
+			"speed" : 1
+		},
+		"zip" : {
+			"name" : "Zip",
+			"damage" : 5,
+			"scale" : "int",
+			"cost" : 10,
+			"effects" : ["stun0"],
+			"sound" : "Lightning",
+			"sprite" : "lightning",
+			"type" : "dmgSpell",
+			"desc" : "Small bolt of lighting. Stuns enemies for a short amount of time.",
+			"action" : "spellCharge",
+			"speed" : 3
+		},
+		"plague" : {
+			"name" : "Plague",
+			"damage" : 10,
+			"scale" : "int",
+			"cost" : 50,
+			"effects" : ["poison1", "waste"],
+			"sound" : "Lightning",
+			"sprite" : "lightning",
+			"type" : "dmgSpellAll",
 			"desc" : "Small bolt of lighting. Stuns enemies for a short amount of time.",
 			"action" : "spellCharge",
 			"speed" : 1
@@ -190,6 +329,30 @@
 			"type" : "buffSpell",
 			"desc" : "Increases resistance to physical attacks.",
 			"action" : "instant"
+		},
+		"absorb1" : {
+			"name" : "Absorb I",
+			"scale" : "int",
+			"cost" : 25,
+			"effects" : ["absorb1"],
+			"sound" : "Heal",
+			"sprite" : "lightning",
+			"type" : "selfSpell",
+			"desc" : "Heal from incoming magic damage.",
+			"action" : "instant"
+		},
+		"waste" : {
+			"name" : "Waste",
+			"scale" : "int",
+			"damage" : 5,
+			"cost" : 30,
+			"effects" : ["waste"],
+			"sound" : "Hit1",
+			"sprite" : "lightning",
+			"type" : "dmgSpell",
+			"desc" : "Causes target to lose resources.",
+			"action" : "timedHit",
+			"speed" : 3
 		},
 		"meditate" : {
 			"name" : "Meditate",
@@ -256,7 +419,7 @@
 			"cost" : 0,
 			"scale" : "int",
 			"effects" : ["taunted"],
-			"sound" : "Hit1",
+			"sound" : "sndTaunt",
 			"sprite" : "slash",
 			"type" : "debuffSpell",
 			"desc" : "Forces a target to focus the user.",
@@ -324,6 +487,7 @@
 		"block" : {
 			"name" : "Block",
 			"scale" : "dex",
+			"cost" : 30,
 			"effects" : ["block"],
 			"sound" : "Heal",
 			"sprite" : "lightning",
@@ -368,6 +532,237 @@
 			"action" : "spellMultiCharge",
 			"speed" : 0.1,
 			"hits" : 100
+		},
+		"guidance" : {
+			"name" : "Guidance",
+			"scale" : "dex",
+			"cost" : 25,
+			"effects" : ["speed1"],
+			"sound" : "Heal",
+			"sprite" : "lightning",
+			"type" : "selfSpell",
+			"desc" : "Inceases user's speed, quicker turn time.",
+			"action" : "instant"
+		},
+		"lightwave" : {
+			"name" : "Wave of Light",
+			"damage" : 10,
+			"scale" : "int",
+			"cost" : 40,
+			"effects" : [],
+			"sound" : "Lightning",
+			"sprite" : "lightning",
+			"type" : "dmgSpellAll",
+			"desc" : "A whip of blood.",
+			"action" : "spellCharge",
+			"speed" : 1
+		},
+		"psycheUp" : {
+			"name" : "Psyche Up",
+			"scale" : "str",
+			"cost" : 15,
+			"effects" : ["strUp1"],
+			"sound" : "Heal",
+			"sprite" : "lightning",
+			"type" : "selfSpell",
+			"desc" : "Increases strength.",
+			"action" : "instant"
+		},
+		"strPotion" : {
+			"name" : "Strength Brew",
+			"scale" : "int",
+			"cost" : 25,
+			"effects" : ["strUp2"],
+			"sound" : "Heal",
+			"sprite" : "lightning",
+			"type" : "selfSpell",
+			"desc" : "Greatly increases Strength.",
+			"action" : "instant"
+		},
+		"dexPotion" : {
+			"name" : "Dexterity Brew",
+			"scale" : "int",
+			"cost" : 25,
+			"effects" : ["dexUp2"],
+			"sound" : "Heal",
+			"sprite" : "lightning",
+			"type" : "selfSpell",
+			"desc" : "Greatly increases Dexterity.",
+			"action" : "instant"
+		},
+		"intPotion" : {
+			"name" : "Intelligence Brew",
+			"scale" : "int",
+			"cost" : 25,
+			"effects" : ["strUp2"],
+			"sound" : "Heal",
+			"sprite" : "lightning",
+			"type" : "selfSpell",
+			"desc" : "Greatly increases Intelligence.",
+			"action" : "instant"
+		},
+		"strSling" : {
+			"name" : "Strength Sling",
+			"scale" : "int",
+			"cost" : 25,
+			"effects" : ["strUp2"],
+			"sound" : "Heal",
+			"sprite" : "lightning",
+			"type" : "selfSpell",
+			"desc" : "Greatly increases Strength.",
+			"action" : "instant"
+		},
+		"dexSling" : {
+			"name" : "Dexterity Sling",
+			"scale" : "int",
+			"cost" : 25,
+			"effects" : ["dexUp2"],
+			"sound" : "Heal",
+			"sprite" : "lightning",
+			"type" : "selfSpell",
+			"desc" : "Greatly increases Dexterity.",
+			"action" : "instant"
+		},
+		"intSling" : {
+			"name" : "Intelligence Sling",
+			"scale" : "int",
+			"cost" : 25,
+			"effects" : ["strUp2"],
+			"sound" : "Heal",
+			"sprite" : "lightning",
+			"type" : "selfSpell",
+			"desc" : "Greatly increases Intelligence.",
+			"action" : "instant"
+		},
+		"smash" : {
+			"name" : "Smash",
+			"damage" : 20,
+			"cost" : 25,
+			"scale" : "str",
+			"effects" : ["strWeakness1"],
+			"sound" : "Hit1",
+			"sprite" : "swing",
+			"type" : "dmgSpell",
+			"desc" : "Reduces target's armor.",
+			"action" : "timedHit",
+			"speed" : 3
+		},
+		"guard" : {
+			"name" : "Guard",
+			"cost" : 25,
+			"scale" : "str",
+			"effects" : ["strResist1"],
+			"sound" : "Heal",
+			"sprite" : "lightning",
+			"type" : "selfSpell",
+			"desc" : "Guards against physical damage.",
+			"action" : "intsant"
+		},
+		"readyKnife" : {
+			"name" : "Ready Knife",
+			"cost" : 30,
+			"scale" : "dex",
+			"effects" : ["critNext"],
+			"sound" : "Heal",
+			"sprite" : "sprLightning",
+			"type" : "selfSpell",
+			"desc" : "Prepares for a devastating attack.",
+			"action" : "spellCharge",
+			"speed" : 2
+		},
+		"trip" : {
+			"name" : "Trip",
+			"cost" : 5,
+			"scale" : "dex",
+			"effects" : ["tripped"],
+			"sound" : "Hit1",
+			"sprite" : "swing",
+			"type" : "dmgSpell",
+			"desc" : "Resets target's timer.",
+			"action" : "instant"
+		},
+		"wolfPaw" : {
+			"name" : "Wolf's Paw",
+			"damage" : 40,
+			"cost" : 75,
+			"scale" : "str",
+			"effects" : ["bleed1"],
+			"sound" : "Hit1",
+			"sprite" : "swing",
+			"type" : "dmgSpell",
+			"desc" : "5 blades in hand. Causes bleeding.",
+			"action" : "spellCharge",
+			"speed" : 5
+		},
+		"manaBlade" : {
+			"name" : "Mana Blade",
+			"cost" : 60,
+			"scale" : "int",
+			"effects" : ["manaBlade"],
+			"sound" : "Lightning",
+			"sprite" : "sprLightning",
+			"type" : "selfSpell",
+			"desc" : "Grants a magical blade.",
+			"action" : "instant"
+		},
+		"leechSlash" : {
+			"name" : "Leeching Slash",
+			"damage" : 25,
+			"cost" : 25,
+			"scale" : "dex",
+			"heal" : 15,
+			"sound" : "Hit1",
+			"sprite" : "swing",
+			"type" : "dmgSpell",
+			"desc" : "Heals from damage",
+			"action" : "timedHit",
+			"speed" : 2
+		},
+		"wither" : {
+			"name" : "Wither",
+			"scale" : "int",
+			"cost" : 15,
+			"effects" : ["slowness1"],
+			"sound" : "Lightning",
+			"sprite" : "lightning",
+			"type" : "debuffSpell",
+			"desc" : "Slows the target.",
+			"action" : "instant"
+		},
+		"tRoar" : {
+			"name" : "Terrible Roar",
+			"scale" : "dex",
+			"damage" : 5,
+			"cost" : 30,
+			"effects" : ["stun0"],
+			"sound" : "Lightning",
+			"sprite" : "lightning",
+			"type" : "dmgSpellAll",
+			"desc" : "Shocks enemy team, resetting their turns.",
+			"action" : "spellCharge"
+		},
+		"shadowStep" : {
+			"name" : "Shadow Step",
+			"scale" : "int",
+			"cost" : 10,
+			"effects" : ["speed2"],
+			"sound" : "Lightning",
+			"sprite" : "lightning",
+			"type" : "selfSpell",
+			"desc" : "Increases attack speed.",
+			"action" : "instant"
+		},
+		"dShock" : {
+			"name" : "DarkShock",
+			"scale" : "int",
+			"cost" : 40,
+			"damage" : 35,
+			"effects" : ["slowness1"],
+			"sound" : "Lightning",
+			"sprite" : "lightning",
+			"type" : "dmgSpell",
+			"desc" : "Heavy Blast that slows target.",
+			"action" : "spellCharge"
 		}
 	}
 }

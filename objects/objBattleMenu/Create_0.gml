@@ -59,10 +59,19 @@ turnStart = function(ftr, atks, spls){
 	actIndex = charGetActorInd(fighter);
 	if (DEBUG_ENABLED) clientLog("[Menu]" + string(actIndex) + " : " + string(fighter));
 	actors[actIndex].isSelected = true;
+	
+	if(scrCheckEffects(fighter.debuffs, global.data.effects.debuffs.taunted)){
+		var tauntInfo = fighter[$"debuffs"][scrGetEffect(fighter[$"debuffs"], global.data.effects.debuffs[$"taunted"])];
+		var tauntSource = tauntInfo.source;
+		doAction(array_last(fighter.attacks), fighter, tauntSource, battleInfo.team2, false, false);
+		return;
+	}
+	
 	if (DEBUG_ENABLED) clientLog("[Menu] Menu state: " + string(battleInfo.menuState) + " Active: " + string(active));
 	menuBox.loadButtons(options);
 	menuBox.loadGUICards();
 	menuBox.selected = selection;
+	menuBox.loadCharInfoMasks();
 }
 
 doFunction = function(op){
@@ -89,7 +98,12 @@ doFunction = function(op){
 			break;
 		case BOPS.ITEM:
 			if (array_length(battleInfo.inventory) > 0){
-				options = battleInfo.inventory;
+				options = [];
+				for (var i = 0; i < array_length(battleInfo.inventory); ++i){
+					if (battleInfo.inventory[i] != undefined && struct_exists(battleInfo.inventory[i], "consumable")){
+						array_push(options, battleInfo.inventory[i]);	
+					}
+				}
 				battleInfo.menuState = BMENUST.ITEMS;
 				operation = op;
 				menuBox.loadButtons(options);
@@ -131,6 +145,9 @@ doFunction = function(op){
 					if (spell[$"type"] == "dmgSpell" || spell[$"type"] == "debuffSpell"){
 						doAction(action, fighter, target, battleInfo.team2, true, false);	
 					}
+					if (spell[$"type"] == "dmgSpellAll" || spell[$"type"] == "debuffSpellAll"){
+						doAction(action, fighter, battleInfo.team2, battleInfo.team2, true, false);	
+					}
 					if (spell[$"type"] == "restoreSpell" || spell[$"type"] == "buffSpell"){
 						doAction(action, fighter, target, battleInfo.team1, true, false);	
 					}
@@ -162,8 +179,16 @@ doAction = function(action, actor, target, team, isSpell, isItem){
 		isSpell : isSpell,
 		isItem : isItem,
 		actorChar : actors[charGetActorInd(actor)],
-		targetChar : actors[charGetActorInd(target)]
 	};
+	if (!is_array(target)){
+		actionInfo.targetChar = actors[charGetActorInd(target)]	
+	} else {
+		var chars = [];
+		for(var i = 0; i < array_length(team); ++i){
+			array_push(chars, actors[charGetActorInd(team[i])]);
+		}
+		actionInfo.targetChars = chars;
+	}
 	if (DEBUG_ENABLED) clientLog("[Menu]" + string(action));
 	if (global.isPlayerBattle){
 		clientLog("Sending Action!");
@@ -204,18 +229,39 @@ doAction = function(action, actor, target, team, isSpell, isItem){
 		context.controller.doItem(actor, action, target, team, true);
 	}
 	var activeActor = actors[charGetActorInd(actor)];
-	activeActor.startTimer(1);
+	var spdMod = 1;
+	for (var i = 0; i < array_length(actor.buffs); ++i){
+		var buff = actor.buffs[i];
+		if (buff.abil == "speed"){
+			spdMod /= buff.pow;	
+		}
+	}
+	for (var i = 0; i < array_length(actor.debuffs); ++i){
+		var debuff = actor.debuffs[i];
+		if (debuff.abil == "slowness"){
+			spdMod /= debuff.pow;	
+		}
+	}
+	activeActor.startTimer(spdMod);
 }
 
 doAnimation = function(info){
 	var actor1 = actors[charGetActorInd(info.actor)];
 	actor1.doAnim(info.act, info, true);
-	if(charGetActorInd(info.tar) != -1){
-		var actor2 = actors[charGetActorInd(info.tar)];
-		actor2 = actors[charGetActorInd(info.tar)];
-		doEffect(info.act, actor1, actor2, 1);
-		actor2.doAnim(info.act, info, false);
-	}	
+	if(is_array(info.tar)){
+		for(var i = 0; i < array_length(info.tar); ++i){
+			var actor2 = actors[charGetActorInd(info.tar[i])];
+			doEffect(info.act, actor1, actor2, 1);
+			actor2.doAnim(info.act, info, false);
+		}
+	} else {
+		if(charGetActorInd(info.tar) != -1){
+			var actor2 = actors[charGetActorInd(info.tar)];
+			actor2 = actors[charGetActorInd(info.tar)];
+			doEffect(info.act, actor1, actor2, 1);
+			actor2.doAnim(info.act, info, false);
+		}
+	}
 }
 
 doEffect = function(act, src, tar, spd){
@@ -277,15 +323,23 @@ chooseTarget = function(team){
 	menuBox.selected = selection;
 	options = [];
 	var names = [];
-	for (var i = 0; i < array_length(team); ++i){
-		battleInfo.tarteam = team;
-		array_push(options, team[i]);
-		array_push(names, team[i][$"name"]);
+	if (is_string(team[0])){
+		options = ["all"];
+		array_push(names, team[0]);
+	} else {
+		for (var i = 0; i < array_length(team); ++i){
+			battleInfo.tarteam = team;
+			if (!scrCheckEffects(team[i].buffs, global.data.effects.buffs.stealth1)){
+				array_push(options, team[i]);
+				array_push(names, team[i][$"name"]);
+			}
+		}
+		menuBox.loadCharMasks(team);
 	}
 	menuBox.loadButtons(names);
 	menuBox.loadGUIButtons();
 	menuBox.loadContainerCard("TARGET");
-	menuBox.loadCharMasks(team);
+	
 }
 
 charDied = function(ftr){
@@ -340,6 +394,9 @@ selectSpell = function(){
 				if (DEBUG_ENABLED) show_debug_message("[Menu] Enemies: " + string(battleInfo.team2) + string(battleInfo.team2));
 				chooseTarget(battleInfo.team2);	
 			}	
+			if (spell[$"type"] == "dmgSpellAll" || spell[$"type"] == "debuffSpellAll"){
+				chooseTarget(["All Enemies"]);	
+			}	
 			if (spell[$"type"] == "restoreSpell" || spell[$"type"] == "buffSpell"){
 				chooseTarget(battleInfo.team1);	
 			}
@@ -366,7 +423,7 @@ selectItem = function(){
 
 selectTarget = function(){
 	target = options[selection];
-	if (DEBUG_ENABLED) show_debug_message("[Menu]" + string(target[$"cid"]));
+	if (DEBUG_ENABLED) show_debug_message("[Menu]" + string(target));
 	doFunction(BOPS.TARGET);
 	menuBox.clearMasks();
 }
@@ -377,7 +434,10 @@ showRewards = function(gold, xpShare){
 	for(var i = 0; i < array_length(context.playerTeam.team); ++i){
 		var ftr = context.playerTeam.team[i];
 		if (ftr.hp > 0){
-			array_push(lines, (ftr.name + " got " + string(xpShare) + " exp."));	
+			var xpMsg = giveExp(global.players[0].team, ftr, xpShare);
+			for (var j = 0; j < array_length(xpMsg); ++j){
+				array_push(lines, xpMsg[j]);	
+			}
 		}
 	}
 	menuBox.loadInfoBox(lines);

@@ -3,8 +3,8 @@
 
 // Inherit the parent event
 event_inherited();
-baseSpriteName = "sprTutPlayerSpirit";
-idleAnim = true;
+baseSpriteName = "sprPlayerChild";
+idleAnim = false;
 distForTransform = 336;
 startDist = y - 336;
 transformDone = false;

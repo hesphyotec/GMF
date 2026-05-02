@@ -143,14 +143,18 @@ doSpell = function(ftr, spl, tar, team, str, final){
 		if (struct_exists(splData, spl)){
 			var spell = struct_get(splData, spl);
 			if (DEBUG_ENABLED) show_debug_message("[BController] Retrieved Spell: " + string(spl) + " : " + string(spell));
-			if(spell[$"type"] == "dmgSpell"){
+			if(spell[$"type"] == "dmgSpell" || spell[$"type"] == "dmgSpellAll"){
 				doDamage(ftr, tar, spell, str);
 			} else if(spell[$"type"] == "restoreSpell"){
 				doHeal(ftr, tar, spell);
 			}
 			if (array_length(spell[$"effects"])){
 				var spEffs = spell[$"effects"];
-				applyEffects(ftr, spEffs, tar);
+				try{
+					applyEffects(ftr, spEffs, tar);
+				} catch (e) {
+					endTeamTurn(ftr);
+				}
 			}
 		} else {
 			if (DEBUG_ENABLED) show_message("[BController] Error loading spell!");	
@@ -207,6 +211,7 @@ endBattle = function(victory){
 	teams[1].activeTeamQueue = [];
 	teams[0].waiting = [];
 	teams[1].waiting = [];
+	objBattleCharacter.state = CHARSTATES.IDLE;
 	if (victory) {
 		if (outcome.op == "normal"){
 			giveRewards();
@@ -438,9 +443,4 @@ giveRewards = function(){
 	}
 	var xpShare = xp / livingTeam;
 	context.menu.showRewards(gold, xpShare);
-	for(var i = 0; i < array_length(teams[0].team); ++i){
-		if (teams[0].team[i].hp > 0){
-			giveExp(global.players[0].team, teams[0].team[i], xpShare);
-		}
-	}
 }

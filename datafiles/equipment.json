@@ -1,14 +1,182 @@
 {
-    "chestpiece1" : {
-        "name" : "Leather Chestpiece",
-        "pResist" : 0.1,
-        "hpBonus" : 25,
-        "sprite"   : "sprChestpiece1"
+    "sTunic" : {
+        "name" : "Scrapper's Tunic",
+        "strResist" : 0.1,
+        "hpBonus" : 75,
+        "sprite"   : "sprSTunic"
     },
-    "knife1" : {
-        "name" : "Long Knife",
+    "bBuckler" : {
+        "name" : "Bouncer's Buckler",
+        "strResist" : 0.25,
+        "hpBonus" : 100,
+        "sprite"   : "sprBBuckler"
+    },
+    "wsChainmail" : {
+        "name" : "Worn Soldier's Chainmail",
+        "strResist" : 0.3,
+        "hpBonus" : 125,
+        "sprite"   : "sprWSChainmail"
+    },
+    "rgShield" : {
+        "name" : "Royal Guard's Shield",
+        "strResist" : 0.5,
+        "hpBonus" : 150,
+        "spell" : "block",
+        "sprite"   : "sprRGShield"
+    },
+    "bKnuckles" : {
+        "name" : "Bouncer's Knuckles",
+        "strBonus" : 1.0,
+        "sprite"   : "sprBKnuckles"
+    },
+    "sStone" : {
+        "name" : "Sharpening Stone",
         "strBonus" : 0.5,
         "sprite"   : "sprChestpiece1"
+    },
+    "tDagger" : {
+        "name" : "Thief's Dagger",
+        "strBonus" : -0.5,
+        "dexBonus" : 0.5,
+        "spdBonus" : 1.0,
+        "sprite"   : "sprTDagger"
+    },
+    "dClaws" : {
+        "name" : "Dweller's Claws",
+        "dexBonus" : 1.0,
+        "spell" : "poisonSlash",
+        "sprite"   : "sprChestpiece1"
+    },
+    "eBaton" : {
+        "name" : "Enforcer's Baton",
+        "strBonus" : 1.0,
+        "spell" : "smash",
+        "sprite"   : "sprEBaton"
+    },
+    "fHatchet" : {
+        "name" : "Forgotten Hatchet",
+        "dexBonus" : 2.0,
+        "spell" : "chop",
+        "sprite"   : "sprFHatchet"
+    },
+    "cBlade" : {
+        "name" : "Cursed Blade",
+        "strBonus" : 3.0,
+        "debuffs" : "dmgLink",
+        "sprite"   : "sprCBlade"
+    },
+    "wastebringer" : {
+        "name" : "Wastebringer",
+        "strBonus" : 2.0,
+        "spell" : "waste",
+        "sprite"   : "sprWBringer"
+    },
+    "qEdge" : {
+        "name" : "Quematic Edge",
+        "dexBonus" : 2.0,
+        "spell" : "flameSlash",
+        "sprite"   : "sprQEdge"
+    },
+    "fPendant" : {
+        "name" : "Follower's Pendant",
+        "intResist" : 0.1,
+        "hpBonus" : 50,
+        "sprite"   : "sprFPendant"
+    },
+    "dHabit" : {
+        "name" : "Devout's Habit",
+        "intResist" : 0.25,
+        "hpBonus" : 75,
+        "sprite"   : "sprDHabit"
+    },
+    "fRosary" : {
+        "name" : "Faded Rosary",
+        "intResist" : 0.3,
+        "hpBonus" : 100,
+        "sprite"   : "sprFRosary"
+    },
+    "dMantle" : {
+        "name" : "Dikaic Mantle",
+        "intResist" : 0.5,
+        "hpBonus" : 150,
+        "spell" : "absorb1",
+        "sprite"   : "sprDMantle"
+    },
+    "dv812" : {
+        "name" : "Dikaic Verse VIII:XII",
+        "intBonus" : 0.5,
+        "spell" : "haste",
+        "sprite"   : "sprDV812"
+    },
+    "dv202" : {
+        "name" : "Dikaic Verse XX:II",
+        "intBonus" : 1.0,
+        "spell" : "focus",
+        "sprite"   : "sprDV202"
+    },
+    "dv413" : {
+        "name" : "Dikaic Verse IV:XIII",
+        "intBonus" : 1.0,
+        "spell" : "penance",
+        "sprite"   : "sprDV413"
+    },
+    "dv1217" : {
+        "name" : "Dikaic Verse XII:XVII",
+        "intBonus" : 2.0,
+        "spell" : "hollow",
+        "sprite"   : "sprDV1217"
+    },
+    "fvM" : {
+        "name" : "Forbidden Verse M",
+        "intBonus" : 2.0,
+        "spell" : "manaBlade",
+        "sprite"   : "sprFVM"
+    },
+    "fvF" : {
+        "name" : "Forbidden Verse F",
+        "intBonus" : 2.0,
+        "spell" : "fireball",
+        "sprite"   : "sprFVF"
+    },
+    "fvZ" : {
+        "name" : "Forbidden Verse Z",
+        "intBonus" : 2.0,
+        "spell" : "zip",
+        "sprite"   : "sprFVZ"
+    },
+    "fvP" : {
+        "name" : "Forbidden Verse P",
+        "intBonus" : 2.0,
+        "spell" : "plague",
+        "sprite"   : "sprFVP"
+    },
+    "asBoots" : {
+        "name" : "Aluminum Soled Boots",
+        "dexResist" : 0.1,
+        "spdBonus" : 0.25,
+        "hpBonus" : 25,
+        "sprite"   : "sprASBoots"
+    },
+    "aCloak" : {
+        "name" : "Assassin's Cloak",
+        "dexResist" : 0.5,
+        "spdBonus" : 2.0,
+        "strBonus" : -1.0,
+        "hpBonus" : 75,
+        "sprite"   : "sprACloak"
+    },
+    "dFootwrap" : {
+        "name" : "Dweller's Footwrap",
+        "dexResist" : 0.3,
+        "spdBonus" : 1.0,
+        "sprite"   : "sprChestpiece1"
+    },
+    "tMask" : {
+        "name" : "Theif's Mask",
+        "dexResist" : 0.25,
+        "spdBonus" : 0.5,
+        "hpBonus" : 50,
+        "sprite"   : "sprTMask"
     },
     "tutSword" : {
         "name" : "Your Sword",

@@ -33,8 +33,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprNPCLeft",
-    "path":"sprites/sprNPCLeft/sprNPCLeft.yy",
+    "name":"sprVeteranDown",
+    "path":"sprites/sprVeteranDown/sprVeteranDown.yy",
   },
   "spriteMaskId":null,
   "visible":true,

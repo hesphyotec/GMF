@@ -86,6 +86,20 @@ enemyTurn = function(enemy){
 		// UH WTF ERROR?????	
 		if (DEBUG_ENABLED) show_message("[BController] No actions loaded!");
 	}
+	var spdMod = 1;
+	
+	for (var i = 0; i < array_length(enemy.buffs); ++i){
+		var buff = enemy.buffs[i];
+		if (buff.abil == "speed"){
+			spdMod /= buff.pow;	
+		}
+	}
+	for (var i = 0; i < array_length(enemy.debuffs); ++i){
+		var debuff = enemy.debuffs[i];
+		if (debuff.abil == "slowness"){
+			spdMod /= debuff.pow;	
+		}
+	}
 	
 	if (struct_exists(atkData, action)){
 		var targets = scrGetTargetable(battleInfo.team1);
@@ -97,7 +111,7 @@ enemyTurn = function(enemy){
 		}
 		var actor1 = context.menu.getActor(fighter);
 		var actor2 = context.menu.getActor(target);
-	
+		
 		var actInfo = {
 			act : action,
 			actor : fighter,
@@ -111,9 +125,10 @@ enemyTurn = function(enemy){
 		
 		context.controller.doAttack(fighter, action, target, battleInfo.team1, 1, true);
 		context.menu.doAnimation(actInfo);
-		actor1.startTimer(1);
+		actor1.startTimer(spdMod);
 	} else if (struct_exists(splData, action)){
-		if (struct_exists(struct_get(splData, action), "damage")){
+		var actData = struct_get(splData, action)
+		if (actData.type == "dmgSpell" || actData.type == "debuffSpell"){
 			var tIndex = irandom(array_length(battleInfo.team1) - 1);
 			var target = battleInfo.team1[tIndex];
 			if (scrCheckEffects(enemy[$"debuffs"], effData.debuffs[$"taunted"])){
@@ -137,9 +152,9 @@ enemyTurn = function(enemy){
 			
 			context.controller.doSpell(fighter, action, target, battleInfo.team1, 1, true);
 			context.menu.doAnimation(actInfo);
-			actor1.startTimer(1);
+			actor1.startTimer(spdMod);
 		}
-		if (struct_exists(struct_get(splData, action), "heal")){
+		if (actData.type == "restoreSpell" || actData.type == "buffSpell"){
 			var tIndex = irandom(array_length(battleInfo.team2) - 1);
 			var target = battleInfo.team2[tIndex];
 			var actor1 = context.menu.getActor(fighter);
@@ -158,10 +173,51 @@ enemyTurn = function(enemy){
 			
 			context.controller.doSpell(fighter, action, target, battleInfo.team2, 1, true);
 			context.menu.doAnimation(actInfo);
-			actor1.startTimer(1);
+			actor1.startTimer(spdMod);
+		}
+		if (actData.type == "selfSpell"){
+			var tIndex = irandom(array_length(battleInfo.team2) - 1);
+			var actor1 = context.menu.getActor(fighter);
+	
+			var actInfo = {
+				act : action,
+				actor : fighter,
+				tar : fighter,
+				team : battleInfo.team1,
+				isSpell : true,
+				isItem : false,
+				actorChar : actor1,
+				targetChar : actor1
+			}
+			
+			context.controller.doSpell(fighter, action, fighter, battleInfo.team2, 1, true);
+			context.menu.doAnimation(actInfo);
+			actor1.startTimer(spdMod);
+		}
+		if (actData.type == "dmgSpellAll"){
+
+			var actor1 = context.menu.getActor(fighter);
+			for (var i = array_length(battleInfo.team1) - 1; i >= 0; --i;){
+			
+				var target = battleInfo.team1[i];
+				var actor2 = context.menu.getActor(target)
+				var actInfo = {
+					act : action,
+					actor : fighter,
+					tar : target,
+					team : battleInfo.team1,
+					isSpell : true,
+					isItem : false,
+					actorChar : actor1,
+					targetChar : actor2
+				}
+			
+				context.controller.doSpell(fighter, action, target, battleInfo.team1, 1, true);
+				context.menu.doAnimation(actInfo);
+			}
+			actor1.startTimer(spdMod);
 		}
 	}
-	
 }
 
 charReady = function(ftr){

@@ -5,7 +5,7 @@ spd = 0;
 dir = Dirs.DOWN;
 mapSpace = [floor(x / TILE_SIZE), floor(y / TILE_SIZE)];
 movePath = ds_list_create();
-baseSprite = "sprNPC";
+baseSpriteName = "sprNPC";
 
 
 
@@ -14,21 +14,21 @@ initMove = function(_tar, _spd){
 	if(x != (moveTarget[0] * TILE_SIZE)){
 		if (x < (moveTarget[0] * TILE_SIZE)){
 			dir = Dirs.LEFT;
-			sprite_index = sprNPCRight;
+			sprite_index = asset_get_index(baseSpriteName + "Right");
 		}
 		if (x > (moveTarget[0] * TILE_SIZE)){
 			dir = Dirs.RIGHT;
-			sprite_index = sprNPCLeft;
+			sprite_index = asset_get_index(baseSpriteName + "Left");
 		}
 	} 
 	if (y != (moveTarget[1] * TILE_SIZE)){
-		if (y < (moveTarget[1] * TILE_SIZE)){
-			dir = Dirs.UP;
-			sprite_index = sprNPCDown;
-		}
 		if (y > (moveTarget[1] * TILE_SIZE)){
+			dir = Dirs.UP;
+			sprite_index = asset_get_index(baseSpriteName + "Up");
+		}
+		if (y < (moveTarget[1] * TILE_SIZE)){
 			dir = Dirs.DOWN;
-			sprite_index = sprNPCUp;
+			sprite_index = asset_get_index(baseSpriteName + "Down");
 		}
 	}
 	spd = _spd;

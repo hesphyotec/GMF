@@ -8,6 +8,22 @@
 			"duration" : 60,
 			"icon" : "sprBStrRes1"
 		},
+		"dexResist1" : {
+			"name" : "Dexterity Resistance I",
+			"abil" : "resist",
+			"type" : "dex",
+			"pow" : 0.5,
+			"duration" : 60,
+			"icon" : "sprBStrRes1"
+		},
+		"intResist1" : {
+			"name" : "Intelligence Resistance I",
+			"abil" : "resist",
+			"type" : "int",
+			"pow" : 0.5,
+			"duration" : 60,
+			"icon" : "sprBStrRes1"
+		},
 		"focused" : {
 			"name" : "Focused",
 			"abil" : "focus",
@@ -47,6 +63,75 @@
 			"pow" : 1.5,
 			"duration" : 60,
 			"icon" : "sprBStrRes1"
+		},
+		"dexUp1" : {
+			"name" : "Dexterity Increase I",
+			"abil" : "enhance",
+			"type" : "dex",
+			"pow" : 1.5,
+			"duration" : 60,
+			"icon" : "sprBStrRes1"
+		},
+		"intUp1" : {
+			"name" : "Intelligence Increase I",
+			"abil" : "enhance",
+			"type" : "int",
+			"pow" : 1.5,
+			"duration" : 60,
+			"icon" : "sprBStrRes1"
+		},
+		"strUp2" : {
+			"name" : "Strength Increase II",
+			"abil" : "enhance",
+			"type" : "str",
+			"pow" : 1.5,
+			"duration" : 60,
+			"icon" : "sprBStrRes1"
+		},
+		"dexUp2" : {
+			"name" : "Dexterity Increase II",
+			"abil" : "enhance",
+			"type" : "dex",
+			"pow" : 1.5,
+			"duration" : 60,
+			"icon" : "sprBStrRes1"
+		},
+		"intUp2" : {
+			"name" : "Intelligence Increase II",
+			"abil" : "enhance",
+			"type" : "int",
+			"pow" : 1.5,
+			"duration" : 60,
+			"icon" : "sprBStrRes1"
+		},
+		"manaBlade" : {
+			"name" : "Mana Blade",
+			"abil" : "tempAttack",
+			"type" : "manaSlash",
+			"duration" : 60,
+			"icon" : "sprBStrRes1"
+		},
+		"speed1" : {
+			"name" : "Speed I",
+			"abil" : "speed",
+			"type" : "dex",
+			"pow" : 1.5,
+			"duration" : 30,
+			"icon" : "sprBMeditate"
+		},
+		"speed2" : {
+			"name" : "Speed II",
+			"abil" : "speed",
+			"type" : "dex",
+			"pow" : 3.0,
+			"duration" : 15,
+			"icon" : "sprBMeditate"
+		},
+		"critNext" : {
+			"name" : "Critical",
+			"abil" : "critNext",
+			"duration" : 20,
+			"icon" : "sprBStrRes1"
 		}
 	},
 	"debuffs" : {
@@ -59,15 +144,55 @@
 			"duration" : 15,
 			"icon" : "sprDbBurn1"
 		},
+		"bleed1" : {
+			"name" : "Bleed I",
+			"abil" : "bleed",
+			"duration" : 10,
+			"icon" : "sprBStrRes1"
+		},
+		"poison1" : {
+			"name" : "Poison I",
+			"abil" : "poison",
+			"pow" : 5,
+			"type" : "int",
+			"scale" : "int",
+			"duration" : 15,
+			"icon" : "sprDbBurn1"
+		},
+		"dmgLink" : {
+			"name" : "Damage Link",
+			"abil" : "selfdamage",
+			"pow" : 0.25,
+			"type" : "int",
+			"scale" : "int",
+			"duration" : -1,
+			"icon" : "sprDbBurn1"
+		},
+		"waste" : {
+			"name" : "Waste",
+			"abil" : "waste",
+			"pow" : -1.5,
+			"type" : "int",
+			"scale" : "int",
+			"duration" : 15,
+			"icon" : "sprDbBurn1"
+		},
 		"taunted" : {
 			"name" : "Taunted",
 			"abil" : "taunt",
 			"type" : "int",
-			"duration" : 30,
+			"duration" : 10,
 			"icon" : "sprBStrRes1"
 		},
+		"stun0" : {
+			"name" : "!",
+			"abil" : "stun",
+			"type" : "int",
+			"duration" : 1,
+			"icon" : "sprBMeditate"
+		},
 		"stun1" : {
-			"name" : "Stunned",
+			"name" : "Stunned I",
 			"abil" : "stun",
 			"type" : "int",
 			"duration" : 5,
@@ -94,6 +219,14 @@
 			"abil" : "recharge",
 			"type" : "int",
 			"duration" : 10,
+			"icon" : "sprBMeditate"
+		},
+		"slowness1" : {
+			"name" : "Slowness I",
+			"abil" : "slow",
+			"type" : "spd",
+			"pow" : 0.5,
+			"duration" : 15,
 			"icon" : "sprBMeditate"
 		}
 	}

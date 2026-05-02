@@ -24,9 +24,76 @@
 				{
 					"op" : "endDiag"
 				}
-			]
+			],
+			"sprite" : "sprVeteranTalkNeutral"
+		},
+		"vetIntro1" : {
+			"dialogue" :[
+				"The HERO... huh?"
+			],
+			"csTrig" : "veteranIntro2",
+			"sprite" : "sprVeteranTalkNeutral"
+		},
+		"vetIntro2" : {
+			"dialogue" :[
+				"Would ya believe me if I said they were taking a nap?"
+			],
+			"nextDiag" : {
+				"speaker" : "veteran",
+				"line" : "vetIntro3",
+				"src" : "objVeteranNPC"
+			},
+			"sprite" : "sprVeteranTalkHappy"
+		},
+		"vetIntro3" : {
+			"dialogue" :[
+				"Nah I bet not."
+			],
+			"csTrig" : "veteranIntro3",
+			"sprite" : "sprVeteranTalkNeutral"
+		},
+		"vetIntro4" : {
+			"dialogue" : [
+				"You're off to kill the IMP MATRIARCH, eh?",
+				"Now, that's an impossible task!",
+				"Them royal imps, they're a tough bunch.",
+				"Last MATRIARCH took out a whole legion on her own.",
+				"You think you've got what it takes?"
+			],
+			"choices" : [
+				"Step Foward.",
+				"Flee."
+			],
+			"result" : [
+				{
+					"op" : "trigCs",
+					"csId" : "veteranIntro4a"
+				},
+				{
+					"op" : "nextDiag",
+					"speaker" : "veteran",
+					"line" : "vetIntro4b",
+					"src" : "objVeteranNPC"
+				}
+			],
+			"sprite" : "sprVeteranTalkNeutral"
+		},
+		"vetIntro4b" : {
+			"dialogue" :[
+				"Ah ah ah!.",
+				"No point in runnin'"
+			],
+			"csTrig" : "veteranIntro4b",
+			"sprite" : "sprVeteranTalkNeutral"
+		},
+		"vetIntro5" : {
+			"dialogue" : [
+				"Let's see it then."
+			],
+			"csTrig" : "veteranIntro5",
+			"sprite" : "sprVeteranTalkNeutral"
 		}
-
+		
 	},
 	"assassin" : {
 		"recruit" : {
@@ -365,6 +432,7 @@
 			"dialogue" : [
 				"HERO! How blessed are we to have thou in our halls."
 			],
+			"sprite" : "sprHighPriestTalk",
 			"nextDiag" : {
 				"speaker" : "narration",
 				"line" : "altar2",
@@ -375,6 +443,7 @@
 			"dialogue" : [
 				"HERO... His highness awaits your audience. Come with me."
 			],
+			"sprite" : "sprHighPriestTalk",
 			"choices" : [
 				"Get up."
 			],

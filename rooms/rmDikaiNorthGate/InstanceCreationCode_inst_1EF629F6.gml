@@ -1,0 +1,1 @@
+tSceneInfo = getCutscene("veteranIntro1");

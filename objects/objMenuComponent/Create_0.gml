@@ -19,6 +19,7 @@ font = fntBattle;
 
 active = true;
 master = undefined;
+parent = undefined;
 
 a = 1;
 color = c_white;
@@ -61,6 +62,8 @@ onClick = function(){}
 onHold = function(){}
 
 onHover = function(){}
+
+onStep = function(){}
 
 drawCompBasic = function(){
 	var tex = sprite_get_texture(sprite_index, image_index);
@@ -109,6 +112,12 @@ onDraw = function(){
 			break;
 		case GUI.INFOBOX:
 			drawInfoBox();
+			break;
+		case GUI.BACKPACKCONTAINER:
+			drawBpContainer();
+			break;
+		case GUI.BACKPACKINVBOX:
+			drawBpBox();
 			break;
 	}
 	draw_set_alpha(1);
@@ -209,9 +218,14 @@ drawSlider = function(){
 
 drawInvContainer = function(){
 	active = false;
-	draw_sprite(sprite_index, image_index, xPos, yPos);
+	draw_sprite_stretched(sprite_index, image_index, tweenX, yPos, width * (tweenX / targetX), height);
 	var charSprite = asset_get_index(data.r_char.sprite);
-	draw_sprite(charSprite, 0, xPos + width - (sprite_get_width(charSprite)), yPos + (sprite_get_width(charSprite)));
+	draw_sprite(charSprite, 0, tweenX + width - (sprite_get_width(charSprite)), yPos + (sprite_get_width(charSprite)));
+}
+
+drawBpContainer = function(){
+	active = false;
+	draw_sprite_stretched(sprite_index, image_index, xPos, tweenY, width, height * (tweenY / targetY));
 }
 
 drawInvDragBox = function(){
@@ -222,12 +236,38 @@ drawInvDragBox = function(){
 	}
 	draw_set_alpha(1);
 	draw_set_color(color);
-	draw_rectangle(xPos, yPos, xPos + width, yPos + height, true);
+	draw_sprite_stretched(sprButtonTest, image_index, tweenX, yPos, width, height);
 	draw_set_colour(c_white);
 	draw_set_alpha(1);
 	if (data.item != undefined){
-		draw_sprite(sprite_index, image_index, xPos + (sprite_width/2), yPos + (sprite_height));
+		if (moving){
+			draw_sprite(sprite_index, image_index, device_mouse_x_to_gui(0), device_mouse_y_to_gui(0));
+		} else {
+			draw_sprite(sprite_index, image_index, tweenX, yPos + (sprite_height));
+		}
 	}
+}
+
+drawBpBox = function(){
+	if (hovered){
+		color = c_yellow;	
+	} else {
+		color = c_white;	
+	}
+	draw_set_alpha(1);
+	draw_set_color(color);
+	draw_sprite_stretched(sprButtonTest, image_index, xPos, tweenY, width, height);
+	//draw_rectangle(xPos, tweenY, xPos + width, tweenY + height, true);
+	draw_set_colour(c_white);
+	draw_set_alpha(1);
+	if (data.item != undefined){
+		if (moving){
+			draw_sprite(sprite_index, image_index, device_mouse_x_to_gui(0), device_mouse_y_to_gui(0));
+		} else {
+			draw_sprite(sprite_index, image_index, xPos, tweenY + (sprite_height));
+		}
+	}
+
 }
 
 drawInfoBox = function(){
@@ -244,4 +284,47 @@ drawInfoBox = function(){
 	}
 	var showText = string_copy(text, 0, textProgress);
 	draw_text_ext(xPos + textPad, yPos + textPad, showText, 16, width - textPad);
+	drawReset();
+}
+
+drawHoverInfo = function(){
+	xPos = device_mouse_x_to_gui(0);
+	yPos = device_mouse_y_to_gui(0) - height;
+	var iconBuffer = 16;
+	var titleBufferX = 8;
+	var lineBufferY = 24;
+	var sep = 16
+	var drawX = xPos;
+	var drawY = yPos;
+	draw_set_halign(fa_left);
+	draw_set_valign(fa_bottom);
+	if (xPos > display_get_gui_width() / 2){
+		drawX = xPos - width;
+		draw_set_halign(fa_right);
+	}
+	
+	if (yPos < display_get_gui_height() / 2){
+		drawY = yPos + height;
+	}
+	
+	draw_sprite_stretched(sprite_index, image_index, drawX, drawY, width, height);
+	if (struct_exists(data, "icon")){
+		draw_sprite(data.icon, image_index, drawX + iconBuffer, drawY + iconBuffer);
+		titleBufferX = iconBuffer + sprite_get_width(data.icon);
+		lineBufferY = 8 + sprite_get_height(data.icon);
+	}
+	draw_set_font(fntBattle);
+	draw_set_halign(fa_left);
+	draw_set_valign(fa_bottom);
+	if (struct_exists(data, "title")){
+		draw_text_ext(drawX + titleBufferX, drawY + iconBuffer, data.title, sep, drawX + width - titleBufferX);
+	}
+	draw_set_font(fntHP);
+	if (struct_exists(data, "lines")){
+		for (var i = 0; i < array_length(data.lines); ++i){
+			draw_text_ext(drawX + iconBuffer, drawY + lineBufferY + (sep * i), data.lines[i], sep, drawX + width - iconBuffer);
+		}
+	}
+	draw_set_font(fntBattle);
+	drawReset();
 }

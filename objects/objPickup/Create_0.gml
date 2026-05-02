@@ -1,8 +1,14 @@
-item = "chestpiece1";
-
+item = {};
+type = NPC.PICKUP;
+dir = Dirs.DOWN;
 onInteract = function(src){
-	if (global.players[0].equipItem(item, 0)){
-		audio_play_sound(sndGet, 1, false, global.effVolume);
-		instance_destroy(id);
-	}
+	objPlayer.pickupItem(item);
+	audio_play_sound(sndGet, 1, false, global.effVolume);
+	instance_destroy(id);
+}
+
+setItem = function(itemName){
+	item = struct_get(global.data.equipment, itemName);
+	var sprite = asset_get_index(item.sprite);
+	sprite_index = sprite;
 }

@@ -1,6 +1,10 @@
 if (follow != undefined){
-	xto = follow.x
-	yto = follow.y
+	try {
+		xto = follow.x
+		yto = follow.y
+	} catch (e) {
+		follow = objOWPlayer;	
+	}
 } else if (lockedPos){
 	xto = lookAtX;
 	yto = lookAtY;

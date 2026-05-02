@@ -14,24 +14,24 @@
     },
     "bandit1" : {
         "foes" : [
-            "banditGoon"
+            "thief"
         ],
         "outcome" : {
             "op" : "normal",
-            "exp" : 20,
+            "exp" : 50,
             "gold" : 50
         },
         "background" : "sprTCasBatBG"
     },
     "bandit2" : {
         "foes" : [
-            "banditGoon",
-            "banditGoon"
+            "thief",
+            "thief"
         ],
         "outcome" : {
             "op" : "normal",
-            "exp" : 1,
-            "gold" : 1
+            "exp" : 75,
+            "gold" : 50
         },
         "background" : "sprTCasBatBG"
     },
@@ -53,6 +53,141 @@
             "op" : "normal",
             "exp" : 1,
             "gold" : 1
-        }
+        },
+        "background" : "sprPrologueBatBG"
+    },
+    "gamblerTest" : {
+        "foes" : [
+            "gambler"
+        ],
+        "outcome" : {
+            "op" : "normal",
+            "exp" : 1,
+            "gold" : 1
+        },
+        "background" : "sprPrologueBatBG"
+    },
+    "dopeyTest" : {
+        "foes" : [
+            "dopey"
+        ],
+        "outcome" : {
+            "op" : "normal",
+            "exp" : 1,
+            "gold" : 1
+        },
+        "background" : "sprPrologueBatBG"
+    },
+    "thugTest" : {
+        "foes" : [
+            "thug"
+        ],
+        "outcome" : {
+            "op" : "normal",
+            "exp" : 1,
+            "gold" : 1
+        },
+        "background" : "sprPrologueBatBG"
+    },
+    "bouncerTest" : {
+        "foes" : [
+            "bouncer"
+        ],
+        "outcome" : {
+            "op" : "normal",
+            "exp" : 1,
+            "gold" : 1
+        },
+        "background" : "sprPrologueBatBG"
+    },
+    "slingerTest" : {
+        "foes" : [
+            "slinger",
+            "thug"
+        ],
+        "outcome" : {
+            "op" : "normal",
+            "exp" : 1,
+            "gold" : 1
+        },
+        "background" : "sprPrologueBatBG"
+    },
+    "oHealerTest" : {
+        "foes" : [
+            "thug",
+            "oHealer"
+        ],
+        "outcome" : {
+            "op" : "normal",
+            "exp" : 1,
+            "gold" : 1
+        },
+        "background" : "sprPrologueBatBG"
+    },
+    "oPyromancerTest" : {
+        "foes" : [
+            "oPyromancer"
+        ],
+        "outcome" : {
+            "op" : "normal",
+            "exp" : 1,
+            "gold" : 1
+        },
+        "background" : "sprPrologueBatBG"
+    },
+    "oHitmanTest" : {
+        "foes" : [
+            "oHitman"
+        ],
+        "outcome" : {
+            "op" : "normal",
+            "exp" : 1,
+            "gold" : 1
+        },
+        "background" : "sprPrologueBatBG"
+    },
+    "oBodyguardTest" : {
+        "foes" : [
+            "oBodyguard"
+        ],
+        "outcome" : {
+            "op" : "normal",
+            "exp" : 1,
+            "gold" : 1
+        },
+        "background" : "sprPrologueBatBG"
+    },
+    "assassinTest" : {
+        "foes" : [
+            "assassinEnemy"
+        ],
+        "outcome" : {
+            "op" : "normal",
+            "exp" : 1,
+            "gold" : 1
+        },
+        "background" : "sprPrologueBatBG"
+    },
+    "dTest" : {
+        "foes" : [
+            "dBoss"
+        ],
+        "outcome" : {
+            "op" : "normal",
+            "exp" : 1,
+            "gold" : 1
+        },
+        "background" : "sprPrologueBatBG"
+    },
+    "knightTest" : {
+        "foes" : [
+            "impKnight1"
+        ],
+        "outcome" : {
+            "op" : "normal",
+            "exp" : 1,
+            "gold" : 1
+        },
+        "background" : "sprPrologueBatBG"
     }
 }

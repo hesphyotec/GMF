@@ -1,0 +1,1 @@
+roomTarget = rmOutskirtsMaze2;

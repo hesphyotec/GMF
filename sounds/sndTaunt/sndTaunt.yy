@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"sndTaunt",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":0.7052154,
+  "exportDir":"",
+  "name":"sndTaunt",
+  "parent":{
+    "name":"BattleSounds",
+    "path":"folders/Sounds/Battle/BattleSounds.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"sndTaunt.wav",
+  "volume":0.4,
+}

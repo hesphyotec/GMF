@@ -2,7 +2,8 @@ function scrDefineNPC(){
 	enum NPC{
 		QUEST,
 		FRIENDLY,
-		HOSTILE
+		HOSTILE,
+		PICKUP
 	}
 	
 	enum RACE{

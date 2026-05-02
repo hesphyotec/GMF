@@ -124,6 +124,63 @@ loadGUIButtons = function(){
 				}
 			}
 		}
+		
+		if (battleInfo.menuState == BMENUST.ATTACK){
+			var attack = struct_get(global.data.moves[$"attacks"], attacks[i]);
+			var atData = {
+				data : {
+					title : attack.name,
+					lines : [
+					"Type : " + attack.scale,
+					"Damage : " + string(attack.damage)
+					]
+				},
+				par : button
+			}
+			button.onHover = method(atData, function(){
+				var info = createButton(mouse_x + 4, mouse_y + 4, 128, 64, sprInfo, GUI.HOVERINFO, data);
+				info.parent = par;
+				info.active = false;
+			});
+		}
+		
+		if (battleInfo.menuState == BMENUST.SPELL){
+			var spell = struct_get(global.data.moves[$"spells"], spells[i]);
+			var spData = {
+				data : {
+					title : spell.name,
+					lines : [
+					"Type : " + spell.scale,
+					"Cost : " + string(spell.cost)
+					]
+				},
+				par : button
+			}
+			button.onHover = method(spData, function(){
+				var info = createButton(mouse_x + 4, mouse_y + 4, 128, 64, sprInfo, GUI.HOVERINFO, data);
+				info.parent = par;
+				info.active = false;
+			});
+		}
+		if (battleInfo.menuState == BMENUST.ITEMS){
+			var item = battleInfo.inventory[i];
+			var itData = {
+				data : {
+					title : item.name,
+					lines : [
+					"Type : " + item.abil,
+					"Power : " + string(item.pow),
+					"Quantity : " + string(item.quantity)
+					]
+				},
+				par : button
+			}
+			button.onHover = method(itData, function(){
+				var info = createButton(mouse_x + 4, mouse_y + 4, 128, 64, sprInfo, GUI.HOVERINFO, data);
+				info.parent = par;
+				info.active = false;
+			});
+		}
 		array_push(buttons, button);
 	}
 }
@@ -168,15 +225,17 @@ loadGUICards = function(){
 				break;
 			case 2:
 				for (var j = 0; j < array_length(battleInfo.inventory); j++){
-					var textInfo = {
-						text : battleInfo.inventory[j].name,
-						spacing : spacing
-					};
-					array_push(card.data.buttons, textInfo);
-					with (card){
-						onClick = function(){
-							objBattleMenu.doFunction(BOPS.ITEM);
-							audio_play_sound(sndChoose,1,false, global.masVolume * global.effVolume);
+					if (battleInfo.inventory[j] != undefined && struct_exists(battleInfo.inventory[j], "consumable")){
+						var textInfo = {
+							text : battleInfo.inventory[j].name,
+							spacing : spacing
+						};
+						array_push(card.data.buttons, textInfo);
+						with (card){
+							onClick = function(){
+								objBattleMenu.doFunction(BOPS.ITEM);
+								audio_play_sound(sndChoose,1,false, global.masVolume * global.effVolume);
+							}
 						}
 					}
 				}
@@ -217,7 +276,7 @@ clearButtons = function(){
 }
 
 loadCharMasks = function(team){
-	for(var i = array_length(options) - 1; i >= 0; --i){
+	for(var i = array_length(team) - 1; i >= 0; --i){
 		var char = team[i];
 		var actor = context.menu.actors[context.menu.charGetActorInd(char)];
 		var maskX = actor.x - sprite_get_width(actor.sprite_index)/2;
@@ -225,9 +284,6 @@ loadCharMasks = function(team){
 		var mask = createButton(maskX, maskY, sprite_get_width(actor.sprite_index), sprite_get_height(actor.sprite_index), actor.sprite_index, GUI.CHARMASK, {index : i});
 		with(mask){
 			with(mask){
-				onHover = function(){
-					objBattleMenu.selection = data.index;	
-				}
 				onClick = function(){
 					objBattleMenu.selection = data.index;	
 					objBattleMenu.selectTarget();
@@ -235,6 +291,70 @@ loadCharMasks = function(team){
 				}
 			}	
 		}
+		var charData = {
+			data : {
+				title : char.name,
+				lines : [
+				"Health : " + string(char.hp) + " / " + string(char.stats.maxhp),
+				char.desc
+				]
+			},
+			par : mask,
+			index : i
+		}
+		mask.onHover = method(charData, function(){
+			objBattleMenu.selected = index;
+			var info = createButton(mouse_x + 4, mouse_y + 4, 128, 64, sprInfo, GUI.HOVERINFO, data);
+			info.parent = par;
+			info.active = false;
+		});
+		array_push(charmasks, mask);
+	}
+}
+
+loadCharInfoMasks = function(){
+	for(var i = array_length(context.menu.actors) - 1; i >= 0; --i){
+		var char = context.menu.actors[i].character;
+		var actor = context.menu.actors[i];
+		var maskX = actor.x - sprite_get_width(actor.sprite_index)/2;
+		var maskY = actor.y - sprite_get_height(actor.sprite_index);
+		var mask = createButton(maskX, maskY, sprite_get_width(actor.sprite_index), sprite_get_height(actor.sprite_index), actor.sprite_index, GUI.CHARMASK, {index : i});
+		with(mask){
+			with(mask){
+				onClick = function(){
+					objBattleMenu.selection = data.index;	
+					objBattleMenu.selectTarget();
+					audio_play_sound(sndChoose,1,false, global.masVolume * global.effVolume);
+				}
+			}	
+		}
+		var charData = {
+			char : char,
+			par : mask,
+			index : i
+		}
+		mask.onHover = method(charData, function(){
+			objBattleMenu.selected = index;
+			var data = {
+				title : char.name,
+				lines : [
+				"Health : " + string(char.hp) + " / " + string(char.stats.maxhp),
+				char.desc
+				],
+				char : char
+			}
+			var info = createButton(mouse_x + 4, mouse_y + 4, 128, 64, sprInfo, GUI.HOVERINFO, data);
+			info.parent = par;
+			info.active = false;
+			with (info){
+				onStep = function(){
+					data.lines = [
+					"Health : " + string(data.char.hp) + " / " + string(data.char.stats.maxhp),
+					data.char.desc
+					]
+				}
+			}
+		});
 		array_push(charmasks, mask);
 	}
 }
@@ -250,7 +370,7 @@ loadInfoBox = function(msg){
 	clearButtons();
 	clearCards();
 	clearMasks();
-	var iBox = createButton(actionBox.X[0], actionBox.activeY, 196, 64, sprInfo, GUI.INFOBOX, {lines : msg});
+	var iBox = createButton(actionBox.X[0], actionBox.activeY, 256, 64, sprInfo, GUI.INFOBOX, {lines : msg});
 	with(iBox){
 		onClick = function(){
 			if (array_length(data.lines) > 3){

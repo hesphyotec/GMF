@@ -13,6 +13,15 @@ function calcDamage(ftr, target, action, str = 1){
 				if (buffData.abil == "block"){
 					if(struct_exists(action, "damage")){
 						array_delete(target.buffs, i, 1);
+						var actor = objBattleMenu.getActor(target);
+						for(var j = 0; j < array_length(actor.effIcons); ++j){
+							if (instance_exists(actor.effIcons[j])){
+								if (actor.effIcons[j].effect == buffData){
+									instance_destroy(actor.effIcons[j]);
+									array_delete(actor.effIcons, j, 1);
+								}
+							}
+						}
 						dmgMult = 0.0;
 					}
 				}
@@ -47,9 +56,24 @@ function calcDamage(ftr, target, action, str = 1){
 	var dmg = 0;
 	
 	if(struct_exists(action, "damage")){
-		dmg = ceil((action[$"damage"] * dmgMult) * (resistMult) * str);
+		dmg = max(ceil((action[$"damage"] * dmgMult) * (resistMult) * str), 0);
 	} else if (struct_exists(action, "pow")){
-		dmg = ceil((action[$"pow"] * dmgMult) * (resistMult) * str);
+		dmg = max(ceil((action[$"pow"] * dmgMult) * (resistMult) * str), 0);
 	}
+	
+	if (scrCheckEffects(ftr.debuffs, global.data.effects.debuffs.dmgLink)){
+		var tempFtr = variable_clone(ftr);
+		tempFtr.debuffs = [];
+		objBattleController.doDamage(tempFtr, ftr, action, .25);
+	}
+	
+	for (var i = 0; i < array_length(ftr.buffs); ++i){
+		var buff = ftr.buffs[i];
+		if (buff.abil == "critNext"){
+			dmg *= 2;	
+		}
+		array_delete(ftr.buffs, scrGetEffect(ftr.buffs, buff), 1);
+	}
+	
 	return dmg;
 }

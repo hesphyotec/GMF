@@ -3,6 +3,9 @@ menuFunctions = {
 		type : GUI.TEXTBUTTON,
 		onClick : function(){
 			//Open Server / Client / Join
+			objGame.storyGenPlayer();
+			global.players[0].team = [objPlayer.loadCompanion("humanplayer")];
+			room_goto(rmHCastleTest);
 		},
 		text : "Multiplayer"
 	},
@@ -23,6 +26,7 @@ menuFunctions = {
 	newGame : {
 		type : GUI.TEXTBUTTON,
 		onClick : function(){
+			deleteSaveData();
 			objGame.storyGenPlayer();
 			room_goto(rmPrologue1);
 		},

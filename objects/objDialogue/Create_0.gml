@@ -38,11 +38,17 @@ choiceTextPos = {
 
 loadDiag = function(diagChar, diag, src){
 	source = src;
+	objCamera.follow = source;
 	currentDiag = struct_get(diagChar, diag);
 	lines = currentDiag[$"dialogue"];
 	if (struct_exists(currentDiag, "choices")){
 		choices = currentDiag[$"choices"];
 		results = currentDiag[$"result"];
+	}
+	if (struct_exists(currentDiag, "sprite")){
+		sprite_index = asset_get_index(currentDiag.sprite);	
+	} else {
+		sprite_index = sprEmpty;	
 	}
 	currentLine = 0;
 	active = true;
@@ -53,7 +59,10 @@ writeDiag = function(){
 	if (textProgress < string_length(lines[currentLine])){
 		textProgress += 1;
 		audio_play_sound(sndSelect, 1, false, global.masVolume * global.effVolume);
-	} else if (array_length(choices) <= 0){
+		image_speed = 1;
+	} else if (array_length(choices) <= 0 || (currentLine < array_length(lines) - 1)){
+		image_speed = 0;
+		image_index = 0;
 		if (interactPress){
 			audio_play_sound(sndChoose, 1, false, global.masVolume * global.effVolume);
 			textProgress = 0;
@@ -76,12 +85,15 @@ writeDiag = function(){
 			}
 		}
 	} else if (array_length(choices) > 0){
+		image_speed = 0;
+		image_index = 0;
 		if (interactPress){
 			result = results[selection];
 			if (struct_exists(result, "op")){
 				if(result[$"op"] == "recruit"){
 					if (array_length(global.players[0].team) < 4){
 						with(global.players[0]){
+							show_message("Dialogue: Creating Player");
 							audio_play_sound(sndLightning, 1, false, global.masVolume * global.effVolume);
 							partyAdd(other.result[$"comp"]);
 							audio_play_sound(sndGet,1, false, global.masVolume * global.effVolume);
@@ -120,19 +132,21 @@ displayDiag = function(){
 	draw_set_color(c_white);
 	
 	if (textProgress == string_length(lines[currentLine])){
-		if (array_length(choices) > 0){
+		if (array_length(choices) > 0 && (currentLine >= array_length(lines) - 1)){
 			draw_sprite_stretched(sprDiagBox, 0, choiceBoxPos.x, choiceBoxPos.y, choiceBoxPos.w, choiceBoxPos.h);
+			for(var i = 0; i < array_length(choices); ++i){
+				var option = choices[i];
+				var color = (i == selection) ? c_yellow : c_black;
+				draw_set_colour(color);
+				draw_text_ext(choiceTextPos.x, choiceTextPos.y + (12 * i), option, 16, choiceTextPos.w);
+			}
 		} else {
 			draw_sprite(sprTutPlayerSpirit, image_index, textBox.x + textBox.w - 32, textBox.y + textBox.h - 32);	
 		}
-		for(var i = 0; i < array_length(choices); ++i){
-			var option = choices[i];
-			var color = (i == selection) ? c_yellow : c_black;
-			draw_set_colour(color);
-			draw_text_ext(choiceTextPos.x, choiceTextPos.y + (12 * i), option, 16, choiceTextPos.w);
-		}
 		draw_set_colour(c_white);
 	}
+	drawReset();
+	draw_sprite(sprite_index, image_index, textBox.x, textBox.y);
 }
 
 endDiag = function(){
@@ -151,5 +165,10 @@ endDiag = function(){
 	results = [];
 	selection = 0;
 	result = undefined;
-	objOWPlayer.inMenu = false; // Leaves menu
+	sprite_index = sprEmpty;
+	 // Leaves menu
+	 if (!instance_exists(objCutscene)){
+		objCamera.follow = objOWPlayer;
+		objOWPlayer.inMenu = false;
+	}
 }

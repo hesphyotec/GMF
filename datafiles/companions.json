@@ -8,23 +8,30 @@
 		"stats" : {
 			"maxhp" : 100,
 			"maxmana" : 100,
+			"manaregen" : 1,
 			"str" : 5,
 			"dex" : 5,
 			"int" : 5,
-			"cspd" : 5
+			"cspd" : 2
 		},
 		"attacks" : ["slash", "jab"],
-		"spells" : ["heal", "chop"],
+		"spells" : ["heal"],
 		"buffs": [],
 		"debuffs": [],
 		"sprite" : "sprBattlePlayerT",
 		"splash" : "sprHumanPlayerSplash",
+		"owSprite" : "sprBattlePlayerT",
 		"resistances" : {
 			"str" : 0.25,
 			"dex" : 0.10,
 			"int" : 0.10
 		},
-		"desc" : "It's you."
+		"desc" : "It's you.",
+		"lvlRewards" : [
+			"heal",
+			"guidance",
+			"lightwave"
+		]
 	},
 	"veteran" : {
 		"cid" : 1,
@@ -37,20 +44,27 @@
 			"str" : 7,
 			"dex" : 3,
 			"int" : 1,
-			"cspd" : 3
+			"cspd" : 1
 		},
 		"attacks" : ["slash", "jab"],
-		"spells" : ["taunt", "hackdown"],
+		"spells" : ["taunt"],
 		"buffs": [],
 		"debuffs": [],
 		"sprite" : "sprBattleVetT",
 		"splash" : "sprVetSplash",
+		"owSprite" : "sprVeteran",
 		"resistances" : {
 			"str" : 0.10,
 			"dex" : 0.00,
 			"int" : 0.00
 		},
-		"desc" : "Ex-soldier from the Impish War. Smells like booze and cigarrettes."
+		"desc" : "Ex-soldier from the Impish War. Smells like booze and cigarrettes.",
+		"lvlRewards" : [
+			"taunt",
+			"chop",
+			"block",
+			"hackdown"
+		]
 	},
 	"mage" : {
 		"cid" : 2,
@@ -62,6 +76,7 @@
 		"stats" : {
 			"maxhp" : 90,
 			"maxmana" : 100,
+			"manaregen" : 1.5,
 			"str" : 3,
 			"dex" : 5,
 			"int" : 7,
@@ -116,6 +131,7 @@
 		"stats" : {
 			"maxhp" : 75,
 			"maxmana" : 100,
+			"manaregen" : 0.5,
 			"str" : 5,
 			"dex" : 7,
 			"int" : 5,
@@ -334,21 +350,23 @@
 		"name" : "Player",
 		"level" : 1,
 		"hp": 100,
-		"mana" : 10,
+		"mana" : 100,
 		"stats" : {
 			"maxhp" : 100,
 			"maxmana" : 100,
+			"manaregen" : 0.5,
 			"str" : 5,
 			"dex" : 5,
 			"int" : 5,
-			"cspd" : 5
+			"cspd" : 2
 		},
 		"attacks" : ["punch"],
-		"spells" : ["heal"],
+		"spells" : ["heal", "chop"],
 		"buffs": [],
 		"debuffs": [],
 		"sprite" : "sprBattlePlayerT",
 		"splash" : "sprHumanPlayerSplash",
+		"owSprite" : "sprBattlePlayerT",
 		"resistances" : {
 			"str" : 0.25,
 			"dex" : 0.25,

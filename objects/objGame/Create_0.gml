@@ -37,6 +37,12 @@ global.loadPosBuffer = {
 	y	:	0,
 	loading : false
 }
+
+global.storyFlags = {
+	veteranBeaten : false,
+	veteranWin : false
+}
+
 storyPlayer = undefined;
 storyPlayerInfo = undefined;
 

@@ -4,6 +4,7 @@
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
   "name":"objPickup",
@@ -13,8 +14,8 @@
     "path":"folders/Objects/Overworld/Pickups.yy",
   },
   "parentObjectId":{
-    "name":"objWall",
-    "path":"objects/objWall/objWall.yy",
+    "name":"objNPC",
+    "path":"objects/objNPC/objNPC.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
@@ -33,7 +34,10 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"sprTutSword",
+    "path":"sprites/sprTutSword/sprTutSword.yy",
+  },
   "spriteMaskId":null,
   "visible":true,
 }

@@ -23,17 +23,37 @@
 		},
 		"desc" : "Friendly rock. Why are you fighting him?"
 	},
-	"banditGoon" : {
+	"goon" : {
 		"name" : "Goon",
-		"hp" : 100,
-		"mana" : 100,
+		"hp" : 75,
 		"stats" : {
-			"maxhp" : 100,
-			"maxmana" : 100,
-			"str" : 4,
+			"maxhp" : 75,
+			"str" : 5,
+			"dex" : 3,
+			"int" : 2,
+			"cspd" : 2
+		},
+		"attacks" : ["hPunch", "kick"],
+		"spells" : ["psycheUp"],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "sprHumanGoon",
+		"resistances" : {
+			"str" : 0.00,
+			"dex" : 0.00,
+			"int" : 0.00
+		},
+		"desc" : "Some bandit. His face seems a little crooked."
+	},
+	"thief" : {
+		"name" : "Thief",
+		"hp" : 50,
+		"stats" : {
+			"maxhp" : 50,
+			"str" : 3,
 			"dex" : 5,
 			"int" : 2,
-			"cspd" : 5
+			"cspd" : 3
 		},
 		"attacks" : ["slash", "stab"],
 		"spells" : [],
@@ -41,26 +61,162 @@
 		"debuffs": [],
 		"sprite" : "sprHumanGoon",
 		"resistances" : {
-			"str" : 0.25,
+			"str" : 0.00,
 			"dex" : 0.00,
 			"int" : 0.00
 		},
-		"desc" : "Some bandit. His face seems a little crooked."
+		"desc" : "Tough guy, he's packing some heat."
 	},
-	"banditThug" : {
+	"gambler" : {
+		"name" : "Gambler",
+		"hp" : 100,
+		"stats" : {
+			"maxhp" : 100,
+			"str" : 3,
+			"dex" : 3,
+			"int" : 3,
+			"cspd" : 2
+		},
+		"attacks" : ["stab"],
+		"spells" : ["doubleOrNothing"],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "sprHumanThug",
+		"resistances" : {
+			"str" : 0.00,
+			"dex" : 0.00,
+			"int" : 0.00
+		},
+		"desc" : "Tough guy, he's packing some heat."
+	},
+	"dopey" : {
+		"name" : "Alchemolic",
+		"hp" : 125,
+		"stats" : {
+			"maxhp" : 125,
+			"str" : 3,
+			"dex" : 3,
+			"int" : 3,
+			"cspd" : 2
+		},
+		"attacks" : ["slash", "stab"],
+		"spells" : ["strPotion", "dexPotion"],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "sprHumanThug",
+		"resistances" : {
+			"str" : 0.1,
+			"dex" : 0.1,
+			"int" : 0.1
+		},
+		"desc" : "Tough guy, he's packing some heat."
+	},
+	"thug" : {
 		"name" : "Thug",
 		"hp" : 250,
-		"mana" : 100,
 		"stats" : {
 			"maxhp" : 250,
+			"str" : 5,
+			"dex" : 2,
+			"int" : 2,
+			"cspd" : 1
+		},
+		"attacks" : ["bash"],
+		"spells" : ["smash"],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "sprHumanThug",
+		"resistances" : {
+			"str" : 0.0,
+			"dex" : 0.0,
+			"int" : 0.0
+		},
+		"desc" : "Tough guy, he's packing some heat."
+	},
+	"bouncer" : {
+		"name" : "Bouncer",
+		"hp" : 250,
+		"stats" : {
+			"maxhp" : 250,
+			"str" : 4,
+			"dex" : 5,
+			"int" : 2,
+			"cspd" : 2
+		},
+		"attacks" : ["bPunch", "punch"],
+		"spells" : ["guard"],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "sprHumanThug",
+		"resistances" : {
+			"str" : 0.25,
+			"dex" : 0.25,
+			"int" : 0.00
+		},
+		"desc" : "Tough guy, he's packing some heat."
+	},
+	"slinger" : {
+		"name" : "Slinger",
+		"hp" : 200,
+		"mana" : 100,
+		"stats" : {
+			"maxhp" : 200,
 			"maxmana" : 100,
-			"str" : 6,
-			"dex" : 4,
-			"int" : 3,
+			"str" : 2,
+			"dex" : 2,
+			"int" : 6,
 			"cspd" : 4
 		},
-		"attacks" : ["slash", "stab", "pistolShot"],
-		"spells" : [],
+		"attacks" : [],
+		"spells" : ["strSling", "dexSling", "intSling", "poisonSling", "weaknessSling"],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "sprHumanThug",
+		"resistances" : {
+			"str" : 0.1,
+			"dex" : 0.1,
+			"int" : 0.1
+		},
+		"desc" : "Tough guy, he's packing some heat."
+	},
+	"oHealer" : {
+		"name" : "Oscura Healer",
+		"hp" : 150,
+		"mana" : 150,
+		"stats" : {
+			"maxhp" : 150,
+			"maxmana" : 150,
+			"str" : 0,
+			"dex" : 0,
+			"int" : 7,
+			"cspd" : 2
+		},
+		"attacks" : [],
+		"spells" : ["heal", "ironskin"],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "sprHumanThug",
+		"resistances" : {
+			"str" : 0.1,
+			"dex" : 0.10,
+			"int" : 0.10
+		},
+		"desc" : "Tough guy, he's packing some heat."
+	},
+	"oPyromancer" : {
+		"name" : "Oscura Pyromancer",
+		"hp" : 200,
+		"mana" : 100,
+		"stats" : {
+			"maxhp" : 200,
+			"maxmana" : 100,
+			"str" : 2,
+			"dex" : 2,
+			"int" : 6,
+			"cspd" : 3
+		},
+		"attacks" : ["stab"],
+		"spells" : ["fireshot", "fireball", "firebomb"],
 		"buffs": [],
 		"debuffs": [],
 		"sprite" : "sprHumanThug",
@@ -71,29 +227,145 @@
 		},
 		"desc" : "Tough guy, he's packing some heat."
 	},
-	"banditBoss" : {
-		"name" : "Bandit Leader",
+	"oHitman" : {
+		"name" : "Oscura Hitman",
+		"hp" : 250,
+		"stats" : {
+			"maxhp" : 250,
+			"str" : 2,
+			"dex" : 5,
+			"int" : 2,
+			"cspd" : 2
+		},
+		"attacks" : ["backstab", "stab"],
+		"spells" : ["readyKnife", "trip"],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "sprHumanThug",
+		"resistances" : {
+			"str" : 0.25,
+			"dex" : 0.3,
+			"int" : 0.1
+		},
+		"desc" : "Tough guy, he's packing some heat."
+	},
+	"oBodyguard" : {
+		"name" : "Oscura Bodyguard",
+		"hp" : 300,
+		"stats" : {
+			"maxhp" : 300,
+			"str" : 6,
+			"dex" : 1,
+			"int" : 1,
+			"cspd" : 1
+		},
+		"attacks" : ["clobber"],
+		"spells" : ["guard", "block", "smash"],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "sprHumanThug",
+		"resistances" : {
+			"str" : 0.3,
+			"dex" : 0.1,
+			"int" : 0.25
+		},
+		"desc" : "Tough guy, he's packing some heat."
+	},
+	"assassinEnemy" : {
+		"name" : "Oscura Assassin",
 		"hp" : 500,
 		"mana" : 100,
 		"stats" : {
+			"maxhp" : 300,
+			"maxmana" : 100,
+			"str" : 3,
+			"dex" : 7,
+			"int" : 5,
+			"cspd" : 5
+		},
+		"attacks" : ["knifeToss", "stab", "backstab"],
+		"spells" : ["cloak", "wolfPaw"],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "sprHumanThug",
+		"resistances" : {
+			"str" : 0.1,
+			"dex" : 0.25,
+			"int" : 0.1
+		},
+		"desc" : "Tough guy, he's packing some heat."
+	},
+	"dweller" : {
+		"name" : "???",
+		"hp" : 500,
+		"mana" : 200,
+		"stats" : {
 			"maxhp" : 500,
+			"maxmana" : 200,
+			"str" : 8,
+			"dex" : 1,
+			"int" : 5,
+			"cspd" : 1
+		},
+		"attacks" : ["crunch", "slash"],
+		"spells" : ["grapple", "poisonBite", "plague"],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "sprHumanThug",
+		"resistances" : {
+			"str" : 0.25,
+			"dex" : 0.25,
+			"int" : 0.25
+		},
+		"desc" : "Tough guy, he's packing some heat."
+	},
+	"dBoss" : {
+		"name" : "D",
+		"hp" : 1000,
+		"mana" : 100,
+		"stats" : {
+			"maxhp" : 1000,
 			"maxmana" : 100,
 			"str" : 5,
-			"dex" : 8,
-			"int" : 2,
-			"cspd" : 3
+			"dex" : 5,
+			"int" : 5,
+			"cspd" : 4
 		},
-		"attacks" : ["knifeToss", "stab", "pistolShot"],
-		"spells" : ["heal"],
+		"attacks" : ["blasterShot", "hPunch", "stab"],
+		"spells" : ["manaBlade", "strPotion", "dexPotion", "intPotion", "smash", "hex"],
 		"buffs": [],
 		"debuffs": [],
 		"sprite" : "sprBattleRock",
 		"resistances" : {
 			"str" : 0.25,
 			"dex" : 0.25,
-			"int" : 0.25
+			"int" : 0.3
 		},
 		"desc" : "Looks like a leader of sorts."
+	},
+	"impKnight1" : {
+		"name" : "\"THE HERO\"",
+		"hp" : 1000,
+		"blood" : 100,
+		"stats" : {
+			"maxhp" : 1000,
+			"maxblood" : 100,
+			"str" : 7,
+			"dex" : 7,
+			"int" : 7,
+			"cspd" : 5
+		},
+		"attacks" : ["slash", "jab"],
+		"spells" : ["leechSlash", "wither", "tRoar", "shadowStep", "dShock"],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "sprHumanThug",
+		"resistances" : {
+			"str" : 0.5,
+			"dex" : 0.25,
+			"int" : 0.25
+		},
+		"desc" : "Tough guy, he's packing some heat."
 	},
 	"bigRock" : {
 		"name" : "Killer Rock",
@@ -129,7 +401,7 @@
 			"str" : 5,
 			"dex" : 5,
 			"int" : 5,
-			"cspd" : 5
+			"cspd" : 1.5
 		},
 		"attacks" : ["slash"],
 		"spells" : [],
@@ -142,5 +414,27 @@
 			"int" : 0.00
 		},
 		"desc" : "Fight her."
+	},
+	"veteran" : {
+		"name" : "Old Man",
+		"hp": 200,
+		"stats" : {
+			"maxhp" : 200,
+			"str" : 7,
+			"dex" : 3,
+			"int" : 1,
+			"cspd" : 1
+		},
+		"attacks" : ["slash", "jab"],
+		"spells" : ["taunt"],
+		"buffs": [],
+		"debuffs": [],
+		"sprite" : "sprVetEnemy",
+		"resistances" : {
+			"str" : 0.10,
+			"dex" : 0.00,
+			"int" : 0.00
+		},
+		"desc" : "Strange old man. Something about him... annoys you."
 	}
 }

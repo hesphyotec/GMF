@@ -8,7 +8,13 @@ if (!global.isServer){
 		doDowned();
 	} else {
 		if (context.menu != undefined && context.menu.active && battleInfo.menuState == BMENUST.TARGET){
-			hovered = (context.menu.options[context.menu.selection] == character);
+			if (is_struct(context.menu.options[context.menu.selection])){
+				hovered = (context.menu.options[context.menu.selection] == character);
+			} else if (is_string(context.menu.options[context.menu.selection])){
+				if (context.menu.options[context.menu.selection] == "All Enemies" && !isPlayerTeam){
+					hovered = true;	
+				}
+			}
 		} else {
 			hovered = false;
 		}

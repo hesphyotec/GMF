@@ -2,7 +2,7 @@ spd = 2;
 moving = false;
 dir = Dirs.DOWN;
 moveTarget = [0,0];
-companions = [];
+companions = objPlayer.getCompanionChars();
 inMenu = false;
 mapSpace = [floor(x / TILE_SIZE), floor(y / TILE_SIZE)];
 moveQueue = [variable_clone(mapSpace), variable_clone(mapSpace)];
@@ -29,7 +29,12 @@ playerMove = function(){
 				moveTarget[1]--;
 				moveComps();
 			} else {
-				moving = false;	
+				moving = false;
+			}
+			if (place_meeting(x, y - TILE_SIZE, objRoomChangeTrigger)){
+				with (instance_place(x, y - TILE_SIZE, objRoomChangeTrigger)){
+					changeRoom();
+				}
 			}
 		} else if (left){
 			dir = Dirs.LEFT;
@@ -48,6 +53,11 @@ playerMove = function(){
 			} else {
 				moving = false;	
 			}
+			if (place_meeting(x - TILE_SIZE, y, objRoomChangeTrigger)){
+				with (instance_place(x- TILE_SIZE, y, objRoomChangeTrigger)){
+					changeRoom();
+				}
+			}
 		} else if (right){
 			dir = Dirs.RIGHT;
 			if (asset_get_index(baseSpriteName + "Right")){
@@ -64,6 +74,12 @@ playerMove = function(){
 				moveComps();
 			} else {
 				moving = false;	
+				
+			}
+			if (place_meeting(x + TILE_SIZE, y, objRoomChangeTrigger)){
+				with (instance_place(x + TILE_SIZE, y, objRoomChangeTrigger)){
+					changeRoom();
+				}
 			}
 		} else if (down){
 			dir = Dirs.DOWN;
@@ -80,7 +96,12 @@ playerMove = function(){
 				moveTarget[1]++;
 				moveComps();
 			} else {
-				moving = false;	
+				moving = false;
+			}
+			if (place_meeting(x, y + TILE_SIZE, objRoomChangeTrigger)){
+				with (instance_place(x, y + TILE_SIZE, objRoomChangeTrigger)){
+					changeRoom();
+				}
 			}
 		}
 		if (moving){
@@ -234,6 +255,8 @@ playerInteract = function(){
 				npc.onInteract();	
 			} else if (npc.type == NPC.HOSTILE){
 				npc.onInteract(global.players[0].team);
+			} else if (npc.type == NPC.PICKUP){
+				npc.onInteract(id);
 			}
 		}
 		if (place_meeting(toCheckx, toChecky, objNetPlayer)){

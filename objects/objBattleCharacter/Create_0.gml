@@ -9,6 +9,7 @@ battleInfo = undefined;
 downed = false;
 hovered = false;
 tMan = undefined;
+bonSpd = 1;
 
 yOff = 0;
 hpTextOffX = 32;
@@ -35,6 +36,8 @@ maxStun = 0;
 chanEff = undefined;
 shdActive = false;
 dmgFlash = false;
+
+effIcons = [];
 
 loadSprite = function(char){
 	character = char;
@@ -92,7 +95,8 @@ doAnim = function(act, actInfo, isActor){
 
 startTimer = function(bonusSpd){
 	state = CHARSTATES.WAITING;
-	timers.wait = ceil(((6/character[$"stats"][$"cspd"]) * 400) * bonusSpd);	
+	timers.wait = ceil(((10/character[$"stats"][$"cspd"]) * fps) * bonusSpd);	
+	bonSpd = bonusSpd;
 }
 
 stun = function(time){
@@ -171,6 +175,10 @@ tickEffects = function(){
 	var buffs = character[$"buffs"];
 	var debuffs = character[$"debuffs"];
 	
+	if (struct_exists(character.stats, "manaregen")){
+		character.mana = min(character.mana + (character.stats.manaregen / fps), character.stats.maxmana);
+	}
+	
 	for(var i = array_length(buffs) - 1; i >= 0; --i){
 		var buff = buffs[i];
 		if (buff.duration > 0){
@@ -180,8 +188,19 @@ tickEffects = function(){
 				//}
 			}
 			--buff.duration;
+		} else if (buff.duration == -1){
+			
 		} else {
 			array_delete(buffs, i, 1);
+			
+			for(var j = 0; j < array_length(effIcons); ++j){
+				if (instance_exists(effIcons[j])){
+					if (effIcons[j].effect == buff){
+						instance_destroy(effIcons[j]);	
+						array_delete(effIcons, j, 1);
+					}
+				}
+			}
 			if (global.isServer){
 				var data = {
 					char : character,	
@@ -202,8 +221,18 @@ tickEffects = function(){
 				//}
 			}
 			--debuff.duration;
+		} else if (debuff.duration == -1){
+			
 		} else {
-			array_delete(debuffs, i, 1);	
+			array_delete(debuffs, i, 1);
+			for(var j = 0; j < array_length(effIcons); ++j){
+				if (instance_exists(effIcons[j])){
+					if (effIcons[j].effect == debuff){
+						instance_destroy(effIcons[j]);
+						array_delete(effIcons, j, 1);
+					}
+				}
+			}
 			if (global.isServer){
 				var data = {
 					char : character,	
@@ -233,9 +262,14 @@ doDebuff = function(debuff){
 	var earlyTurnEnd = false;
 	if (struct_exists(debuff, "abil")){
 		if (debuff[$"abil"] == "damage"){
-			if (global.isServer){
+			//if (global.isServer){
 				context.controller.doDamage(character, character, debuff);
-			}
+			//}
+		}
+		if (debuff[$"abil"] == "poison"){
+			//if (global.isServer){
+				context.controller.doDamage(character, character, debuff);
+			//}
 		}
 		if (debuff[$"abil"] == "taunt"){
 			if(debuff[$"source"].hp <= 0){
@@ -246,6 +280,11 @@ doDebuff = function(debuff){
 			if (state != CHARSTATES.STUNNED){
 				stun(debuff.duration);	
 			}
+		}
+		if (debuff[$"abil"] == "waste"){
+			//if (global.isServer){
+				context.controller.doRestore(character, character, debuff);
+			//}
 		}
 		if (debuff[$"abil"] == "recharge"){
 			if (state != CHARSTATES.STUNNED){

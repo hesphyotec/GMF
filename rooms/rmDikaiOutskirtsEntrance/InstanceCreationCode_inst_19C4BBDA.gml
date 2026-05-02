@@ -1,0 +1,1 @@
+roomTarget = rmDikaiOutskirtsBonus1;

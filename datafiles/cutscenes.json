@@ -72,5 +72,35 @@
         ["csMoveCharNoCollide", "objHighPriest", 10, 1, true, 2],
         ["csInstanceDestroy", "objHighPriest"],
         ["csTogglePlayer", false]
+    ],
+    "veteranIntro1": [
+        ["csTogglePlayer", true],
+        ["csChangeCamera", "objVeteranNPC"],
+        ["csWait", 3],
+        ["csDialogue", "veteran", "vetIntro1", "objVeteranNPC"]
+    ],
+    "veteranIntro2": [
+        ["csMoveCharNoCollide", "objVeteranNPC", 0, -1, true, 2],
+        ["csWait", 2],
+        ["csMoveCharNoCollide", "objVeteranNPC", 0, 1, true, 2],
+        ["csDialogue", "veteran", "vetIntro2", "objVeteranNPC"]
+    ],
+    "veteranIntro3": [
+        ["csWait", 2],
+        ["csDialogue", "veteran", "vetIntro4", "objVeteranNPC"]
+    ],
+    "veteranIntro4a": [
+        ["csMoveCharNoCollide", "objOWPlayer", 0, -1, true, 2],
+        ["csWait", 2],
+        ["csDialogue", "veteran", "vetIntro5", "objVeteranNPC"]
+    ],
+    "veteranIntro4b": [
+        ["csChangeCamera", "objOWPlayer"],
+        ["csInstanceCreate", ["objVeteranNPC", "x"], ["objVeteranNPC", "y"], "World_Objects", "objVeteranEnemy"],
+        ["csInstanceDestroy", "objVeteranNPC"]
+    ],
+    "veteranIntro5": [
+        ["csStartBattle", "veteran1"]
     ]
+
 }
