@@ -608,7 +608,7 @@
 			"effects" : ["strUp2"],
 			"sound" : "Heal",
 			"sprite" : "lightning",
-			"type" : "selfSpell",
+			"type" : "buffSpell",
 			"desc" : "Greatly increases Strength.",
 			"action" : "instant"
 		},
@@ -619,7 +619,7 @@
 			"effects" : ["dexUp2"],
 			"sound" : "Heal",
 			"sprite" : "lightning",
-			"type" : "selfSpell",
+			"type" : "buffSpell",
 			"desc" : "Greatly increases Dexterity.",
 			"action" : "instant"
 		},
@@ -630,7 +630,7 @@
 			"effects" : ["strUp2"],
 			"sound" : "Heal",
 			"sprite" : "lightning",
-			"type" : "selfSpell",
+			"type" : "buffSpell",
 			"desc" : "Greatly increases Intelligence.",
 			"action" : "instant"
 		},

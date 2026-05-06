@@ -4,7 +4,7 @@
         "abil"      : "heal",
         "pow"       : 50,
         "quantity"  : 3,
-        "sprite"    : "sprChestpiece1",
+        "sprite"    : "sprHPPotion",
         "consumable" : true
     },
     "manapotion" : {
@@ -12,7 +12,11 @@
         "abil"  : "restore",
         "pow"   : 50,
         "quantity"  : 3,
-        "sprite"    : "sprChestpiece1",
+        "sprite"    : "sprHPPotion",
+        "consumable" : true
+    },"fancyChest" : {
+        "name"  : "Ornate Chest",
+        "sprite"    : "sprFancyChest",
         "consumable" : true
     }
 }

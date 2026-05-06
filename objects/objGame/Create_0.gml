@@ -40,7 +40,8 @@ global.loadPosBuffer = {
 
 global.storyFlags = {
 	veteranBeaten : false,
-	veteranWin : false
+	veteranWin : false,
+	firstThiefBeaten : false
 }
 
 storyPlayer = undefined;

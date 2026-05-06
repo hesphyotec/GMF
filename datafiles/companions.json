@@ -15,7 +15,7 @@
 			"cspd" : 2
 		},
 		"attacks" : ["slash", "jab"],
-		"spells" : ["heal"],
+		"spells" : ["heal", "devsmite"],
 		"buffs": [],
 		"debuffs": [],
 		"sprite" : "sprBattlePlayerT",

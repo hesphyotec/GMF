@@ -11,6 +11,67 @@ baseSpriteName = "sprPlayer";
 movePath = ds_list_create();
 idleAnim = false;
 
+movement = function(){
+	if(!ds_list_empty(movePath) && moving == false){
+		var node = ds_list_find_value(movePath, 0);
+		moveTarget = [node.gx, node.gy];
+		ds_list_delete(movePath, 0);
+		if (moveTarget[0] != mapSpace[0]){
+			dir = moveTarget[0] < mapSpace[0] ? Dirs.LEFT : Dirs.RIGHT
+		}
+		if (moveTarget[1] != mapSpace[1]){
+			dir = (moveTarget[1] < mapSpace[1]) ? Dirs.UP : Dirs.DOWN
+		}
+		var spriteDir = "Down";
+		
+		switch(dir){
+			case Dirs.UP:
+				spriteDir = "Up";
+				break;
+			case Dirs.DOWN:
+				spriteDir = "Down";
+				break;
+			case Dirs.LEFT:
+				spriteDir = "Left";
+				break;
+			case Dirs.RIGHT:
+				spriteDir = "Right";
+				break;
+		}
+		if (asset_get_index(baseSpriteName + spriteDir)){
+			sprite_index = asset_get_index(baseSpriteName + spriteDir);
+		}
+		moveComps();
+		moving = true;
+	}
+	
+	if (moving){
+		image_speed = 1;
+		if(dir == Dirs.LEFT || dir == Dirs.RIGHT){
+			x = approach(x, (moveTarget[0] * TILE_SIZE), spd);
+			if (abs(x - (moveTarget[0] * TILE_SIZE)) <= spd/2){
+				x = (moveTarget[0] * TILE_SIZE);
+				moving = false;	
+			}
+		}
+		if(dir == Dirs.UP || dir == Dirs.DOWN){
+			y = approach(y, (moveTarget[1] * TILE_SIZE), spd);
+			if (abs(y - (moveTarget[1] * TILE_SIZE)) <= spd/2){
+				y = (moveTarget[1] * TILE_SIZE);
+				moving = false;	
+			}
+		}
+		mapSpace = [floor(x / TILE_SIZE), floor(y / TILE_SIZE)];
+	} else {
+		if (!idleAnim){
+			image_index = 0;
+			image_speed = 0;
+		} else {
+			image_speed = 1;
+		}
+	}	
+}
+
 playerMove = function(){
 	if ((up || left || right || down ) && !moving){
 		moving = true;
@@ -111,69 +172,16 @@ playerMove = function(){
 		}
 	}
 	
+	movement();
 	//if(lClick){
 	//	ds_list_copy(movePath, getPath(mapSpace, [floor(mouse_x / TILE_SIZE), ceil(mouse_y / TILE_SIZE)]));	
 	//}
 	
-	if(!ds_list_empty(movePath) && moving == false){
-		var node = ds_list_find_value(movePath, 0);
-		moveTarget = [node.gx, node.gy];
-		ds_list_delete(movePath, 0);
-		if (moveTarget[0] != mapSpace[0]){
-			dir = moveTarget[0] < mapSpace[0] ? Dirs.LEFT : Dirs.RIGHT
-		}
-		if (moveTarget[1] != mapSpace[1]){
-			dir = (moveTarget[1] < mapSpace[1]) ? Dirs.UP : Dirs.DOWN
-		}
-		var spriteDir = "Down";
-		
-		switch(dir){
-			case Dirs.UP:
-				spriteDir = "Up";
-				break;
-			case Dirs.DOWN:
-				spriteDir = "Down";
-				break;
-			case Dirs.LEFT:
-				spriteDir = "Left";
-				break;
-			case Dirs.RIGHT:
-				spriteDir = "Right";
-				break;
-		}
-		if (asset_get_index(baseSpriteName + spriteDir)){
-			sprite_index = asset_get_index(baseSpriteName + spriteDir);
-		}
-		moveComps();
-		moving = true;
-	}
 	
-	if (moving){
-		image_speed = 1;
-		if(dir == Dirs.LEFT || dir == Dirs.RIGHT){
-			x = approach(x, (moveTarget[0] * TILE_SIZE), spd);
-			if (abs(x - (moveTarget[0] * TILE_SIZE)) <= spd/2){
-				x = (moveTarget[0] * TILE_SIZE);
-				moving = false;	
-			}
-		}
-		if(dir == Dirs.UP || dir == Dirs.DOWN){
-			y = approach(y, (moveTarget[1] * TILE_SIZE), spd);
-			if (abs(y - (moveTarget[1] * TILE_SIZE)) <= spd/2){
-				y = (moveTarget[1] * TILE_SIZE);
-				moving = false;	
-			}
-		}
-		mapSpace = [floor(x / TILE_SIZE), floor(y / TILE_SIZE)];
-	} else {
-		if (!idleAnim){
-			image_index = 0;
-			image_speed = 0;
-		} else {
-			image_speed = 1;
-		}
-	}
 }
+
+
+
 
 receiveMove = function(mTar){
 	//if (DEBUG_ENABLED) show_debug_message("Move Received");

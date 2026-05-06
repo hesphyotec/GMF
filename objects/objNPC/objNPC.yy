@@ -36,8 +36,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprNPCDown",
-    "path":"sprites/sprNPCDown/sprNPCDown.yy",
+    "name":"sprNPCBaseDown",
+    "path":"sprites/sprNPCBaseDown/sprNPCBaseDown.yy",
   },
   "spriteMaskId":null,
   "visible":true,

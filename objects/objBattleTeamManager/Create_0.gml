@@ -56,7 +56,7 @@ loadTeam = function(tm){
 endTurn = function(){
 	if(DEBUG_ENABLED) show_debug_message("[TeamMan] " + string(playerTeam) + "Ending Turn.");
 	if(DEBUG_ENABLED) show_debug_message("[TeamMan] Enemy Team Remaining: " + string(array_length(battleInfo.team2)));
-	if (fighter.hp > 0){
+	if (fighter.hp > 0 && !array_contains(waiting, fighter)){
 		array_push(waiting, fighter);
 	}
 	if(DEBUG_ENABLED) show_debug_message("[TeamMan] Enemy Team Remaining: " + string(array_length(battleInfo.team2)));

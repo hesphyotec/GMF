@@ -6,6 +6,8 @@ scrGetInput();
 if (!inMenu){
 	playerMove();
 	playerInteract();
+} else {
+	movement();
 }
 
 if (global.loadPosBuffer.loading){

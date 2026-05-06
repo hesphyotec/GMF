@@ -428,8 +428,8 @@ selectTarget = function(){
 	menuBox.clearMasks();
 }
 
-showRewards = function(gold, xpShare){
-	var lines = ["You Win!", "You got " + string(gold) + " gold."];
+showRewards = function(xpShare){
+	var lines = ["You Win!"];
 
 	for(var i = 0; i < array_length(context.playerTeam.team); ++i){
 		var ftr = context.playerTeam.team[i];

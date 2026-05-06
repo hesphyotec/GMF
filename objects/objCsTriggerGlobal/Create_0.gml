@@ -1,3 +1,4 @@
+active = true;
 tSceneInfo = [];
 
 

@@ -1,0 +1,1 @@
+tSceneInfo = getCutscene("thiefIntro1");

@@ -69,7 +69,6 @@ partyAdd = function(comp){
 	companion.expCap = 100;
 	array_push(team, variable_clone(companion));
 	with(objOWPlayer){
-		show_message("Creating companion!");
 		var compChar = instance_create_layer(x, y, "World_Objects", objCompanion);
 		compChar.baseSpriteName = companion.owSprite;
 		compChar.sprite_index = asset_get_index(companion.owSprite + "Down");

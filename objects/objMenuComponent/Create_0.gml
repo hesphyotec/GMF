@@ -273,7 +273,7 @@ drawBpBox = function(){
 drawInfoBox = function(){
 	var textPad = 8;
 	var text = "";
-	for(var i = currLine; i < 3; ++i){
+	for(var i = currLine; i < min(array_length(data.lines), 3); ++i){
 		text = string_concat(text, data.lines[i], "\n");	
 	}
 	draw_sprite_stretched(sprite_index, image_index, xPos, yPos, width, height);

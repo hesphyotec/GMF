@@ -35,8 +35,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprTutSword",
-    "path":"sprites/sprTutSword/sprTutSword.yy",
+    "name":"sprChest",
+    "path":"sprites/sprChest/sprChest.yy",
   },
   "spriteMaskId":null,
   "visible":true,

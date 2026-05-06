@@ -77,6 +77,9 @@ writeDiag = function(){
 					var src = asset_get_index(currentDiag.nextDiag.src);
 					endDiag();
 					loadDiag(speaker, line, src);
+				} else if (struct_exists(currentDiag, "newDiag")){
+					source.line = currentDiag.newDiag;
+					endDiag();
 				} else {
 					endDiag();	
 				}
@@ -93,7 +96,6 @@ writeDiag = function(){
 				if(result[$"op"] == "recruit"){
 					if (array_length(global.players[0].team) < 4){
 						with(global.players[0]){
-							show_message("Dialogue: Creating Player");
 							audio_play_sound(sndLightning, 1, false, global.masVolume * global.effVolume);
 							partyAdd(other.result[$"comp"]);
 							audio_play_sound(sndGet,1, false, global.masVolume * global.effVolume);
@@ -102,6 +104,11 @@ writeDiag = function(){
 					}
 					endDiag();
 				} else if (result[$"op"] == "endDiag"){
+					endDiag();
+				} else if (result[$"op"] == "openInventory"){
+					if (!objInventoryMenu.open){
+						objInventoryMenu.openMenu();
+					}
 					endDiag();
 				} else if (result.op == "trigCs"){
 					var cs = getCutscene(result.csId);

@@ -35,8 +35,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprThiefDown",
-    "path":"sprites/sprThiefDown/sprThiefDown.yy",
+    "name":"sprCriminalDown",
+    "path":"sprites/sprCriminalDown/sprCriminalDown.yy",
   },
   "spriteMaskId":null,
   "visible":true,

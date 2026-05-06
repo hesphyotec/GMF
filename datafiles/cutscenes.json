@@ -80,9 +80,9 @@
         ["csDialogue", "veteran", "vetIntro1", "objVeteranNPC"]
     ],
     "veteranIntro2": [
-        ["csMoveCharNoCollide", "objVeteranNPC", 0, -1, true, 2],
+        ["csForceNPCMove", "objVeteranNPC", 0, -1, true, true],
         ["csWait", 2],
-        ["csMoveCharNoCollide", "objVeteranNPC", 0, 1, true, 2],
+        ["csForceNPCMove", "objVeteranNPC", 0, 1, true, true],
         ["csDialogue", "veteran", "vetIntro2", "objVeteranNPC"]
     ],
     "veteranIntro3": [
@@ -90,7 +90,7 @@
         ["csDialogue", "veteran", "vetIntro4", "objVeteranNPC"]
     ],
     "veteranIntro4a": [
-        ["csMoveCharNoCollide", "objOWPlayer", 0, -1, true, 2],
+        ["csForcePlayerMove", 0, -1, true, true],
         ["csWait", 2],
         ["csDialogue", "veteran", "vetIntro5", "objVeteranNPC"]
     ],
@@ -101,6 +101,52 @@
     ],
     "veteranIntro5": [
         ["csStartBattle", "veteran1"]
+    ],
+    "veteranEnd1" : [
+        ["csTogglePlayer", true],
+        ["csChangeCamera", "objVeteranNPC"],
+        ["csForceNPCMove", "objVeteranNPC", 0, -1, true, true],
+        ["csWait", 1],
+        ["csDialogue", "veteran", "vetEnd1", "objVeteranNPC"]
+    ],
+    "veteranEnd2" : [
+        ["csForceNPCMove", "objVeteranNPC", 0, 3, true, true],
+        ["csWait", 1],
+        ["csDialogue", "veteran", "vetEnd2", "objVeteranNPC"]
+    ],
+    "veteranEnd2a" : [
+        ["csDialogue", "veteran", "vetEnd3", "objVeteranNPC"]
+    ],
+    "veteranEnd2b" : [
+        ["csChangeCamera", "objOWPlayer"],
+        ["csMoveCharNoCollide", "objOWPlayer", 11, 3, false, 2],
+        ["csWait", 1],
+        ["csDialogue", "veteran", "vetEnd2b", "objVeteranNPC"]
+    ],
+    "veteranEnd2b1" : [
+        ["csMoveCharNoCollide", "objOWPlayer", 0, 1, true, 2],
+        ["csDialogue", "veteran", "vetEnd2b1", "objVeteranNPC"]
+    ],
+    "veteranEnd2b2" : [
+        ["csMoveCharNoCollide", "objOWPlayer", 0, 1, true, 2],
+        ["csSetFlag", "refusedVeteran", true],
+        ["csDialogue", "veteran", "vetDeclined", "objVeteranNPC"]
+    ],
+    "veteranDeclined" : [
+        ["csTogglePlayer", false],
+        ["csMoveCharNoCollide", "objVeteranNPC", 0, 10, true, 2],
+        ["csInstanceDestroy", "objVeteranNPC"]
+    ],
+    "thiefIntro1": [
+        ["csTogglePlayer", true],
+        ["csDialogue", "thief", "thiefIntro1", "objCriminalNPC"]
+    ],
+    "thiefIntro2": [
+        ["csForceNPCMove", "objCriminalNPC", 13, 19, false, true],
+        ["csDialogue", "thief", "thiefIntro2", "objCriminalNPC"]
+    ],
+    "thiefIntro3": [
+        ["csTogglePlayer", true],
+        ["csStartBattle", "bandit1"]
     ]
-
 }

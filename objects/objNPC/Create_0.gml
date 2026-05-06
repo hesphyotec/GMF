@@ -5,7 +5,7 @@ interactCd = false;
 diagChar = global.data.dialogue.npc_test;
 line = "test";
 
-baseSpriteName = "sprNPC";
+baseSpriteName = "sprNPCBase";
 
 onInteract = function(){
 	if (!interactCd){

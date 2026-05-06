@@ -1,2 +1,4 @@
-createCutscene(tSceneInfo);
-instance_destroy(id);
+if (active){
+	createCutscene(tSceneInfo);
+	instance_destroy(id);
+}

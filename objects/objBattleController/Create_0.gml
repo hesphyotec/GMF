@@ -199,8 +199,12 @@ doItem = function(ftr, item, tar, team, final){
 
 doMiss = function(ftr, target, final){
 	scrNBQTEMiss(global.server, ftr, final);
-	var actor = context.menu.getActor(target);
-	createMissText(actor, target);
+	try {
+		var actor = context.menu.getActor(target);
+		createMissText(actor, target);
+	} catch (e){
+		endTeamTurn(ftr);
+	}
 	if (final){
 		endTeamTurn(ftr);
 	}
@@ -217,6 +221,9 @@ endBattle = function(victory){
 			giveRewards();
 		} else if (outcome.op == "gotoRoom"){
 			room_goto(asset_get_index(outcome.dest));	
+		} else if (outcome.op == "setFlag"){
+			struct_set(global.storyFlags, outcome.flag, outcome.value);
+			giveRewards();
 		}
 	} else {
 		show_message("You lost!");
@@ -429,8 +436,8 @@ netUpdateChar = function(char){
 
 giveRewards = function(){
 	var xp = outcome.exp;
-	var gold = round(outcome.gold * random_range(.9, 1.1));
-	global.playerData[0].gold += gold;
+	//var gold = round(outcome.gold * random_range(.9, 1.1));
+	//global.playerData[0].gold += gold;
 	
 	var livingTeam = 0;
 	for(var i = 0; i < array_length(teams[0].team); ++i){
@@ -442,5 +449,5 @@ giveRewards = function(){
 		livingTeam++;	
 	}
 	var xpShare = xp / livingTeam;
-	context.menu.showRewards(gold, xpShare);
+	context.menu.showRewards(xpShare);
 }

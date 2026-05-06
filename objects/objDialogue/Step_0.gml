@@ -10,3 +10,8 @@ if (active){
 		}
 	}
 }
+if (keyboard_check_pressed(ord("C"))){
+	endDiag();
+	instance_destroy(objCutscene);
+	instance_destroy(objOWEffect);
+}

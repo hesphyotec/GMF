@@ -17,9 +17,10 @@
             "thief"
         ],
         "outcome" : {
-            "op" : "normal",
+            "op" : "setFlag",
             "exp" : 50,
-            "gold" : 50
+            "flag" : "firstThiefBeaten",
+            "value" : true
         },
         "background" : "sprTCasBatBG"
     },
@@ -35,6 +36,33 @@
         },
         "background" : "sprTCasBatBG"
     },
+    "goon1" : {
+        "foes" : [
+            "goon",
+            "thief"
+        ],
+        "outcome" : {
+            "op" : "normal",
+            "exp" : 100,
+            "gold" : 50
+        },
+        "background" : "sprTCasBatBG"
+    },
+    "lowGroup1" : {
+        "foes" : [
+            "goon",
+            "thief",
+            "dopey",
+            "thief"
+        ],
+        "outcome" : {
+            "op" : "normal",
+            "exp" : 200,
+            "gold" : 50
+        },
+        "background" : "sprTCasBatBG"
+    },
+    
     "prologue" : {
         "foes" : [
             "luna"
@@ -50,9 +78,10 @@
             "veteran"
         ],
         "outcome" : {
-            "op" : "normal",
-            "exp" : 1,
-            "gold" : 1
+            "op" : "setFlag",
+            "exp" : 100,
+            "flag" : "veteranBeaten",
+            "value" : true
         },
         "background" : "sprPrologueBatBG"
     },

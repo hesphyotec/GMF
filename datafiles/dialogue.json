@@ -92,8 +92,95 @@
 			],
 			"csTrig" : "veteranIntro5",
 			"sprite" : "sprVeteranTalkNeutral"
+		},
+		"vetEnd1" : {
+			"dialogue" : [
+				"Heh... heh heh...",
+				"Phew! Now, I don't know about a HERO,",
+				"But you sure fight likee a man!",
+				"Even so...",
+				"You've gotta be more than a man if you wanna stand a chance."
+			],
+			"csTrig" : "veteranEnd2",
+			"sprite" : "sprVeteranTalkHappy"
+		},
+		"vetEnd2" : {
+			"dialogue" : [
+				"Listen, Bud.",
+				"People 'round here call me Tyralt.",
+				"I know my way about a battlefield.",
+				"I'll help you, though only if you can do something for me first."
+			],
+			"choices" : [
+				"Hear him out.",
+				"Walk away."
+			],
+			"result" : [
+				{
+					"op" : "trigCs",
+					"csId" : "veteranEnd2a"
+				},
+				{
+					"op" : "trigCs",
+					"csId" : "veteranEnd2b"
+				}
+			],
+			"sprite" : "sprVeteranTalkNeutral"
+		},
+		"vetEnd3" : {
+			"dialogue" : [
+				"If you can get us some horses, I'll take you to Imp Territory.",
+				"There's a farm near the west side of the city that sells 'em.",
+				"I'll meet you over there when you get them.",
+				"Oh and here, take this.",
+				"It should be enough to cover any cost."
+			],
+			"csTrig" : "vetEnd3"
+		},
+		"vetEnd2b" : {
+			"dialogue" : [
+				"Woah, hang on!",
+				"You're passing up a prime opportunity here.",
+				"I don't offer help to every scrawny errant I see.",
+				"You'd best reconsider."
+			],
+			"choices" : [
+				"Listen to him.",
+				"Keep walking."
+			],
+			"result" : [
+				{
+					"op" : "trigCs",
+					"csId" : "veteranEnd2b1"
+				},
+				{
+					"op" : "trigCs",
+					"csId" : "veteranEnd2b2"
+				}
+			],
+			"sprite" : "sprVeteranTalkNeutral"
+		},
+		"vetEnd2b1" : {
+			"dialogue" :[
+				"Good. Glad you reconsidered."
+			],
+			"nextDiag" : {
+				"speaker" : "veteran",
+				"line" : "vetEnd3",
+				"src" : "objVeteranNPC"
+			},
+			"sprite" : "sprVeteranTalkHappy"
+		},
+		"vetDeclined" : {
+			"dialogue" :[
+				"Hah, you're really something, arent you?",
+				"Fine. Have it your way.",
+				"There's a barn to the west with some horses.",
+				"You're gonna need them."
+			],
+			"csTrig" : "veteranDeclined",
+			"sprite" : "sprVeteranTalkNeutral"
 		}
-		
 	},
 	"assassin" : {
 		"recruit" : {
@@ -453,6 +540,99 @@
 					"csId" : "introAltar3"
 				}
 			]
+		}
+	},
+	"outskirtsEntranceKid" : {
+		"firstInteract" : {
+			"dialogue" : [
+				"Hey mister!",
+				"Have you seen a HERO around here?",
+				"I heard he was going to come by here, and I wanted to meet him!",
+				"Please tell me if you see him."
+			],
+			"newDiag" : "secondInteract"
+		},
+		"secondInteract" : {
+			"dialogue" : [
+				"I hope he can help...",
+				"Please let me know if you see him!"
+			]
+		}
+	},
+	"outskirtsRandom" : {
+		"lockdown1" : {
+			"dialogue" : [
+				"What are you doing outside!?",
+				"The city's on lockdown!",
+				"...",
+				"Looks like you're a rulebreaker, too."
+			],
+			"newDiag" : "lockdown2"
+		},
+		"lockdown2" : {
+			"dialogue" : [
+				"The world needs people like us..."
+			]
+		},
+		"gangExpo1" : {
+			"dialogue" : [
+				"Hey pal, I ain't seen you around these parts before.",
+				"Word to the wise.",
+				"Outside the walls, the laws don't really apply here.",
+				"Watch out for some... nasty folks."
+			],
+			"newDiag" : "gangExpo2"
+		},
+		"gangExpo2" : {
+			"dialogue" : [
+				"Ever since the war ended...",
+				"* He trails off in thought."
+			]
+		},
+		"northBlocked1" : {
+			"dialogue" : [
+				"What the hell is this crap?",
+				"I've got an important mission to attend to!",
+				"This city's gone Miteran..."
+			],
+			"newDiag" : "northBlocked2"
+		},
+		"northBlocked2" : {
+			"dialogue" : [
+				"I gotta walk all the way to the WEST GATE...",
+				"Through a damn lockdown...",
+				"That damn King..."
+			]
+		},
+		"thiefPre1" : {
+			"dialogue" : [
+				"* She's shaking.",
+				"H-Hey! Please! Help me!",
+				"Those monsters... they... they...",
+				"They can't keep getting away with this..."
+			],
+			"newDiag" : "thiefPre2"
+		},
+		"thiefPre2" : {
+			"dialogue" : [
+				"* She's crying."
+			]
+		}
+	},
+	"thief" : {
+		"thiefIntro1" : {
+			"dialogue" : [
+				"Woah, hey there buddy!"
+			],
+			"csTrig" : "thiefIntro2"
+		},
+		"thiefIntro2" : {
+			"dialogue" : [
+				"That's some snazzy armor you got there.",
+				"And that sword... wow...",
+				"Hey, do you mind letting me take a look?"
+			],
+			"csTrig" : "thiefIntro3"
 		}
 	}
 }

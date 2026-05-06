@@ -2,7 +2,7 @@ type = NPC.HOSTILE;
 diag = "I'm just a rock. Chillin'.";
 enemy = "bandit1";
 
-baseSpriteName = "sprThief";
+baseSpriteName = "sprCriminal";
 
 onInteract = function(player){
 	scrStartBattle(room, player, enemy);
@@ -101,14 +101,15 @@ getMoveTarget = function(_mTar){
 }
 
 checkPlayerInVision = function(){
+	var obstructed = collision_line(x, y, objOWPlayer.x, objOWPlayer.y, objWall, true, true);
 	switch(dir){
 		case(Dirs.UP):
-			return collision_rectangle(x - rangeSide / 2, y - rangeDist, x + rangeSide / 2, y, objOWPlayer, false, true);
+			return (collision_rectangle(x - rangeSide / 2, y - rangeDist, x + rangeSide / 2, y, objOWPlayer, false, true) && !obstructed);
 		case(Dirs.LEFT):
-			return collision_rectangle(x - rangeDist, y - rangeSide / 2, x, y + rangeSide / 2, objOWPlayer, false, true);
+			return (collision_rectangle(x - rangeDist, y - rangeSide / 2, x, y + rangeSide / 2, objOWPlayer, false, true) && !obstructed);
 		case(Dirs.RIGHT):
-			return collision_rectangle(x, y - rangeSide / 2, x + rangeDist , y + rangeSide / 2, objOWPlayer, false, true);
+			return (collision_rectangle(x, y - rangeSide / 2, x + rangeDist , y + rangeSide / 2, objOWPlayer, false, true) && !obstructed);
 		case(Dirs.DOWN):
-			return collision_rectangle(x - rangeSide / 2, y, x + rangeSide / 2, y + rangeDist, objOWPlayer, false, true);
+			return (collision_rectangle(x - rangeSide / 2, y, x + rangeSide / 2, y + rangeDist, objOWPlayer, false, true) && !obstructed);
 	}
 }
